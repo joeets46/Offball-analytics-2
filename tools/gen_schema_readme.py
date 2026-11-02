@@ -181,7 +181,7 @@ def main(argv: list[str] | None = None) -> int:
           + f", owning **{len(owned)}** of the 153 in-scope target tables.")
         w("")
         w("Named in the upstream model's `operational_systems_of_records`. See")
-        w("[../../docs/05-source-systems.md](../../docs/05-source-systems.md) for how")
+        w("[../../../docs/05-source-systems.md](../../../docs/05-source-systems.md) for how")
         w("ownership was assigned.")
         w("")
 
@@ -235,8 +235,11 @@ def main(argv: list[str] | None = None) -> int:
         w("here crosses a schema boundary, which `offball-check` enforces.")
         w("")
 
-        target = ROOT / "oltp" / schema / "README.md"
-        target.write_text("\n".join(out), encoding="utf-8")
+        target = ROOT / "models" / "physical" / schema / "README.md"
+        # One trailing newline, not two: the builder ends sections with a
+        # blank line, so strip before adding the final one.
+        body = "\n".join(out).rstrip("\n") + "\n"
+        target.write_text(body, encoding="utf-8", newline="")
         print(f"  {schema:<12} {len(owned):>2} target tables, "
               f"{len(info.tables):>2} source tables, {len(low)} low-confidence")
 

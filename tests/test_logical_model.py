@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-LOGICAL = Path(__file__).resolve().parent.parent / "logical"
+LOGICAL = Path(__file__).resolve().parent.parent / "models" / "logical"
 
 TABLE_RE = re.compile(r"^Table\s+(\w+)\s*\{", re.M)
 REF_RE = re.compile(r"^Ref:\s*(\w+)\.(\w+)\s*[<>-]\s*(\w+)\.(\w+)", re.M)

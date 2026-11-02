@@ -1,4 +1,4 @@
-"""Parse the generated DDL back out of the ``oltp/`` tree.
+"""Parse the generated DDL back out of the ``models/physical/`` tree.
 
 The point is self-checking. The ownership map names source tables, the
 mapping CSV publishes them, and the docs quote counts -- all of which can
@@ -16,7 +16,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-OLTP = Path(__file__).resolve().parent.parent / "oltp"
+OLTP = Path(__file__).resolve().parent.parent / "models" / "physical"
 
 #: Files that define tables, in load order. ``70_audit.sql`` is included
 #: because it creates the ``_change_log`` table.
@@ -102,13 +102,13 @@ def read_schema(schema: str) -> SchemaDdl:
 
 
 def read_all() -> dict[str, SchemaDdl]:
-    """Parse every schema directory under ``oltp/``."""
+    """Parse every schema directory under ``models/physical/``."""
     schemas = sorted(d.name for d in OLTP.iterdir() if (d / "ddl").is_dir())
     return {s: read_schema(s) for s in schemas}
 
 
 def declared_domains() -> set[str]:
-    """The ``common.dom_*`` types that ``sql/01_common.sql`` actually creates."""
-    path = Path(__file__).resolve().parent.parent / "sql" / "01_common.sql"
+    """The ``common.dom_*`` types that ``models/physical/sql/01_common.sql`` actually creates."""
+    path = OLTP / "sql" / "01_common.sql"
     sql = path.read_text(encoding="utf-8")
     return set(re.findall(r"CREATE DOMAIN common\.(dom_\w+)", sql))

@@ -355,9 +355,9 @@ Edit the generator, not the output.
 | Artifact | Generator |
 |---|---|
 | `tools/derived/*.csv`, `summary.json` | `offball-extract` |
-| `sql/01_common.sql` | `offball-common` |
+| `models/physical/sql/01_common.sql` | `offball-common` |
 | `mapping/table_level_mapping.csv`, `out_of_scope.csv` | `offball-mapping` |
-| `oltp/*/ddl/70_audit.sql` | `offball-audit` |
+| `models/physical/*/ddl/70_audit.sql` | `offball-audit` |
 | `dictionary/*` | `offball-dictionary` |
 
 Everything else — the DDL, the conceptual and logical models, the docs, the

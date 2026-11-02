@@ -30,10 +30,10 @@ then reviewing the result by hand. The measurement lives in
 
 | Layer | Location | What it is |
 |---|---|---|
-| **Conceptual** | [conceptual/](conceptual/) | ~38 business entities in 5 subject areas, no attributes, M:N unresolved |
-| **Logical** | [logical/](logical/) | Platform-neutral 3NF: supertypes, resolved associative entities, normalized value domains |
-| **Physical (source)** | [oltp/](oltp/) | **10 PostgreSQL 18 schemas**, one per system of record, each in its native idiom |
-| **Physical (target)** | [target/](target/) | The upstream Silver-layer model as a constraint on the sources — documented, not vendored |
+| **Conceptual** | [models/conceptual/](models/conceptual/) | ~38 business entities in 5 subject areas, no attributes, M:N unresolved |
+| **Logical** | [models/logical/](models/logical/) | Platform-neutral 3NF: supertypes, resolved associative entities, normalized value domains |
+| **Physical (source)** | [models/physical/](models/physical/) | **10 PostgreSQL 18 schemas**, one per system of record, each in its native idiom |
+| **Physical (target)** | [target/](target/) | The upstream Silver-layer model as a constraint on the sources — copied verbatim to [source/mvm/](source/mvm/), documented here, not re-modeled |
 | **Mapping** | [mapping/](mapping/) | Table-level for all 153 in-scope tables, column-level for the key ones, plus the 47 excluded |
 | **Dictionary** | [dictionary/](dictionary/) | Every OLTP table and column with its description, generated from the live database |
 | **Docs** | [docs/](docs/) | Conventions, the ten systems, the scope boundary, the ingestion contract |
@@ -67,7 +67,7 @@ docker compose up -d
 
 # 3. Load the whole model
 psql "postgresql://offball:offball@localhost:55432/offball" \
-     -v ON_ERROR_STOP=1 -f sql/00_create_all.sql
+     -v ON_ERROR_STOP=1 -f models/physical/sql/00_create_all.sql
 
 # 4. Verify
 uv run pytest
@@ -88,10 +88,10 @@ reads it; nothing in the repository contains a real secret.
 Everything derived from the upstream model is generated, in this order:
 
 ```bash
-uv run offball-extract      # model.json  -> tools/derived/*.csv + summary.json
-uv run offball-common       # derived     -> sql/01_common.sql
+uv run offball-extract      # source/mvm  -> tools/derived/*.csv + summary.json
+uv run offball-common       # derived     -> models/physical/sql/01_common.sql
 uv run offball-mapping      # ownership   -> mapping/*.csv
-uv run offball-audit        # oltp DDL    -> oltp/*/ddl/70_audit.sql
+uv run offball-audit        # physical DDL -> models/physical/*/ddl/70_audit.sql
 uv run offball-check        # assertions across mapping, scope and DDL
 uv run offball-dictionary   # live database -> dictionary/*.csv
 ```
@@ -102,13 +102,10 @@ source table named in the mapping **actually exists in the DDL**, and that no
 foreign key crosses a system boundary. It has already caught two phantom tables
 that existed only in the mapping.
 
-The upstream `model.json` is cached in `tools/.cache/` (7 MB, gitignored). To
-refresh it:
-
-```bash
-curl -s https://raw.githubusercontent.com/databricks-industry-solutions/lakehouse-industry-data-models/main/data-models/sports_entertainment/v1/mvm/model.json \
-  -o tools/.cache/mvm_model.json
-```
+The upstream model is **vendored** at [source/mvm/](source/mvm/), so no network
+access is needed to regenerate anything. `source/mvm/model.json` is the input of
+record; see [source/mvm/README.md](source/mvm/README.md) for its provenance and
+how to refresh it.
 
 ## The ten source systems
 
@@ -117,16 +114,16 @@ Tier A carries full DDL; Tier B is abbreviated by design (see
 
 | Schema | System | Tier | Target tables | Native idiom worth seeing |
 |---|---|:--:|:--:|---|
-| [`sap_s4`](oltp/sap_s4/) | SAP S/4HANA FI/CO/MM/SD | A | 33 | Real SAP names (`bkpf`/`bseg`), `MANDT` leading every key, unsigned amounts with a separate debit/credit character |
-| [`tm_axs`](oltp/tm_axs/) | Ticketmaster / AXS | A | 30 | Partitioned scan stream, rotating barcodes, offline-captured scans arriving late |
-| [`sfdc_crm`](oltp/sfdc_crm/) | Salesforce CRM | A | 26 | `CHAR(18)` IDs, `__c` custom fields, `IsDeleted` Recycle Bin, `SystemModstamp` replication |
-| [`dalet`](oltp/dalet/) | Dalet Galaxy | A | 20 | media_object / essence split, metadata as data, rights windows with territory arrays |
-| [`archtics`](oltp/archtics/) | Archtics | A | 14 | Five-level seating hierarchy, reusable manifests, personal seat licences |
-| [`adobe_aep`](oltp/adobe_aep/) | Adobe Experience Platform | A | 8 | Namespaced identities, probabilistic graph links, XDM in JSONB, immutable event stream |
-| [`shopify`](oltp/shopify/) | Shopify Plus | A | 8 | Platform-assigned IDs (no `IDENTITY`), negative discount values, three independent order lifecycles |
-| [`hudl`](oltp/hudl/) | SportsCode / Hudl | A | 5 | Client-generated UUIDs, coded instances on a video timeline, statistics derived from labels |
-| [`sap_sfsf`](oltp/sap_sfsf/) | SAP SuccessFactors | B | 7 | Effective-dated everything; compensation as components, not salary |
-| [`workday_ap`](oltp/workday_ap/) | Workday Adaptive Planning | B | 2 | A cube, not entities: one fact table, versions as a dimension, sign-flipped accounts |
+| [`sap_s4`](models/physical/sap_s4/) | SAP S/4HANA FI/CO/MM/SD | A | 33 | Real SAP names (`bkpf`/`bseg`), `MANDT` leading every key, unsigned amounts with a separate debit/credit character |
+| [`tm_axs`](models/physical/tm_axs/) | Ticketmaster / AXS | A | 30 | Partitioned scan stream, rotating barcodes, offline-captured scans arriving late |
+| [`sfdc_crm`](models/physical/sfdc_crm/) | Salesforce CRM | A | 26 | `CHAR(18)` IDs, `__c` custom fields, `IsDeleted` Recycle Bin, `SystemModstamp` replication |
+| [`dalet`](models/physical/dalet/) | Dalet Galaxy | A | 20 | media_object / essence split, metadata as data, rights windows with territory arrays |
+| [`archtics`](models/physical/archtics/) | Archtics | A | 14 | Five-level seating hierarchy, reusable manifests, personal seat licences |
+| [`adobe_aep`](models/physical/adobe_aep/) | Adobe Experience Platform | A | 8 | Namespaced identities, probabilistic graph links, XDM in JSONB, immutable event stream |
+| [`shopify`](models/physical/shopify/) | Shopify Plus | A | 8 | Platform-assigned IDs (no `IDENTITY`), negative discount values, three independent order lifecycles |
+| [`hudl`](models/physical/hudl/) | SportsCode / Hudl | A | 5 | Client-generated UUIDs, coded instances on a video timeline, statistics derived from labels |
+| [`sap_sfsf`](models/physical/sap_sfsf/) | SAP SuccessFactors | B | 7 | Effective-dated everything; compensation as components, not salary |
+| [`workday_ap`](models/physical/workday_ap/) | Workday Adaptive Planning | B | 2 | A cube, not entities: one fact table, versions as a dimension, sign-flipped accounts |
 
 ## Things the source tier can say that the target model cannot
 
@@ -166,26 +163,38 @@ Both measured, not asserted — see
 ## Repository layout
 
 ```
-conceptual/      Mermaid ERD + subject areas
-logical/         DBML per subject area, platform-neutral 3NF
-oltp/<system>/   ddl/00..70 in load order, erd/, README
-  00_schema            schema + COMMENT
-  10_domains_and_enums local value domains restored as reference tables
-  20_reference         configuration
-  30_master            master data
-  31_master_pii        one-to-one PII satellites (separate grants)
-  40_transaction       transactions, partitioned where volume warrants
-  50_constraints       foreign keys, declared last so one ordered pass loads
-  60_indexes           only indexes serving a named access path
-  70_audit             GENERATED — watermark triggers, change log, grants
-sql/             01_common.sql (GENERATED), 00_create_all.sql (ordered loader)
-mapping/         table-level, column-level, out-of-scope, lineage narrative
-dictionary/      GENERATED data dictionary
-docs/            conventions, source systems, scope boundary, ingestion contract
-target/          upstream model documented as a constraint on the sources
-tools/           Python package: derivation, generation, assertions
-tests/           pytest: schemas load, every table has a PK, mapping is complete
+source/mvm/        VENDORED — the upstream Databricks MVM, verbatim
+                   model.json is the input every derived artifact is built from
+models/
+  conceptual/      Mermaid ERD + subject areas
+  logical/         DBML per subject area, platform-neutral 3NF
+  physical/
+    <system>/      one folder per source system: ddl/00..80, erd/, README
+      00_schema            schema + COMMENT
+      10_domains_and_enums local value domains restored as reference tables
+      20_reference         configuration
+      30_master            master data
+      31_master_pii        one-to-one PII satellites (separate grants)
+      40_transaction       transactions, partitioned where volume warrants
+      50_constraints       foreign keys, declared last so one ordered pass loads
+      60_indexes           only indexes serving a named access path
+      70_audit             GENERATED — watermark triggers, change log, grants
+      80_comments          table descriptions, published by the data dictionary
+    sql/           01_common.sql (GENERATED) + 00_create_all.sql (ordered loader)
+mapping/           table-level, column-level, out-of-scope, lineage narrative
+dictionary/        GENERATED data dictionary
+docs/              conventions, source systems, scope boundary, ingestion contract
+target/            upstream model documented as a constraint on the sources
+tools/             Python package: derivation, generation, assertions
+tests/             pytest: schemas load, every table has a PK, mapping is complete
 ```
+
+`models/` holds the three modelling layers in the order they are derived:
+conceptual, then logical, then physical. `models/physical/` keeps **one folder
+per source system**, because the whole point of the source tier is that each
+system is modeled in its own idiom rather than a house style. `models/physical/sql/`
+holds the only two SQL files that are not specific to one system: the shared
+`common` schema and the loader that orders all ten.
 
 Files marked GENERATED are produced by `tools/` — edit the generator, not the
 output.

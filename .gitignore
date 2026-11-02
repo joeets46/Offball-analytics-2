@@ -9,8 +9,8 @@ dist/
 .ruff_cache/
 .mypy_cache/
 
-# Cached upstream model (7 MB). Regenerate with the curl command in README.md;
-# it is an input, not a source artifact.
+# Old download cache for the upstream model. The model is now vendored and
+# committed at source/mvm/; this path is only a fallback for older checkouts.
 tools/.cache/
 
 # Local environment. .env.example is committed; .env is not.

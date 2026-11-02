@@ -18,6 +18,15 @@ from io import StringIO
 from pathlib import Path
 from typing import Iterable, Sequence
 
+ROOT = Path(__file__).resolve().parent.parent
+
+#: The vendored upstream model. Committed under ``source/mvm/`` so the project
+#: is self-contained: every derived artifact can be regenerated from the repo
+#: alone, with no network access.
+MODEL_PATH = ROOT / "source" / "mvm" / "model.json"
+
+#: Where the model used to be fetched to. Still honoured as a fallback so an
+#: existing working copy keeps working, but it is no longer the input of record.
 CACHE_PATH = Path(__file__).resolve().parent / ".cache" / "mvm_model.json"
 
 
@@ -210,8 +219,17 @@ def strictest_classification(levels: Iterable[str]) -> str:
 
 
 def load_model(path: Path | None = None) -> dict:
-    """Load the cached upstream model."""
-    target = path or CACHE_PATH
+    """Load the vendored upstream model.
+
+    Reads ``source/mvm/model.json``, falling back to the old download cache so
+    a working copy from before the model was vendored still resolves.
+    """
+    target = path or (MODEL_PATH if MODEL_PATH.is_file() else CACHE_PATH)
+    if not target.is_file():
+        raise SystemExit(
+            f"upstream model not found at {target}. It is committed at "
+            "source/mvm/model.json; see source/mvm/README.md to restore it."
+        )
     with target.open(encoding="utf-8") as handle:
         return json.load(handle)["model"]
 

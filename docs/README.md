@@ -24,12 +24,13 @@ Read in order for the full argument, or jump to what you need.
 
 | Location | Contents |
 |---|---|
-| [../conceptual/](../conceptual/) | Subject areas and the conceptual ERD |
-| [../logical/](../logical/) | Five DBML files and the logical ERDs |
-| [../oltp/](../oltp/) | The DDL, one directory per system |
+| [../models/conceptual/](../models/conceptual/) | Subject areas and the conceptual ERD |
+| [../models/logical/](../models/logical/) | Five DBML files and the logical ERDs |
+| [../models/physical/](../models/physical/) | The DDL, one directory per system |
 | [../mapping/](../mapping/) | Table-level, column-level, out-of-scope, and [lineage.md](../mapping/lineage.md) |
 | [../dictionary/](../dictionary/) | Generated data dictionary |
-| [../target/](../target/) | The upstream model, documented rather than vendored |
+| [../target/](../target/) | The target's conventions as constraints on the sources |
+| [../source/mvm/](../source/mvm/) | The upstream Databricks MVM, vendored verbatim — the input every derived artifact is built from |
 | [../README.md](../README.md) | How to run everything |
 
 ## If you only read three things

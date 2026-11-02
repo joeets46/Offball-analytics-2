@@ -3,9 +3,9 @@
 169 entities in third normal form, platform-neutral. No vendor types, no
 physical keys, no indexes.
 
-The model is in [../logical/](../logical/), five files by subject area, with
-[README.md](../logical/README.md) explaining what normalization changed and
-[logical-erd.md](../logical/logical-erd.md) rendering it.
+The model is in [../models/logical/](../models/logical/), five files by subject area, with
+[README.md](../models/logical/README.md) explaining what normalization changed and
+[logical-erd.md](../models/logical/logical-erd.md) rendering it.
 
 | Subject area | Entities | Relationships |
 |---|--:|--:|

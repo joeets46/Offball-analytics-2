@@ -21,16 +21,16 @@ Verbatim, as the upstream model lists them:
 
 | Schema | System | Tier | Target tables | Source tables | Extract pattern |
 |---|---|:--:|--:|--:|---|
-| [`sap_s4`](../oltp/sap_s4/) | SAP S/4HANA FI/CO/MM/SD | A | 33 | 39 | CDC log |
-| [`tm_axs`](../oltp/tm_axs/) | Ticketmaster / AXS | A | 30 | 42 | CDC log |
-| [`sfdc_crm`](../oltp/sfdc_crm/) | Salesforce CRM | A | 26 | 26 | API incremental on `SystemModstamp` |
-| [`dalet`](../oltp/dalet/) | Dalet Galaxy | A | 20 | 23 | CDC log |
-| [`archtics`](../oltp/archtics/) | Archtics | A | 14 | 23 | CDC log |
-| [`adobe_aep`](../oltp/adobe_aep/) | Adobe Experience Platform | A | 8 | 21 | Event stream + API |
-| [`shopify`](../oltp/shopify/) | Shopify Plus | A | 8 | 25 | Webhooks + reconciling sweep |
-| [`sap_sfsf`](../oltp/sap_sfsf/) | SAP SuccessFactors | B | 7 | 19 | API incremental on `last_modified_on` |
-| [`hudl`](../oltp/hudl/) | SportsCode / Hudl | A | 5 | 22 | API incremental |
-| [`workday_ap`](../oltp/workday_ap/) | Workday Adaptive Planning | B | 2 | 12 | API snapshot per version |
+| [`sap_s4`](../models/physical/sap_s4/) | SAP S/4HANA FI/CO/MM/SD | A | 33 | 39 | CDC log |
+| [`tm_axs`](../models/physical/tm_axs/) | Ticketmaster / AXS | A | 30 | 42 | CDC log |
+| [`sfdc_crm`](../models/physical/sfdc_crm/) | Salesforce CRM | A | 26 | 26 | API incremental on `SystemModstamp` |
+| [`dalet`](../models/physical/dalet/) | Dalet Galaxy | A | 20 | 23 | CDC log |
+| [`archtics`](../models/physical/archtics/) | Archtics | A | 14 | 23 | CDC log |
+| [`adobe_aep`](../models/physical/adobe_aep/) | Adobe Experience Platform | A | 8 | 21 | Event stream + API |
+| [`shopify`](../models/physical/shopify/) | Shopify Plus | A | 8 | 25 | Webhooks + reconciling sweep |
+| [`sap_sfsf`](../models/physical/sap_sfsf/) | SAP SuccessFactors | B | 7 | 19 | API incremental on `last_modified_on` |
+| [`hudl`](../models/physical/hudl/) | SportsCode / Hudl | A | 5 | 22 | API incremental |
+| [`workday_ap`](../models/physical/workday_ap/) | Workday Adaptive Planning | B | 2 | 12 | API snapshot per version |
 
 **Tier A** carries full DDL: complete column sets, every constraint, indexes,
 partitioning, audit triggers. **Tier B** is abbreviated by design — key
@@ -255,7 +255,7 @@ The boundary is deliberately easy to move. To bring, say, a sportsbook in:
 
 1. Add it to `SYSTEMS` in [tools/scope.py](../tools/scope.py).
 2. Remove `gaming` from `OUT_OF_SCOPE` in the same file.
-3. Add `oltp/sportsbook/ddl/` following the numbered file layout.
+3. Add `models/physical/sportsbook/ddl/` following the numbered file layout.
 4. Add the `gaming` block to `OWNERSHIP` in
    [tools/ownership.py](../tools/ownership.py).
 5. Add a `SchemaConfig` to [tools/gen_audit.py](../tools/gen_audit.py).

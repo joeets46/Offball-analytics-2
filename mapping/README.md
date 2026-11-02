@@ -51,6 +51,6 @@ uv run offball-column-mapping   # column level
 uv run offball-check            # assert completeness against scope and DDL
 ```
 
-`offball-check` verifies that every source table named here actually exists in
-`oltp/`. It has already caught two phantom tables that existed only in the
-mapping.
+`offball-check` verifies that every source table named here actually exists
+in `models/physical/`. It has already caught two phantom tables that existed
+only in the mapping.

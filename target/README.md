@@ -3,26 +3,33 @@
 The target is the upstream **Databricks Sports Entertainment Lakehouse Data
 Model (MVM)**.
 
-It is deliberately **not vendored into this repository**.
+Its published artifacts are vendored verbatim at
+[../source/mvm/](../source/mvm/), pinned to one upstream commit. What this
+project deliberately does **not** do is *re-model* the target.
 
-## Why not
+## Copied, not re-modeled
 
-Three reasons, in order of weight:
+The distinction matters:
 
-1. **It would drift.** The upstream model is generated and versioned; a copy
-   here would diverge the first time it changed, and a stale copy is worse than
-   a link.
-2. **It adds no information.** 200 tables of generated DDL that this project
-   does not author, cannot improve, and has no business restating.
-3. **It is already authoritative where it lives.** The point of this
-   repository is the *source* tier and the mapping between the two, not a
-   second copy of the destination.
+- **Copied**, because a fixed input is what makes the derivation reproducible.
+  Every count in `docs/`, every row in `mapping/`, and the 55 `DOMAIN` types in
+  `models/physical/sql/01_common.sql` are generated from
+  `source/mvm/model.json`. Fetching that file at build time would make all of it
+  contingent on the upstream `main` branch not moving.
+- **Not re-modeled**, because 200 tables of generated target DDL are something
+  this project does not author, cannot improve and has no business restating.
+  The point of this repository is the *source* tier and the mapping between the
+  two, not a second rendering of the destination.
 
-## Where it is
+So `target/` contains documentation, not DDL: the target's conventions stated as
+constraints the source tier has to satisfy.
+
+## Where it comes from
 
 <https://github.com/databricks-industry-solutions/lakehouse-industry-data-models/tree/main/data-models/sports_entertainment/v1/mvm>
 
-The artifacts worth knowing about:
+Pinned to commit `b8595c9` (2026-07-18). The artifacts worth knowing about, all
+present under [../source/mvm/](../source/mvm/):
 
 | Path | What it is |
 |---|---|
@@ -41,17 +48,20 @@ the measurement.
 
 ## How this project uses it
 
-`model.json` is cached at `tools/.cache/mvm_model.json` (7 MB, gitignored) and
-read by the derivation tooling. Everything in `tools/derived/` comes from it,
-and nothing about the target model is hand-typed anywhere in this repository.
+The upstream model is vendored at [../source/mvm/](../source/mvm/) and read from
+there by the derivation tooling. Everything in `tools/derived/` comes from
+`source/mvm/model.json`, and nothing about the target model is hand-typed
+anywhere in this repository.
 
-To fetch or refresh the cache:
+Because it is committed rather than downloaded, the derived artifacts can be
+rebuilt offline and the input cannot shift under them:
 
 ```bash
-mkdir -p tools/.cache
-curl -s https://raw.githubusercontent.com/databricks-industry-solutions/lakehouse-industry-data-models/main/data-models/sports_entertainment/v1/mvm/model.json   -o tools/.cache/mvm_model.json
 uv run offball-extract
 ```
+
+See [../source/mvm/README.md](../source/mvm/README.md) for provenance and how to
+refresh the vendored copy.
 
 ## What is here instead
 

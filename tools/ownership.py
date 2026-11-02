@@ -11,7 +11,7 @@ affinity signal at all -- almost all of them reference or associative tables
 whose owner is obvious from context -- and are assigned here explicitly.
 
 ``check_mapping`` asserts that every ``src`` table named below actually exists
-in the generated DDL, so this file cannot drift from ``oltp/``.
+in the generated DDL, so this file cannot drift from ``models/physical/``.
 
 Row shape: ``[mvm_table, system, src, transform, confidence, note?]``
 

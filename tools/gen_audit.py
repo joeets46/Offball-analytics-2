@@ -35,7 +35,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-OLTP = ROOT / "oltp"
+OLTP = ROOT / "models" / "physical"
 
 # Files to scan for table definitions, in load order. 70_audit.sql is excluded
 # because that is what we are generating.
@@ -583,7 +583,9 @@ def main(argv: list[str] | None = None) -> int:
             continue
         sql = render(schema, CONFIG[schema])
         target = ddl_dir / "70_audit.sql"
-        target.write_text(sql, encoding="utf-8")
+        # newline="" so the file is LF on every platform, matching
+        # .gitattributes and the other generators.
+        target.write_text(sql, encoding="utf-8", newline="")
         tables, partitions = discover_tables(schema, CONFIG[schema].touch_column)
         touch_count = sum(
             1 for t, has in tables if has and t not in partitions

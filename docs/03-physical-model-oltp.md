@@ -3,7 +3,7 @@
 Ten PostgreSQL 18 schemas, one per named system of record. **255 base tables
 plus 24 partitions.**
 
-The DDL is in [../oltp/](../oltp/), and the conventions it follows are in
+The DDL is in [../models/physical/](../models/physical/), and the conventions it follows are in
 [06-conventions.md](06-conventions.md).
 
 ## What got built
@@ -124,7 +124,7 @@ The primary key includes the partition key, which PostgreSQL requires — hence
 
 ```bash
 docker compose up -d
-psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f sql/00_create_all.sql
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f models/physical/sql/00_create_all.sql
 ```
 
 Or, with no local `psql`, through the container:

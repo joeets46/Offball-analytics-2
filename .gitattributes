@@ -18,5 +18,13 @@
 uv.lock linguist-generated=true
 tools/derived/*.csv linguist-generated=true
 dictionary/*.csv linguist-generated=true
-oltp/*/ddl/70_audit.sql linguist-generated=true
-sql/01_common.sql linguist-generated=true
+models/physical/*/ddl/70_audit.sql linguist-generated=true
+models/physical/sql/01_common.sql linguist-generated=true
+
+# The vendored upstream model is a verbatim copy. No line-ending normalisation
+# and no language statistics: it must stay byte-identical to what Databricks
+# publishes, so the type comparison in docs/04 remains reproducible.
+source/mvm/** -text linguist-vendored=true
+
+# ...except the provenance note, which is this project's own prose.
+source/mvm/README.md text eol=lf linguist-vendored=false

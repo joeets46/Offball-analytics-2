@@ -1,10 +1,14 @@
 # Physical model — the target
 
 The target physical model is the upstream Databricks Sports Entertainment MVM.
-It is **not vendored here**: it lives at
-[databricks-industry-solutions/lakehouse-industry-data-models](https://github.com/databricks-industry-solutions/lakehouse-industry-data-models/tree/main/data-models/sports_entertainment/v1/mvm)
-and duplicating 200 tables of generated DDL would add no information and would
-drift the moment upstream changed.
+A verbatim copy is vendored at [../source/mvm/](../source/mvm/) so that every
+derived artifact in this repository has a fixed input and the measurements below
+are reproducible offline.
+
+What is **not** done is re-modeling it. The 200 tables of generated target DDL
+are used as they are published; nothing here restates, re-emits or improves
+them, because that would add no information and would drift the moment upstream
+changed.
 
 What this document does instead is state the target's physical conventions
 **as constraints on the source tier**, and record two measured defects anyone
@@ -38,7 +42,7 @@ led by `MANDT`, 18-character Salesforce IDs, platform-assigned Shopify
 `BIGINT`s, client-generated `UUID`s and namespaced AEP identity values.
 
 The uniform target key is therefore a *product of integration*, and
-[`common.entity_xref`](../sql/01_common.sql) is where that production happens:
+[`common.entity_xref`](../models/physical/sql/01_common.sql) is where that production happens:
 it maps each system-local key to the canonical surrogate the lakehouse will
 use. Twelve business entities need it, registered in
 `common.canonical_entity`.
@@ -146,9 +150,13 @@ deployed model cannot locate a stadium within a city.
 **This model uses the `model.json` types**, which preserve intent. The
 comparison is reproducible:
 
+Both artifacts are vendored, so the comparison needs no network access:
+
 ```bash
-# Fetch a generated schema and compare it to model.json
-curl -s "https://raw.githubusercontent.com/databricks-industry-solutions/lakehouse-industry-data-models/main/data-models/sports_entertainment/v1/mvm/schemas/sports_entertainment_event_schema_v1_mvm.sql"
+# the declared types
+../source/mvm/model.json
+# the deployable types for the same domain
+../source/mvm/schemas/sports_entertainment_event_schema_v1_mvm.sql
 ```
 
 ### Defect 2 — `source_system_code` cannot name seven of the ten systems

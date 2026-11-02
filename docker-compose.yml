@@ -47,8 +47,12 @@ services:
       # psql inside the container can run the loader directly:
       #   docker compose exec postgres psql -U offball -d offball \
       #     -v ON_ERROR_STOP=1 -f /model/sql/00_create_all.sql
-      - ./sql:/model/sql:ro
-      - ./oltp:/model/oltp:ro
+      #
+      # One mount, not two: 00_create_all.sql reaches the schemas with
+      # \ir ../<system>/ddl/..., which resolves relative to the file, so
+      # mounting models/physical as /model reproduces the host layout and
+      # the same loader works inside and outside the container.
+      - ./models/physical:/model:ro
     healthcheck:
       # pg_isready alone returns true before the database finishes creating, so
       # the check runs a real query.

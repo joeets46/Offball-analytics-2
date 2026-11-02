@@ -1,4 +1,4 @@
-"""Generate ``sql/01_common.sql`` -- the shared ``common`` schema.
+"""Generate ``models/physical/sql/01_common.sql`` -- the shared ``common`` schema.
 
 It holds three things every system schema depends on:
 
@@ -32,7 +32,8 @@ from pathlib import Path
 from .scope import SYSTEMS
 
 DERIVED = Path(__file__).resolve().parent / "derived"
-OUT_PATH = Path(__file__).resolve().parent.parent / "sql" / "01_common.sql"
+ROOT = Path(__file__).resolve().parent.parent
+OUT_PATH = ROOT / "models" / "physical" / "sql" / "01_common.sql"
 
 #: Patterns the upstream model validates on only one column, but which are
 #: structurally shared once the model is normalized into ten source schemas.
@@ -298,7 +299,7 @@ def main() -> int:
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="")
 
-    print("sql/01_common.sql written")
+    print("models/physical/sql/01_common.sql written")
     print(f"  domain types : {len(reused)}")
     print(f"  columns covered: {covered}")
     print(f"  canonical entities: {len(CANONICAL)}")

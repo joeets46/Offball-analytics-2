@@ -3,11 +3,11 @@
 38 business entities in five subject areas. No attributes beyond identifiers,
 no keys, no foreign keys, and many-to-many relationships left unresolved.
 
-The model itself is in [../conceptual/](../conceptual/):
+The model itself is in [../models/conceptual/](../models/conceptual/):
 
-- [subject-areas.md](../conceptual/subject-areas.md) — the five areas, every
+- [subject-areas.md](../models/conceptual/subject-areas.md) — the five areas, every
   entity, and the cross-area relationships that carry the business
-- [conceptual-erd.md](../conceptual/conceptual-erd.md) — six Mermaid diagrams,
+- [conceptual-erd.md](../models/conceptual/conceptual-erd.md) — six Mermaid diagrams,
   one per area plus the spine
 
 This document explains the two decisions behind it.

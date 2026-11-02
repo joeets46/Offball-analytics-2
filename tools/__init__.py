@@ -1,7 +1,7 @@
 """Tooling for the OFF-Ball source OLTP data models.
 
 Everything in this package derives from one input: the upstream Databricks
-Sports Entertainment MVM ``model.json``, cached in ``tools/.cache/``. Nothing
+Sports Entertainment MVM ``model.json``, vendored at ``source/mvm/``. Nothing
 here invents facts about the target model -- it reads them.
 
 Module map, in the order they depend on each other:
@@ -20,7 +20,7 @@ Module map, in the order they depend on each other:
     are written against.
 
 ``build_common_ddl``
-    Generates ``sql/01_common.sql`` -- the shared DOMAIN types, the
+    Generates ``models/physical/sql/01_common.sql`` -- the shared DOMAIN types, the
     source-system registry and the identity resolution tables.
 
 ``build_mapping``

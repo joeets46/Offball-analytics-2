@@ -35,7 +35,7 @@ def upstream() -> tuple[set[str], set[str]]:
         model = load_model()
     except FileNotFoundError:
         pytest.skip(
-            "tools/.cache/mvm_model.json missing; see the curl command in README.md"
+            "source/mvm/model.json missing; it is committed in this repo"
         )
     every: set[str] = set()
     in_scope: set[str] = set()
@@ -154,7 +154,7 @@ def test_every_source_table_exists_in_the_ddl(in_scope_rows):
         referenced.update(row["source_tables"].split())
 
     phantom = sorted(referenced - existing)
-    assert not phantom, f"source tables named in the mapping but absent from oltp/: {phantom}"
+    assert not phantom, f"source tables named in the mapping but absent from models/physical/: {phantom}"
 
 
 def test_ownership_map_matches_the_scope_boundary(upstream):
@@ -189,7 +189,7 @@ def test_excluded_rows_state_what_would_be_needed(out_of_scope_rows):
 
 
 def test_referenced_domain_types_are_declared():
-    """Every ``common.dom_*`` used by a schema is created by sql/01_common.sql."""
+    """Every ``common.dom_*`` used by a schema is created by models/physical/sql/01_common.sql."""
     declared = ddl_introspect.declared_domains()
     used: set[str] = set()
     for info in ddl_introspect.read_all().values():

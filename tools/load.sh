@@ -7,7 +7,7 @@
 # This is the no-local-psql path: it runs psql inside the container, so Docker
 # is the only requirement. With psql installed locally, prefer:
 #
-#   psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f sql/00_create_all.sql
+#   psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f models/physical/sql/00_create_all.sql
 #
 # Connection settings come from .env, falling back to the same defaults as
 # docker-compose.yml.
@@ -56,11 +56,11 @@ docker exec -i "$CONTAINER" psql -U "$USER_NAME" -d postgres -q \
     -c "DROP DATABASE IF EXISTS $DB WITH (FORCE);" -c "CREATE DATABASE $DB;"
 
 echo "==> common"
-psql_run < "$ROOT/sql/01_common.sql"
-psql_run < "$ROOT/sql/02_common_comments.sql"
+psql_run < "$ROOT/models/physical/sql/01_common.sql"
+psql_run < "$ROOT/models/physical/sql/02_common_comments.sql"
 
 for schema in "${SCHEMAS[@]}"; do
-    dir="$ROOT/oltp/$schema/ddl"
+    dir="$ROOT/models/physical/$schema/ddl"
     [ -d "$dir" ] || { echo "    (skip $schema -- no ddl directory)"; continue; }
     echo "==> $schema"
     for stem in "${FILE_ORDER[@]}"; do

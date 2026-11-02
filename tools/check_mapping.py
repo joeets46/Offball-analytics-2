@@ -11,7 +11,7 @@ a standalone command rather than only as a test. It asserts:
    DDL. This is the one that keeps the mapping honest -- it is easy to write a
    plausible table name into a spreadsheet and never build it.
 4. Every ``common.dom_*`` type referenced by a schema is actually created by
-   ``sql/01_common.sql``.
+   ``models/physical/sql/01_common.sql``.
 5. The ownership map covers the in-scope set exactly.
 
 Run with::
@@ -129,7 +129,7 @@ def main(argv: list[str] | None = None) -> int:
 
     phantom = sorted(referenced - existing)
     check(
-        f"all {len(referenced)} source tables named in the mapping exist in oltp/ DDL",
+        f"all {len(referenced)} source tables named in the mapping exist in models/physical/ DDL",
         not phantom,
         f"not found in DDL: {phantom}",
     )

@@ -17,8 +17,9 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
+PHYSICAL = ROOT / "models" / "physical"
 
-#: Load order within a schema, matching tools/load.sh and sql/00_create_all.sql.
+#: Load order within a schema, matching tools/load.sh and models/physical/sql/00_create_all.sql.
 FILE_ORDER = (
     "00_schema.sql",
     "10_domains_and_enums.sql",
@@ -75,11 +76,11 @@ def psycopg():
 def ddl_files() -> list[tuple[str, Path]]:
     """Every DDL file, in load order, as ``(schema, path)``."""
     files: list[tuple[str, Path]] = [
-        ("common", ROOT / "sql" / "01_common.sql"),
-        ("common", ROOT / "sql" / "02_common_comments.sql"),
+        ("common", PHYSICAL / "sql" / "01_common.sql"),
+        ("common", PHYSICAL / "sql" / "02_common_comments.sql"),
     ]
     for schema in SCHEMA_ORDER:
-        ddl_dir = ROOT / "oltp" / schema / "ddl"
+        ddl_dir = PHYSICAL / schema / "ddl"
         for name in FILE_ORDER:
             path = ddl_dir / name
             if path.exists():
