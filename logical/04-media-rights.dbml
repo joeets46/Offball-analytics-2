@@ -1,0 +1,410 @@
+// =========================================================================
+// Logical model -- Media & Rights
+//
+// Subject area 4 of 5. Upstream MVM domains: broadcast, content, sponsorship.
+//
+// Two separations carry this area:
+//   * media_asset / asset_rendition, because the editorial decision is made
+//     once and the storage cost is incurred once per rendition.
+//   * rights_agreement / rights_window, because one deal grants many
+//     permissions -- live here, delayed there, clips globally -- each with its
+//     own period and conditions.
+// =========================================================================
+
+Project media_rights {
+  database_type: 'logical'
+}
+
+// -------------------------------------------------------------------------
+// Content
+// -------------------------------------------------------------------------
+
+Table media_asset {
+  media_asset_id identifier [pk]
+  asset_code code [not null, unique]
+  title name [not null]
+  description text
+  asset_type asset_type [not null, note: 'video | audio | image | document | graphic | subtitle | package']
+  content_class content_class
+  lifecycle_status asset_lifecycle_status [not null]
+  is_placeholder boolean [not null, note: 'An asset with no rendition yet. Normal and intended: a production order reserves it before the camera has shot anything.']
+  duration_frames quantity [note: 'Frames, not seconds. Broadcast is frame-accurate and rounding loses the edit point.']
+  frame_rate quantity
+  content_day day
+  event_id identifier
+  first_published_at instant
+  archive_after day
+  note: 'The editorial asset -- the thing a commissioner decides about.'
+}
+
+Table asset_rendition {
+  asset_rendition_id identifier [pk]
+  media_asset_id identifier [not null]
+  rendition_role rendition_role [not null, note: 'master | proxy | editorial | distribution | thumbnail | audio_stem | subtitle']
+  rendition_profile code [not null]
+  storage_tier storage_tier [not null]
+  file_size_bytes quantity
+  codec code
+  width_px quantity
+  height_px quantity
+  bitrate_kbps quantity
+  language_code language_code
+  restore_hours quantity [note: 'A deep-archive rendition may take hours to retrieve, which is the difference between usable and not during a live event.']
+  checksum code
+  note: '''
+    One physical file of an asset. No upstream equivalent, so a 4K master and
+    its five derived cutdowns collapse into a single asset row and storage cost
+    reporting becomes impossible downstream.
+  '''
+}
+
+Table collection {
+  collection_id identifier [pk]
+  collection_code code [not null, unique]
+  name name [not null]
+  collection_type collection_type [not null]
+  definition_expression text [note: 'Set for a rule-driven collection, which therefore has no membership rows.']
+  language_code language_code
+  is_published boolean [not null]
+}
+
+Table asset_collection {
+  collection_id identifier [pk]
+  media_asset_id identifier [pk]
+  display_order quantity [not null]
+  note: 'Associative, retained upstream as content.collection_item.'
+}
+
+Table metadata_field {
+  metadata_field_id identifier [pk]
+  field_code code [not null, unique]
+  display_label name [not null]
+  value_type metadata_value_type [not null]
+  vocabulary_id identifier
+  is_multi_valued boolean [not null]
+  is_mandatory_for_publication boolean [not null, note: 'Mandatory to publish, not to ingest: an asset can arrive incomplete but must not go out incomplete.']
+  note: '''
+    The metadata schema held as data. A broadcaster extends it monthly, so a
+    model requiring a schema change per field would be unusable. The upstream
+    content.metadata_tag is the flattened result.
+  '''
+}
+
+Table vocabulary {
+  vocabulary_id identifier [pk]
+  vocabulary_code code [not null, unique]
+  name name [not null]
+  is_hierarchical boolean [not null]
+  is_open boolean [not null, note: 'An open vocabulary lets operators add terms as they tag, which is useful and is also why controlled vocabularies drift.']
+}
+
+Table vocabulary_term {
+  vocabulary_term_id identifier [pk]
+  vocabulary_id identifier [not null]
+  parent_term_id identifier
+  term name [not null]
+  external_reference code
+  is_deprecated boolean [not null]
+  indexes { (vocabulary_id, term) [unique] }
+}
+
+Table asset_metadata_value {
+  media_asset_id identifier [pk]
+  metadata_field_id identifier [pk]
+  value_order quantity [pk]
+  text_value text
+  numeric_value quantity
+  day_value day
+  instant_value instant
+  boolean_value boolean
+  vocabulary_term_id identifier
+  note: '''
+    Associative, with one typed slot per value type rather than everything as
+    text, so values stay sortable and comparable. Exactly one slot is populated
+    per row.
+  '''
+}
+
+Table asset_tag {
+  media_asset_id identifier [pk]
+  vocabulary_term_id identifier [pk]
+  assigned_by tag_assigner [not null, note: 'human | ai_vision | ai_speech | ai_text | imported']
+  confidence quantity
+  is_verified boolean [not null]
+  note: '''
+    Associative. The upstream content.asset_tag does not record who assigned a
+    tag, so an unverified machine guess and a librarian judgement arrive
+    indistinguishable.
+  '''
+}
+
+// -------------------------------------------------------------------------
+// Production
+// -------------------------------------------------------------------------
+
+Table production_request {
+  production_request_id identifier [pk]
+  request_code code [not null, unique]
+  title name [not null]
+  request_kind production_request_kind [not null, note: 'ingest | transcode | edit | qc | subtitle | publish | archive | restore | production']
+  media_asset_id identifier [note: 'Null for a production that will create its own placeholder.']
+  event_id identifier
+  priority priority [not null]
+  request_status production_status [not null]
+  due_at instant [note: 'Live production is deadline-driven: a highlights package has to be out before the audience loses interest.']
+  started_at instant
+  completed_at instant
+  assigned_to_party_id identifier
+  note: 'One entity for every kind of media job. The upstream model splits it across content.production_order, content.ingest_job and broadcast.production.'
+}
+
+Table production_step {
+  production_step_id identifier [pk]
+  production_request_id identifier [not null]
+  step_name name [not null]
+  step_order quantity [not null]
+  step_status production_status [not null]
+  depends_on_step_id identifier [note: 'What makes a request a workflow rather than a list.']
+  started_at instant
+  completed_at instant
+}
+
+Table editorial_brief {
+  editorial_brief_id identifier [pk]
+  brief_code code [not null, unique]
+  title name [not null]
+  brief_body text [not null]
+  target_channel_id identifier
+  target_duration_seconds quantity
+  aspect_ratio aspect_ratio [note: 'A 15-second vertical clip and a three-minute package are different commissions.']
+  language_code language_code
+  brief_status brief_status [not null]
+  production_request_id identifier
+  due_at instant
+}
+
+// -------------------------------------------------------------------------
+// Distribution
+// -------------------------------------------------------------------------
+
+Table distribution_channel {
+  distribution_channel_id identifier [pk]
+  channel_code code [not null, unique]
+  name name [not null]
+  channel_type distribution_channel_type [not null, note: 'linear_tv | linear_radio | ott | fast | social | ppv | web']
+  territory_code country_code
+  language_code language_code
+  channel_status channel_status [not null]
+  required_rendition_profile code [note: 'A channel that will not accept the rendition profile is the commonest cause of a failed publication.']
+  requires_captions boolean [not null]
+}
+
+Table broadcast_schedule {
+  broadcast_schedule_id identifier [pk]
+  distribution_channel_id identifier [not null]
+  broadcast_day day [not null]
+  schedule_status schedule_status [not null]
+  locked_at instant [note: 'Locked means playout has taken it; later changes are as-run amendments rather than schedule edits.']
+  indexes { (distribution_channel_id, broadcast_day) [unique] }
+}
+
+Table schedule_item {
+  schedule_item_id identifier [pk]
+  broadcast_schedule_id identifier [not null]
+  media_asset_id identifier
+  event_id identifier
+  item_order quantity [not null]
+  title name [not null]
+  item_type schedule_item_type [not null]
+  scheduled_start_at instant [not null]
+  scheduled_duration_seconds quantity [not null]
+  actual_start_at instant
+  actual_duration_seconds quantity [note: 'As-run. A match going to extra time shifts everything after it, and the scheduled-versus-actual gap is what the upstream model cannot show.']
+  is_live boolean [not null]
+  indexes { (broadcast_schedule_id, item_order) [unique] }
+}
+
+Table live_signal {
+  live_signal_id identifier [pk]
+  signal_code code [not null, unique]
+  name name [not null]
+  signal_type live_signal_type [not null, note: 'world_feed | clean | iso_camera | tactical | commentary | backup | contribution']
+  distribution_channel_id identifier
+  event_id identifier
+  is_clean boolean [not null, note: 'A clean signal carries no commentary or graphics, which is what makes it licensable onward.']
+  signal_status live_signal_status [not null]
+  live_from instant
+  live_to instant
+}
+
+Table publication {
+  publication_id identifier [pk]
+  media_asset_id identifier [not null]
+  asset_rendition_id identifier
+  distribution_channel_id identifier [not null]
+  rights_window_id identifier [note: 'Nullable, and the null is meaningful: a live publication with no window behind it is either wholly owned content or an unlicensed publication.']
+  publication_status publication_status [not null]
+  scheduled_at instant
+  published_at instant
+  expires_at instant
+  withdrawn_at instant
+  withdrawal_reason withdrawal_reason
+  external_url text
+}
+
+// -------------------------------------------------------------------------
+// Rights
+// -------------------------------------------------------------------------
+
+Table rights_agreement {
+  rights_agreement_id identifier [pk]
+  agreement_id identifier [not null, note: 'Subtype of agreement -- see 05-corporate.dbml.']
+  direction rights_direction [not null, note: 'inbound (acquired) | outbound (sold). One entity for both, and an extract ignoring the direction counts acquired rights as revenue.']
+  counterparty_party_id identifier [not null]
+}
+
+Table rights_window {
+  rights_window_id identifier [pk]
+  rights_agreement_id identifier [not null]
+  media_asset_id identifier
+  collection_id identifier
+  rights_type rights_type [not null, note: 'live | delayed | highlights | archive | clips | full_replay']
+  window_from instant [not null]
+  window_to instant
+  is_exclusive boolean [not null, note: 'An exclusive window blocks every other licensee in the same territory for the same period, which is the constraint scheduling has to respect.']
+  delay_minutes quantity [note: 'A contractual term for a delayed right, not a technical one.']
+  max_clip_seconds quantity
+  requires_drm boolean [not null]
+  blackout_radius_km quantity
+  blackout_until_sellout boolean [not null, note: 'The classic local-blackout term. Couples a rights rule to live ticketing inventory, and is the single clearest cross-area dependency in the model.']
+  note: 'A specific permission: what, where, when, how. One agreement grants many.'
+}
+
+Table rights_window_territory {
+  rights_window_id identifier [pk]
+  country_code country_code [pk]
+  is_excluded boolean [not null, note: 'A window is often "Europe except the UK", which needs both inclusion and exclusion.']
+  note: 'Associative. Territory is the axis every rights dispute turns on, and it is a set rather than a value.'
+}
+
+Table rights_window_channel {
+  rights_window_id identifier [pk]
+  distribution_channel_id identifier [pk]
+  note: '''
+    Associative. A window permitting three channels is three rows. No upstream
+    equivalent, so the target model can state only one channel per window.
+  '''
+}
+
+Table rights_window_language {
+  rights_window_id identifier [pk]
+  language_code language_code [pk]
+  note: 'Associative. Language rights are sold separately from territory rights.'
+}
+
+// -------------------------------------------------------------------------
+// Sponsorship
+// -------------------------------------------------------------------------
+
+Table sponsorship_agreement {
+  sponsorship_agreement_id identifier [pk]
+  agreement_id identifier [not null, note: 'Subtype of agreement.']
+  sponsor_party_id identifier [not null]
+  exclusivity_category_id identifier [note: 'Category exclusivity: a competing brand in the same category blocks the deal, which is what drives inventory conflicts.']
+  opportunity_stage opportunity_stage
+  loss_reason loss_reason [note: 'Why a deal was lost. No upstream column corresponds, so the lakehouse reports what was won and nothing about what was not.']
+}
+
+Table exclusivity_category {
+  exclusivity_category_id identifier [pk]
+  category_code code [not null, unique]
+  name name [not null]
+}
+
+Table sponsorship_asset {
+  sponsorship_asset_id identifier [pk]
+  product_id identifier [not null, note: 'Subtype of product: a sponsorable asset is something that can be sold.']
+  asset_kind sponsorship_asset_kind [not null, note: 'signage | broadcast_spot | digital_impression | hospitality | naming | athlete_appearance | content_series | activation_space']
+  venue_id identifier
+  seating_area_id identifier
+  distribution_channel_id identifier
+  estimated_impressions quantity
+}
+
+Table agreement_asset_commitment {
+  sponsorship_agreement_id identifier [pk]
+  sponsorship_asset_id identifier [pk]
+  committed_quantity quantity [not null]
+  delivered_quantity quantity [not null, note: 'Over-delivery is permitted: exceeding a commitment is common and is not an error.']
+  unit_price money
+  starts_on day
+  ends_on day
+  note: 'Associative. Retained upstream as sponsorship.inventory_allocation.'
+}
+
+Table activation {
+  activation_id identifier [pk]
+  sponsorship_agreement_id identifier [not null]
+  sponsorship_asset_id identifier [not null]
+  event_id identifier
+  campaign_id identifier [note: 'Where the activation is executed as a fan-facing campaign -- see 03-commerce-fan.dbml.']
+  activation_status activation_status [not null]
+  delivered_quantity quantity [not null]
+  verified_at instant
+  note: 'A specific use of a sponsorship asset -- what the sponsor actually got, as distinct from what was promised.'
+}
+
+Table activation_measurement {
+  activation_measurement_id identifier [pk]
+  activation_id identifier [not null]
+  measure_code code [not null]
+  measure_value quantity [not null]
+  measurement_source measurement_source [not null, note: 'Who measured it. A sponsor-supplied figure and an independently audited one are not the same evidence.']
+  measured_at instant [not null]
+}
+
+// -------------------------------------------------------------------------
+// Relationships
+// -------------------------------------------------------------------------
+
+Ref: asset_rendition.media_asset_id > media_asset.media_asset_id
+Ref: asset_collection.collection_id > collection.collection_id
+Ref: asset_collection.media_asset_id > media_asset.media_asset_id
+Ref: metadata_field.vocabulary_id > vocabulary.vocabulary_id
+Ref: vocabulary_term.vocabulary_id > vocabulary.vocabulary_id
+Ref: vocabulary_term.parent_term_id > vocabulary_term.vocabulary_term_id
+Ref: asset_metadata_value.media_asset_id > media_asset.media_asset_id
+Ref: asset_metadata_value.metadata_field_id > metadata_field.metadata_field_id
+Ref: asset_metadata_value.vocabulary_term_id > vocabulary_term.vocabulary_term_id
+Ref: asset_tag.media_asset_id > media_asset.media_asset_id
+Ref: asset_tag.vocabulary_term_id > vocabulary_term.vocabulary_term_id
+
+Ref: production_request.media_asset_id > media_asset.media_asset_id
+Ref: production_step.production_request_id > production_request.production_request_id
+Ref: production_step.depends_on_step_id > production_step.production_step_id
+Ref: editorial_brief.target_channel_id > distribution_channel.distribution_channel_id
+Ref: editorial_brief.production_request_id > production_request.production_request_id
+
+Ref: broadcast_schedule.distribution_channel_id > distribution_channel.distribution_channel_id
+Ref: schedule_item.broadcast_schedule_id > broadcast_schedule.broadcast_schedule_id
+Ref: schedule_item.media_asset_id > media_asset.media_asset_id
+Ref: live_signal.distribution_channel_id > distribution_channel.distribution_channel_id
+Ref: publication.media_asset_id > media_asset.media_asset_id
+Ref: publication.asset_rendition_id > asset_rendition.asset_rendition_id
+Ref: publication.distribution_channel_id > distribution_channel.distribution_channel_id
+Ref: publication.rights_window_id > rights_window.rights_window_id
+
+Ref: rights_window.rights_agreement_id > rights_agreement.rights_agreement_id
+Ref: rights_window.media_asset_id > media_asset.media_asset_id
+Ref: rights_window.collection_id > collection.collection_id
+Ref: rights_window_territory.rights_window_id > rights_window.rights_window_id
+Ref: rights_window_channel.rights_window_id > rights_window.rights_window_id
+Ref: rights_window_channel.distribution_channel_id > distribution_channel.distribution_channel_id
+Ref: rights_window_language.rights_window_id > rights_window.rights_window_id
+
+Ref: sponsorship_agreement.exclusivity_category_id > exclusivity_category.exclusivity_category_id
+Ref: agreement_asset_commitment.sponsorship_agreement_id > sponsorship_agreement.sponsorship_agreement_id
+Ref: agreement_asset_commitment.sponsorship_asset_id > sponsorship_asset.sponsorship_asset_id
+Ref: activation.sponsorship_agreement_id > sponsorship_agreement.sponsorship_agreement_id
+Ref: activation.sponsorship_asset_id > sponsorship_asset.sponsorship_asset_id
+Ref: activation_measurement.activation_id > activation.activation_id

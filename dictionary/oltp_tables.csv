@@ -1,0 +1,280 @@
+schema_name,table_name,table_kind,partition_of,column_count,foreign_key_count,check_count,index_count,description
+adobe_aep,_change_log,table,,7,0,1,3,Change capture for incremental extraction. Deletes are the reason this exists: a high-water-mark read of updated_at cannot see a removed row.
+adobe_aep,audience,table,,7,1,2,2,"Audiences, whether platform segments or externally imported lists."
+adobe_aep,consent_policy,table,,9,0,3,1,"What a marketing action requires. GDPR default-deny and CCPA default-allow are genuinely different, and a boolean consent column cannot express the difference."
+adobe_aep,consent_record,table,,11,2,4,5,"Consent state per profile and policy, with provenance. Three states rather than two: not-asked is distinct from declined, and conflating them is the commonest consent bug."
+adobe_aep,data_use_label,table,,7,0,2,1,"Data-use labels and the lawful basis each asserts. With dataset and privacy_job, the only named source for target compliance.data_processing_record."
+adobe_aep,dataset,table,,9,0,3,1,"Where ingested data lands, and the unit of governance. Record datasets hold profile attributes; time-series datasets hold experience events, and the distinction governs retention and merge behaviour."
+adobe_aep,destination,table,,8,0,1,1,"Activation destinations with the data-use labels they enforce, which is what stops health or special-category data reaching an ad platform."
+adobe_aep,destination_activation,table,,9,2,3,4,"Audience-to-destination activations. A blocked activation is a governance refusal, and the reason is the evidence that policy was enforced."
+adobe_aep,event_type_ref,table,,6,0,1,1,The XDM eventType vocabulary. Feeds the type dimension of target fan.engagement_event; the conversion flag is what attribution counts.
+adobe_aep,experience_event,partitioned,,22,3,5,7,"Append-only, immutable time series. Highest-volume table in the project. Carries no updated_at because nothing ever updates it."
+adobe_aep,experience_event_2026_q1,partition,experience_event,22,3,5,7,
+adobe_aep,experience_event_2026_q2,partition,experience_event,22,3,5,7,
+adobe_aep,experience_event_2026_q3,partition,experience_event,22,3,5,7,
+adobe_aep,experience_event_2026_q4,partition,experience_event,22,3,5,7,
+adobe_aep,experience_event_default,partition,experience_event,22,3,5,7,"Catch-all. Should stay empty; rows here mean partition maintenance has fallen behind, or an SDK is sending events with implausible timestamps."
+adobe_aep,identity,table,,8,1,1,6,"One row per namespaced identifier. Deliberately carries no profile reference: in AEP the profile is derived from the identity graph, so a profile_id here would invert the direction of inference."
+adobe_aep,identity_graph_link,table,,11,2,7,6,"Pairwise, revocable, probabilistic links between identities. The target model has no concept of a disputed identity, so a mis-merge is invisible downstream."
+adobe_aep,identity_map,table,,6,2,0,3,Which identities belong to which profile. The table that would let the lakehouse explain why two orders from different systems belong to the same fan.
+adobe_aep,identity_namespace,table,,7,0,1,1,"The vocabulary of identity. A person is not identified by one key but by several, each in its own namespace from a different system -- which is what target fan.fan_profile reduces to a single BIGINT."
+adobe_aep,journey,table,,11,1,4,4,"Orchestration definitions. Feeds nothing directly: target fan.communication is the step event, so which branch a fan took is not reconstructable."
+adobe_aep,journey_step,table,,10,2,5,3,"Steps in a journey graph, including branches. A step sends on a channel only if it is an action step."
+adobe_aep,journey_step_event,partitioned,,10,3,3,6,One person reaching one journey step. Append-only and partitioned; the suppression reason is a compliance record showing an opt-out was honoured.
+adobe_aep,journey_step_event_2026_h1,partition,journey_step_event,10,3,3,6,
+adobe_aep,journey_step_event_2026_h2,partition,journey_step_event,10,3,3,6,
+adobe_aep,journey_step_event_default,partition,journey_step_event,10,3,3,6,
+adobe_aep,privacy_job,table,,13,1,6,5,"AEP's execution of a privacy request, not its intake. The DSAR portal is not among the ten named systems, which is why target compliance.privacy_request is out of scope while this table is in it."
+adobe_aep,profile,table,,17,1,3,7,"The resolved person. A view over sources that disagree, where the merge policy rather than the data decides which value wins."
+adobe_aep,segment_definition,table,,11,0,3,3,"Segment rules in Adobe query language. The rule is the definition; the target model keeps only a name, so what a segment means is not recoverable downstream."
+adobe_aep,segment_membership,table,,9,2,4,4,Membership with a status rather than a flag. Exiting is the actionable state -- a fan who has just dropped out is the one worth calling -- and it has no target equivalent.
+archtics,_change_log,table,,7,0,1,3,Change capture for incremental extraction. Deletes are the reason this exists: a high-water-mark read of updated_at cannot see a removed row.
+archtics,accessibility_feature,table,,14,2,3,5,Building-level accessibility provisions with their compliance status. ADA and equivalent regimes set minimum ratios against capacity.
+archtics,account_seat_assignment,table,,16,5,8,9,"Which account holds which seat on which plan for which season. The central fact of season-ticket administration, and a genuine four-way relationship the target model flattens onto one row."
+archtics,building,table,,22,0,7,3,"The venue as a seating structure, and authoritative for it. Coordinates are kept at six decimal places; the target model rounds every decimal to two, which locates a venue to within about a kilometre."
+archtics,event_manifest,table,,16,2,6,7,"A manifest applied to one fixture. The turnstile count here is what the target fixture.actual_attendance receives, and it differs from seats sold by the no-shows."
+archtics,level,table,,9,1,2,4,"A tier of the building -- lower bowl, club, suite, upper. Joined with section to feed target venue.seating_section."
+archtics,manifest,table,,16,2,10,7,"A named, reusable seating configuration. Capacity is a stated, fire-authority-approved figure rather than a count of rows, and an approved manifest must carry a valid certificate."
+archtics,manifest_section,table,,8,2,2,2,Which sections a manifest uses and for what. One of only six associative tables the upstream MVM retains; feeds target venue.config_section_allocation.
+archtics,parking_activation,table,,11,2,5,3,A parking allocation opened for one event. Feeds target venue.parking_activation.
+archtics,parking_inventory,table,,9,1,2,3,"Standing allocation of a lot into sellable buckets -- general, season, suite, staff, accessible."
+archtics,parking_lot,table,,14,1,7,3,Parking facilities with sub-category allocations. Feeds target venue.parking_lot.
+archtics,plan,table,,17,1,6,4,"Season-ticket products -- full season, half season, game packs. Feeds target ticketing.season_ticket_package."
+archtics,plan_seat,table,,6,2,2,3,"Which seats a plan may be sold against, with per-seat price overrides."
+archtics,psl,table,,13,2,5,6,"Personal seat licence -- a property right in a seat, independent of any season ticket. No target table corresponds; a few columns on ticketing.season_ticket_account are all that survives."
+archtics,renewal,table,,17,2,13,6,"The annual renewal decision, tracked separately from the resulting assignment because the campaign is managed and reported on in its own right. Seat count can change on renewal, which is the churn signal that matters."
+archtics,seat,table,,10,1,2,6,Authoritative seat inventory. tm_axs.ticket_inventory mirrors this per event and drifts during an on-sale; this table is the reconciliation base.
+archtics,seat_attribute,table,,9,0,1,2,"Seat attribute vocabulary. The target model flattens these into booleans and STRING columns on venue.seat, losing both the history and the controlled list."
+archtics,seat_attribute_assignment,table,,7,2,1,3,"Many-to-many bridge. The target model flattens these into booleans and STRING columns on venue.seat, losing both the history and the vocabulary."
+archtics,seat_row,table,,7,1,1,3,"Rows within a section. Modeled explicitly because rows are what get added, removed and relabelled in a reconfiguration, and their sort order is not derivable from the label."
+archtics,section,table,,11,1,4,3,Seating sections with orientation and status. Feeds target venue.seating_section.
+archtics,sta_account,table,,14,0,5,7,"Season-ticket accounts. The highest-value fans in the model and the hardest to resolve, because the account is often held by a company or a family rather than the person who attends."
+archtics,suite,table,,15,2,5,5,Physical premium inventory. Feeds target venue.suite; the lease commercials sit in SAP.
+archtics,suite_lease,table,,15,2,6,5,Suite occupancy rights. The money sits in the referenced SAP contract; this is the right to be in the room.
+common,canonical_entity,table,,5,0,0,2,The business entities that exist in more than one source system and so need identity resolution before load. One row per target master table.
+common,entity_xref,table,,12,2,2,4,"Maps each system-local key to the canonical surrogate the lakehouse will use. The mechanism that replaces 1,397 cross-domain foreign keys the source tier cannot enforce."
+common,source_system,table,,9,0,1,2,"Registry of the ten operational systems of record. The target model constrains its own source_system_code to five values while naming ten systems, so this table is the full list."
+dalet,_change_log,table,,7,0,1,3,Change capture for incremental extraction. Deletes are the reason this exists: a high-water-mark read of updated_at cannot see a removed row.
+dalet,channel,table,,10,0,3,2,Linear and OTT outlets. Feeds target broadcast.channel.
+dalet,collection,table,,9,0,2,2,"Asset collections -- series, season packs, playlists. A smart collection is a stored query and so has no membership rows."
+dalet,collection_member,table,,6,2,0,2,Collection membership. Feeds target content.collection_item.
+dalet,editorial_brief,table,,14,2,3,4,"Content commissions with target platform, duration and aspect ratio. A 15-second vertical clip and a three-minute package are different commissions."
+dalet,essence,table,,18,1,10,7,"One rendition of a media object. No target table corresponds, so a 4K master and its five derived cutdowns collapse into a single asset row and storage cost reporting is not possible downstream."
+dalet,feed,table,,18,2,6,7,"Live signals. Feeds target broadcast.live_feed; a clean feed carries no commentary or graphics, which is what makes it licensable onward."
+dalet,folder,table,,8,1,3,4,The hierarchical asset catalog. Feeds target content.category; the materialised path is kept alongside the parent reference because these trees are deep and read constantly.
+dalet,job,table,,17,1,9,7,"Workflow jobs: ingest, transcode, edit, QC, publish, archive. Feeds target content.production_order, content.ingest_job and broadcast.production."
+dalet,job_task,table,,12,2,4,3,"Job steps with dependencies, which is what makes a job a workflow rather than a list."
+dalet,media_object,table,,18,1,8,10,"The editorial asset, and the source of both target content.asset and broadcast.media_asset. A placeholder with no essence is a normal, intended state rather than a broken row."
+dalet,metadata_field,table,,11,1,2,4,"The metadata schema held as data. A broadcaster extends it monthly, so a MAM that needed a DDL change per field would be unusable. Target content.metadata_tag is the flattened result."
+dalet,metadata_value,table,,12,3,1,7,"Metadata values against a field, in typed columns rather than one text column so values stay sortable. Feeds target content.asset_tag."
+dalet,publication,table,,15,4,6,8,"A delivery of an asset to a target. A live publication with no rights window behind it is either wholly owned content or an unlicensed publication, and only the first is acceptable."
+dalet,publication_target,table,,11,1,2,2,Delivery destinations with their technical spec. A target that will not accept the essence profile is the commonest cause of a failed publication.
+dalet,rights_contract,table,,11,0,3,6,"Rights agreements, inbound and outbound in one table. An extract that ignores the direction counts acquired rights as revenue."
+dalet,rights_window,table,,20,5,9,12,"The right to show something, somewhere, for a period. Target broadcast.rights_window keeps the dates; the territory arrays, exclusivity and blackout conditions are what target broadcast.blackout_rule has to be derived from."
+dalet,running_order,table,,8,1,2,3,"A channel playout schedule for one day. Locked means playout has taken it, after which changes are as-run amendments rather than edits."
+dalet,schedule_item,table,,14,2,3,8,"Items in a playout running order. The scheduled-versus-as-run gap is the operational reality of live sport, where a match going to extra time shifts everything after it."
+dalet,tag_assignment,table,,7,2,3,3,"Tags on an asset, human or machine. The target model does not distinguish them, so an unverified AI guess and a librarian judgement arrive indistinguishable."
+dalet,transfer,table,,15,2,7,4,Essence movement between storage and sites. Contributes to target content.ingest_job.
+dalet,vocabulary,table,,7,0,0,1,"Controlled term lists. An open vocabulary lets operators add terms as they tag, which is useful and is also why controlled vocabularies drift."
+dalet,vocabulary_term,table,,9,2,1,5,"Controlled vocabulary terms, optionally hierarchical -- Sport > Football > Premier League."
+hudl,_change_log,table,,7,0,1,3,Change capture for incremental extraction. Deletes are the reason this exists: a high-water-mark read of updated_at cannot see a removed row.
+hudl,code_row,table,,10,3,3,4,"A row in the analyst coding window, usually a player or a phase of play."
+hudl,competition,table,,6,1,1,2,"Competitions within a season, including training and friendlies, which are coded in the same system."
+hudl,game,table,,17,3,11,8,A match. The same fixture exists as tm_axs.event and archtics.event_manifest; this is the only one of the three that knows the score.
+hudl,game_participant,table,,13,3,6,7,"Who played, and for how long. Feeds target event.participant; minutes played is the denominator for every per-90 metric."
+hudl,injury_note,table,,15,3,8,6,"Availability and mechanism, deliberately not diagnosis. No EMR is among the ten named systems, so this is the ceiling on what target athlete.injury_record can honestly contain -- which is why that mapping carries medium confidence."
+hudl,instance,table,,18,4,13,8,A coded moment on a timeline -- the atomic unit of sports analysis and the source of target event.scoring_event. Pitch coordinates are normalised 0..100 so positions compare across venues.
+hudl,instance_label,table,,3,2,0,2,"What an instance means. ""Shot, right foot, inside box, on target, goal"" is five rows here. No target table corresponds, so the semantics of every coded event are lost on the way into the lakehouse -- only those labels the mapping explicitly promotes to columns survive."
+hudl,label,table,,8,1,0,4,"Coding labels within a group. The vocabulary that makes instances queryable, and entirely absent from the target model."
+hudl,label_group,table,,7,1,0,3,"Groups of coding labels. Exclusive groups allow one label per instance, inclusive groups several, and that distinction is what makes a label set queryable."
+hudl,metric_definition,table,,11,1,3,4,"The rule that turns coded instances into a statistic. Target athlete.performance_stat receives the resulting number, so without this table the figure is not reproducible or auditable."
+hudl,organization,table,,8,0,0,1,The club or federation account.
+hudl,player,table,,14,1,4,5,"The athlete as performer. Deliberately holds no address or contact data: an analysis platform does not need it, and SuccessFactors is the identity record."
+hudl,player_game_metric,table,,11,4,0,8,"The derived statistic. Carries the timeline it was computed from, so a disputed number can be traced back to the instances behind it."
+hudl,playlist,table,,9,1,1,3,"A curated sequence of instances, for opposition analysis, player feedback or recruitment."
+hudl,playlist_instance,table,,5,2,0,2,"Playlist contents, ordered, with per-clip annotation."
+hudl,season,table,,7,1,1,2,Analysis seasons.
+hudl,team,table,,10,1,2,3,"A team as the analysis system knows it. A different record from the SAP profit centre doing duty as league.team, which is what common.entity_xref reconciles."
+hudl,timeline,table,,9,2,0,4,"A coding pass over a video. One game has several -- different analysts, different purposes -- and they legitimately disagree. The extract into target event.scoring_event must pick the primary timeline or it double counts every goal."
+hudl,video,table,,11,1,5,3,"Match video. The match-start offset is what converts an instance position in video milliseconds into a match minute, without which the target scoring minute is wrong."
+hudl,video_angle,table,,7,1,1,3,"Camera angles on a video. Not synchronised by default, so each carries its own offset."
+hudl,wearable_session,table,,18,2,14,5,"Load monitoring, including training. Target athlete.injury_record is per-injury, so the training load that preceded an injury -- the point of collecting it -- is not represented downstream."
+sap_s4,_change_log,table,,7,0,1,3,Change capture for incremental extraction. Deletes are the reason this exists: a high-water-mark read of updated_at cannot see a removed row.
+sap_s4,a004,table,,11,1,1,3,"Pricing condition access table, keyed on the combination that was looked up. KNUMH is not unique here, which is why KONP cannot reference it."
+sap_s4,afih,table,,12,2,2,6,"Maintenance order header: equipment, functional location, priority and the breakdown flag that drives the response-time commitment."
+sap_s4,anla,table,,13,2,1,5,"Fixed asset master. Venue infrastructure is the bulk of a sports organisation asset base, so the asset-to-plant link is what connects finance to the building."
+sap_s4,anlc,table,,12,1,1,2,Asset values per fiscal year and depreciation area. Multiple areas mean multiple valuations of one asset; target finance.fixed_asset keeps one.
+sap_s4,aufk,table,,16,2,3,6,"Order master, including maintenance orders. Planned against actual cost is the budget variance facilities managers are held to."
+sap_s4,bkpf,table,,23,2,5,9,"Accounting document header. Posted documents are immutable: a correction is a second, reversing document, so any sum that ignores reversals double-counts."
+sap_s4,bseg,table,,25,5,6,11,"Accounting document line item, and the grain of target finance.journal_entry. Amounts are unsigned with the debit/credit sign in a separate character, which is the commonest source of sign errors in an extract."
+sap_s4,bsid,table,,21,2,3,6,"Open customer items. Rows are DELETED when the item clears, not flagged. The eleven-column primary key is genuine SAP: it is an index table whose key encodes the clearing state."
+sap_s4,bsik,table,,21,2,2,6,"Open vendor items. Like BSID, rows are DELETED when the item clears rather than flagged, so a watermark extract can never observe a payment."
+sap_s4,cepc,table,,12,1,2,6,"Profit centre, time-dependent. Four target tables map here -- finance.profit_center plus league.conference, division and team -- separated only by the structure_level column."
+sap_s4,csks,table,,12,1,2,5,"Cost centre, time-dependent: the key ends in a validity date, so one centre has several rows over its life and the target model keeps only one."
+sap_s4,faglflexa,table,,19,2,4,5,GL line items per ledger. One BSEG line becomes several rows here when parallel ledgers value it differently -- so a target finance.journal_entry built from this table without a ledger filter multiplies every amount.
+sap_s4,kna1,table,,17,0,0,5,"Customer master, client view. The counterparty side of receivables, and -- through common.entity_xref -- target sponsorship.sponsor."
+sap_s4,knb1,table,,10,2,0,3,"Customer master, company-code view: reconciliation account, payment terms and dunning state. The same customer can be dunned differently per company code."
+sap_s4,konp,table,,11,0,1,2,"Pricing condition values. Rows are marked deleted rather than removed, so an extract that ignores the flag loads prices no longer in force."
+sap_s4,lfa1,table,,15,0,1,4,"Vendor master, client view. Feeds target merchandise.supplier; the vendor_role column is what lets licensors, agents and athletes share the table."
+sap_s4,lfb1,table,,10,2,0,3,"Vendor master, company-code view, including the payment block that stops a vendor being paid by the payment run."
+sap_s4,mara,table,,14,1,3,5,"Material master, client view. SAP is authoritative for the material; Shopify owns the sellable catalog, which is why target merchandise.sku_catalog maps there and not here."
+sap_s4,marc,table,,11,2,3,3,"Material master, plant view: reorder point, safety stock and planned delivery time -- the parameters that drive replenishment."
+sap_s4,mard,table,,10,2,2,5,"Stock balance per material and storage location. Three buckets -- unrestricted, in inspection, blocked -- collapse to one quantity in the target model, which overstates what is actually sellable."
+sap_s4,qmel,table,,17,2,2,5,"Maintenance notification -- the report of a problem, distinct from the order that authorises work on it. Target venue.maintenance_work_order merges the two, losing the report-to-authorisation lag."
+sap_s4,rbkp,table,,18,2,3,6,Vendor invoice header. The RBSTAT three-way-match state is what holds an invoice back from payment on a quantity or price variance.
+sap_s4,reguh,table,,16,1,1,8,"Automatic payment run header. Feeds target finance.payment_run; the XVORL flag separates a proposal from an actual payment, and reporting that ignores it overstates cash out."
+sap_s4,regup,table,,13,1,0,3,"Payment run item. Cannot reference REGUH: the item key omits XVORL, LIFNR and KUNNR, which are all in the header key."
+sap_s4,rseg,table,,12,3,1,5,"Vendor invoice item. Royalty lines carry the licence contract they settle, which is how target merchandise.royalty_payment resolves to an agreement."
+sap_s4,ska1,table,,10,0,1,3,"GL account, chart-of-accounts view. One character (XBILK) decides whether the account appears in the balance sheet or the P&L."
+sap_s4,skb1,table,,11,1,0,3,"Company-code view of a GL account. The same account can be open-item managed in one company code and not another, so target finance.gl_account is a join of SKA1 and SKB1 and is only unique per company code."
+sap_s4,t001,table,,13,1,1,3,"Company code -- the legal entity and the unit of external reporting. Also doing duty as the league and franchise structure, which is a documented compromise rather than a good fit."
+sap_s4,t001l,table,,6,1,0,1,Storage location within a plant. The location dimension of target merchandise.inventory_position.
+sap_s4,t001w,table,,13,1,1,3,"Plant / site -- the physical operating location. Feeds target venue.facility and target merchandise.retail_location; a stadium, a store and a warehouse are all plants to SAP."
+sap_s4,t009,table,,8,0,2,1,"Fiscal year variant -- how many posting and special periods a year has. Feeds target finance.fiscal_period and, by compromise, target league.season."
+sap_s4,t009b,table,,11,1,6,3,Fiscal period definitions with their calendar boundaries and open/closed state. The period status is what blocks a posting at month end.
+sap_s4,t881,table,,7,0,1,1,"Parallel ledgers. The target finance.journal_entry has no ledger dimension beyond a single column, so an IFRS and a local-GAAP view of the same document arrive as two rows that look like a duplicate."
+sap_s4,vbak,table,,16,1,1,3,"Sales document header. Covers orders and contracts alike, which is how an athlete contract and a ticket sale come to share a table."
+sap_s4,vbap,table,,12,2,1,3,Sales document item.
+sap_s4,vbrk,table,,18,3,3,7,"Billing document header. Only documents released to accounting have hit the ledger, so revenue reporting that ignores the release status counts invoices that do not yet exist in the GL."
+sap_s4,vbrp,table,,16,3,1,5,"Billing document item, carrying the originating sales document so revenue traces back to the order that produced it."
+sap_s4,veda,table,,18,2,8,6,"Contract data, and the busiest table in the mapping: eight target tables reach it. SAP does not care what a contract is about, so the contract_category column is what keeps them apart."
+sap_sfsf,_change_log,table,,7,0,1,3,Change capture for incremental extraction. Deletes are the reason this exists: a high-water-mark read of updated_at cannot see a removed row.
+sap_sfsf,candidate,table,,10,1,1,3,"Recruiting candidates, linked to a person record once hired."
+sap_sfsf,emp_compensation,table,,9,2,3,5,"Effective-dated compensation. SAP carries the contract document; this carries what is actually paid, and the two disagree more often than anyone would like."
+sap_sfsf,emp_employment,table,,11,2,6,5,"A person engagement with the organisation. A player who retires and returns as a coach is one person with two employments, and the rehire link is what keeps the career continuous."
+sap_sfsf,emp_job,table,,14,6,4,9,Effective-dated job assignment. The event reason distinguishes a promotion from a transfer from a loan return; the target model keeps none of it.
+sap_sfsf,emp_pay_component,table,,10,1,3,3,"Where athlete compensation actually lives: appearance fees, bonuses, image rights. Target athlete.contract carries one value, so the component structure -- the substance of the deal -- does not survive."
+sap_sfsf,emp_time_off,table,,10,1,4,5,"A suspension is recorded here as leave, which is what HR sees. The disciplinary decision behind it belongs to league.disciplinary_action, which is out of scope -- so target athlete.suspension_record can show the absence but not the reason, and that mapping is low confidence."
+sap_sfsf,fo_company,table,,9,0,1,2,Legal entities. The same entity as the referenced SAP company code.
+sap_sfsf,fo_cost_center,table,,8,1,1,3,Cost centres. SAP controlling holds the authoritative version; this is the HCM view of it.
+sap_sfsf,fo_department,table,,9,2,3,4,"Departments, carrying the squad or function: first team, academy, commercial, venue operations."
+sap_sfsf,fo_pay_grade,table,,7,0,3,1,Pay grades with their ranges.
+sap_sfsf,job_application,table,,10,2,4,6,"Applications against a requisition. The selection order is the closest a recruiting module gets to a draft pick, and it cannot represent traded or compensatory picks."
+sap_sfsf,job_requisition,table,,11,3,3,5,"Recruiting requisitions. The recruiting_type column separates ordinary hiring from a draft, a trial or an academy intake."
+sap_sfsf,per_address,table,,11,1,1,2,"Addresses, effective-dated, because people move and the history matters for tax and squad registration."
+sap_sfsf,per_email,table,,6,1,1,2,Email addresses by type. Business and personal addresses are governed differently under most privacy regimes.
+sap_sfsf,per_person,table,,7,0,2,4,"The person -- the immutable identity, separate from the effective-dated attributes that change. Nationality here governs squad registration limits as much as work eligibility."
+sap_sfsf,per_personal,table,,10,1,1,4,"Effective-dated. A legal name change creates a new row rather than updating the old one, so the extract must select the window in force or it returns one row per historical name."
+sap_sfsf,per_phone,table,,6,1,1,1,"Phone numbers by type, including the emergency contact number."
+sap_sfsf,position,table,,15,5,4,9,"The seat, which exists whether or not anyone occupies it. A vacant position is the unit of workforce planning and the basis of target venue.staff_plan."
+sfdc_crm,_change_log,table,,7,0,1,3,Change capture for incremental extraction. Deletes are the reason this exists: a high-water-mark read of updated_at cannot see a removed row.
+sfdc_crm,account,table,,27,5,7,9,"Companies and fan households. Six target tables are this one table filtered by record type, which is what makes sfdc_crm.record_type load-bearing."
+sfdc_crm,account_contact_relation,table,,14,2,3,5,The many-to-many Salesforce added because a contact genuinely belongs to more than one account. Feeds target athlete.agent_relationship and target fan.club_membership.
+sfdc_crm,asset,table,,17,3,5,5,A product instance a customer holds. Feeds the allocated side of target sponsorship.inventory_allocation and sponsorship.activation.
+sfdc_crm,campaign,table,,20,3,7,7,"Marketing and sponsorship-activation campaigns. Salesforce plans them; AEP executes them, which is why target fan.communication comes from the AEP side."
+sfdc_crm,campaign_member,table,,11,3,3,6,"Campaign membership and response. Requires exactly one of a contact or a lead, which Salesforce enforces and so does this schema."
+sfdc_crm,contact,table,,23,6,1,13,"People. The five __c business keys are the reason `fan` is a canonical entity: the same person exists here, in TM/AXS, in Archtics, in Shopify and in AEP, under five unrelated keys."
+sfdc_crm,contact_pii,table,,16,1,2,2,"One-to-one PII satellite of sfdc_crm.contact. In a real org these are Contact fields restricted by field-level security; this is the normalized equivalent, and target fan.fan_profile rejoins them."
+sfdc_crm,contract,table,,23,6,8,11,"Executed contracts. Six target tables map here by record type, from sponsorship.deal through fan.loyalty_enrollment to broadcast.streaming_subscription."
+sfdc_crm,contract_line_item,table,,16,3,7,6,Contract deliverables and their delivery progress. Target sponsorship.deal_term is this table; over-delivery is permitted because exceeding a commitment is common and not an error.
+sfdc_crm,event_activity,table,,17,1,3,5,Salesforce Events -- meetings and appointments. Named event_activity because `event` is already taken by tm_axs.event in this model and the collision would be genuinely confusing.
+sfdc_crm,lead,table,,19,3,5,4,"Unqualified demand, converted into an Account and Contact. Conversion writes all three references at once and cannot be partially applied."
+sfdc_crm,opportunity,table,,25,6,8,9,"The sales pipeline. Carries the loss reason, which has no target column -- so the lakehouse can report what was won and nothing about why anything was lost."
+sfdc_crm,opportunity_line_item,table,,15,3,3,5,"Opportunity lines with the discount against list generated, so sales cannot report a discount differently from finance."
+sfdc_crm,pricebook2,table,,9,0,0,1,"Price books. A Plus org runs several -- standard, partner, renewal -- and the same product carries a different price in each."
+sfdc_crm,pricebook_entry,table,,11,2,1,4,One price per product per book per currency. The join that makes a product sellable.
+sfdc_crm,product2,table,,13,0,2,3,"Products. A sponsorable asset is a product in Salesforce, which is why four target tables -- sponsorship.property, inventory_unit, ad_inventory and fan.loyalty_program -- all map here, separated by product_class__c."
+sfdc_crm,quote,table,,14,1,3,4,"No target table corresponds. The quoted-versus-contracted gap is the realised discount, and it is not reconstructable from the lakehouse."
+sfdc_crm,quote_line_item,table,,12,3,3,4,"Quote lines. No target table corresponds, so the quoted-versus-contracted gap -- the realised discount -- is not reconstructable downstream."
+sfdc_crm,record_type,table,,8,0,0,2,The seed rows are not illustrative -- the mapping depends on them. Four target tables are sfdc_crm.account filtered by record_type_id.
+sfdc_crm,sales_order,table,,17,4,5,8,"Salesforce orders. Loyalty point movements are recorded here as orders, which is why the points delta can be negative on a redemption."
+sfdc_crm,sales_order_item,table,,13,3,1,4,Order lines.
+sfdc_crm,service_case,table,,25,4,9,11,Service cases. Feeds target fan.service_case; first response and resolution are the two service commitments actually reported on.
+sfdc_crm,service_case_comment,table,,9,2,0,3,"Case correspondence, public or internal. The target model keeps no comments at all, so the substance of a complaint does not reach the lakehouse."
+sfdc_crm,sf_user,table,,9,0,0,2,Salesforce users -- the owner of every record and the actor in every audit column.
+sfdc_crm,task,table,,16,1,5,6,"Salesforce tasks: calls, emails and to-dos. WhoId and WhatId are polymorphic and so cannot be foreign keys, which is why what_object_type is mandatory alongside WhatId."
+shopify,_change_log,table,,7,0,1,3,Change capture for incremental extraction. Deletes are the reason this exists: a high-water-mark read of updated_at cannot see a removed row.
+shopify,collection,table,,12,1,1,5,"Product collections. A smart collection is a stored rule with no membership rows, so target merchandise.product_category cannot be fully populated from membership alone."
+shopify,collection_product,table,,5,2,1,2,"Explicit collection membership. Smart collections have none, so target merchandise.product_category cannot be fully populated from this table alone."
+shopify,customer,table,,22,2,6,10,Storefront customers. The redacted marketing state is a completed GDPR erasure and must not be loaded as a marketable state.
+shopify,customer_address,table,,16,1,0,2,"Customer address book. Distinct from the shipping address copied onto an order, which must not change when the book is later edited."
+shopify,discount_application,table,,12,4,5,5,Which discount hit which line and for how much. The only place promotion effectiveness can be measured; neither target table retains it.
+shopify,discount_code,table,,6,1,1,3,"Discount codes, matched case-insensitively at checkout."
+shopify,fulfillment,table,,13,2,3,6,Shipments. One order line can be fulfilled across several shipments from several locations; the target model has one shipment row per line.
+shopify,fulfillment_line_item,table,,5,2,1,4,"Which lines, and how many units, went in which shipment."
+shopify,inventory_item,table,,10,0,1,4,"The stock-keeping entity behind a variant, carrying the only unit cost Shopify holds. The SAP moving average price is the authoritative one."
+shopify,inventory_level,table,,6,2,2,4,Stock per item and location. Available is deliberately allowed to go negative: a variant with a continue inventory policy oversells by design.
+shopify,line_item,table,,20,3,7,7,Order lines. Title and SKU are copied onto the line so a product deleted afterwards does not take the order history with it.
+shopify,location,table,,17,1,0,4,"Stock and fulfilment locations. Feeds target merchandise.retail_location; a location can hold stock, fulfil orders, both or neither."
+shopify,metafield,table,,9,0,1,4,"Polymorphic key-value extension, so owner_id cannot be a foreign key. JSONB rather than text because the type column genuinely varies: a metafield holds a scalar, a list or a reference."
+shopify,price_rule,table,,16,1,9,5,"Discount rules. The value is negative by Shopify convention, and inverting the sign on load turns a discount into a surcharge."
+shopify,product,table,,15,1,3,8,"The product grouping. Target merchandise.sku_catalog is the variant, so the grouping is dropped and product-level reporting cannot be rebuilt from the lakehouse without matching on title."
+shopify,product_variant,table,,23,2,8,9,"The sellable item, and the grain of target merchandise.sku_catalog. Variant axes are three fixed option slots rather than a normalized option table, which is Shopify, not a simplification."
+shopify,refund,table,,8,1,1,3,Refunds. The restock flag is the difference between a return and a write-off.
+shopify,refund_line_item,table,,9,3,4,4,Refunded lines with their restock disposition.
+shopify,return_line_item,table,,10,2,3,4,Returned lines with reason and received condition. Separating too-small from too-large is what makes the data actionable on the size curve.
+shopify,return_request,table,,9,1,5,4,"The customer-initiated return, distinct from the refund that settles it. Declined returns are the informative ones: a personalised shirt cannot come back."
+shopify,sales_order,table,,37,2,10,12,"Orders, with three independent lifecycle axes -- money, goods and existence -- that move separately. The target model has a single status column."
+shopify,shipping_line,table,,10,1,3,2,"Shipping charges on an order, before and after discount."
+shopify,shop,table,,12,0,0,3,The storefront. A Plus account runs several -- one per market or team -- and the target model has no concept of them at all.
+shopify,transaction,table,,17,2,5,5,"Payment attempts. Test-mode rows are real rows with no money behind them, so an extract that does not exclude them inflates revenue."
+tm_axs,_change_log,table,,7,0,1,3,Change capture for incremental extraction. Deletes are the reason this exists: a high-water-mark read of updated_at cannot see a removed row.
+tm_axs,access_point,table,,12,2,3,2,"Physical entry points -- turnstiles, doors, gates, mobile readers. Throughput drives queue modelling and doors-open planning."
+tm_axs,access_zone,table,,10,1,2,2,Venue access zones with nested clearance levels. Feeds target security.access_zone; a zone requires at least its clearance level on the presented credential.
+tm_axs,barcode,table,,10,1,3,5,One row per barcode rotation. A rotating-barcode ticket accumulates many; the target access_entitlement keeps only the live one.
+tm_axs,credential,table,,17,0,6,5,"Non-ticket access for staff, media, athletes, officials and vendors. Feeds target security.credential; clearance 4 and above requires a cleared background check."
+tm_axs,credential_assignment,table,,10,3,2,4,"Which zones a credential reaches, per event or as a standing season assignment. Feeds target security.credential_assignment."
+tm_axs,credential_pii,table,,12,1,3,1,"One-to-one PII satellite of credential. Holds a biometric template reference rather than a template, so the appliance stays the only system holding biometrics."
+tm_axs,customer_account,table,,15,1,7,5,Ticketing accounts. One of four places the same human exists; identifying attributes live in customer_account_pii so operational queries never read restricted data.
+tm_axs,customer_account_pii,table,,18,1,1,1,"One-to-one PII satellite of customer_account. Separate grants, and the DSAR erasure target for this system."
+tm_axs,delivery,table,,11,2,4,4,Delivery attempts per ticket. Separate from the ticket so a delivery can be retried without reissuing the entitlement.
+tm_axs,delivery_method,table,,7,0,0,1,"How a ticket reaches its holder. Determines whether a barcode is issued at purchase or rotated at scan time, which changes the fraud model."
+tm_axs,ejection,table,,15,4,3,5,Ejections arising from a security incident. Neither the ticket nor the account is mandatory: an ejected person is often unidentified.
+tm_axs,event,table,,30,4,9,7,"Operational event record. Primary source for target event.fixture, joined with archtics.event_manifest for capacity and hudl.game for result."
+tm_axs,event_day_log,table,,12,2,3,4,Event-day operations log with snapshot gate counters. Feeds target venue.event_day_ops and unions into target event.event_incident.
+tm_axs,event_group,table,,10,2,2,3,"Self-referencing hierarchy for series, tournaments, phases and rounds. Four target tables derive from this one structure, which is why three of them map at low confidence."
+tm_axs,event_status_transition,table,,3,0,3,1,The legal event lifecycle transitions. The target model stores only the current lifecycle_status; this table is what makes that column auditable.
+tm_axs,event_type,table,,9,0,2,2,Configured event classifications. Feeds target event.type; the category column is what the logical model turns into an event subtype.
+tm_axs,group_sale,table,,14,1,6,2,Group bookings with a committed quantity and negotiated discount. Feeds target ticketing.group_sale.
+tm_axs,hold_code,table,,8,0,1,1,"Reasons inventory is withheld from sale. Held inventory is unsold revenue, so the categories are reported on directly."
+tm_axs,inventory_hold,table,,14,4,5,4,"Inventory withheld from sale, either seat-specific or as a block count against a zone. Feeds target ticketing.hold_allocation, which flattens both shapes."
+tm_axs,order_line,table,,15,4,8,6,Order lines. Feeds target ticketing.ticket_order_line; a seat-specific line sells exactly one seat.
+tm_axs,payment,table,,13,2,6,5,Payment intent and its settled state per order. Feeds target ticketing.ticket_payment.
+tm_axs,payment_method,table,,15,1,5,4,"Tokenized instruments only -- no primary account number is stored, per PCI-DSS. Shopify holds a parallel set for merchandise; target fan.payment_method is a union of the two deduplicated on token."
+tm_axs,payment_transaction,table,,12,1,3,5,"Every gateway attempt, including declines. The target model keeps only the settled result, so an order that took four declines looks identical to one that worked first time."
+tm_axs,price_level,table,,12,2,4,2,"Price points within a scale and zone, with the face value, fee, facility fee and tax kept apart because they settle to different parties."
+tm_axs,price_scale,table,,11,1,2,2,A versioned price structure for one event. Versioned because dynamic pricing rescales during an on-sale and past orders must stay explicable.
+tm_axs,price_zone,table,,9,1,1,2,"Venue pricing zones, ranked by desirability. Feeds target ticketing.price_zone and is the axis dynamic pricing walks."
+tm_axs,promo_code,table,,12,0,7,2,Promotional discount codes with redemption limits. Feeds the discount side of target ticketing.ticket_order.
+tm_axs,refund,table,,19,4,8,8,"Refunds with the fee split retained, because fees are frequently non-refundable except on cancellation and the distinction has to survive into the ledger."
+tm_axs,resale_listing,table,,11,2,5,3,"Verified resale listings with the price cap in force recorded, so a listing can be explained after the fact."
+tm_axs,resale_transaction,table,,12,3,6,3,"Completed resales and the seller payout. The platform fee splits between venue, league and operator by rules held in the settlement engine."
+tm_axs,sales_channel,table,,7,0,1,1,"Configured sales channels. Drives the fee schedule and settlement routing, and is operator-maintained rather than code-level."
+tm_axs,sales_order,table,,23,5,9,7,"Ticket orders. Totals are denormalized onto the header because the gateway settles against the header, not the lines."
+tm_axs,scan,partitioned,,15,4,5,7,"Every barcode or credential presentation, including rejections. Monthly range partitions: queried per event or per day, and retention is a DETACH."
+tm_axs,scan_2026_01,partition,scan,15,4,5,7,
+tm_axs,scan_2026_02,partition,scan,15,4,5,7,
+tm_axs,scan_2026_03,partition,scan,15,4,5,7,
+tm_axs,scan_2026_04,partition,scan,15,4,5,7,
+tm_axs,scan_2026_05,partition,scan,15,4,5,7,
+tm_axs,scan_2026_06,partition,scan,15,4,5,7,
+tm_axs,scan_2026_07,partition,scan,15,4,5,7,
+tm_axs,scan_2026_08,partition,scan,15,4,5,7,
+tm_axs,scan_2026_09,partition,scan,15,4,5,7,
+tm_axs,scan_2026_10,partition,scan,15,4,5,7,
+tm_axs,scan_2026_11,partition,scan,15,4,5,7,
+tm_axs,scan_2026_12,partition,scan,15,4,5,7,
+tm_axs,scan_default,partition,scan,15,4,5,7,Catch-all. Rows landing here mean the partition maintenance job has fallen behind; it should be monitored and stay empty.
+tm_axs,screening_checkpoint,table,,11,1,3,2,Security screening positions attached to an access point. Feeds target security.screening_checkpoint.
+tm_axs,screening_event,partitioned,,10,2,3,3,"Anonymous screening throughput. Carries no ticket or person reference by design; escalation creates a security_incident, which does."
+tm_axs,screening_event_2026_h1,partition,screening_event,10,2,3,3,
+tm_axs,screening_event_2026_h2,partition,screening_event,10,2,3,3,
+tm_axs,screening_event_default,partition,screening_event,10,2,3,3,
+tm_axs,season,table,,11,0,2,2,"A selling period, not a competition structure. Contributes to target event.calendar and target league.season."
+tm_axs,security_incident,table,,20,3,7,6,Feeds both target security.security_incident and target venue.safety_incident -- the two overlap because no EHS system is named. Also unions into event.event_incident.
+tm_axs,ticket,table,,18,4,5,7,The issued entitlement. Seat labels are copied on at issue so a later manifest change cannot rewrite what the ticket said.
+tm_axs,ticket_inventory,table,,15,2,1,5,The selling system mirror of the Archtics manifest. Drifts from archtics.event_manifest during an on-sale; Archtics is authoritative.
+tm_axs,ticket_transfer,table,,11,3,3,4,"Ticket transfers between accounts. Offered to an email address before a recipient account necessarily exists, which is why the recipient is nullable."
+tm_axs,venue_ref,table,,13,0,1,2,"The venue as TM/AXS holds it. Deliberately a separate record from archtics.building and sap_s4.t001w: all three describe the same building and none shares a key, which is the clearest illustration of why the target venue_id is a product of integration."
+workday_ap,_change_log,table,,7,0,1,3,Change capture for incremental extraction. Deletes are the reason this exists: a high-water-mark read of updated_at cannot see a removed row.
+workday_ap,account,table,,12,2,3,7,The planning chart of accounts. The sign-flip flag prevents the commonest FP&A integration error: revenue is stored negative in many Adaptive models.
+workday_ap,allocation_rule,table,,10,4,2,5,"How a cost pool is split across levels: evenly, by a driver, or by fixed percentages. No target counterpart, so an allocated figure arrives unexplained."
+workday_ap,cell_value,table,,17,7,3,10,"The planning fact. Sparse: a model with 2,000 accounts, 300 levels, 60 periods and 5 versions has ~1.8 billion possible intersections and maybe two million populated. The UNIQUE constraint on the dimension tuple is what makes it a cube."
+workday_ap,dimension,table,,7,1,0,3,"User-defined cube axes. A sports organisation plans by fixture, competition, sponsor and squad, and none of those are accounts or levels."
+workday_ap,dimension_value,table,,9,2,2,5,"Dimension members. A member is usually a business entity from another system -- a fixture, a player, a sponsor -- and the external reference is how a planning cell resolves to anything real."
+workday_ap,driver,table,,9,3,1,4,"The calculation behind a planned number. No target table corresponds, so a budget arrives in the lakehouse as a figure with no explanation -- the question ""why is this up 12%"" is answerable here and nowhere downstream."
+workday_ap,level,table,,11,2,1,7,"The organisational dimension. A rollup level holds no input of its own, so loading rollups alongside leaves double counts."
+workday_ap,model,table,,8,0,1,1,"A planning model -- a workspace with its own dimensions, accounts and versions. Its fiscal calendar need not match the SAP one, and when they differ a period remap is required."
+workday_ap,plan,table,,13,2,6,5,"A named planning exercise -- the annual budget round, a reforecast, a salary-cap plan. Supplies the metadata target finance.budget needs beyond the numbers."
+workday_ap,time_period,table,,13,2,5,6,"Time as a dimension member. A plan period is ""FY26 Q3"", which need not align with a calendar quarter -- starts_on and ends_on are what make it reconcilable to the ledger."
+workday_ap,version,table,,11,2,4,6,"The version dimension. Actuals, budget, forecast and scenarios coexist for the same intersection, so an extract into target finance.budget must filter on is_plan_of_record or it will load a what-if as a commitment."

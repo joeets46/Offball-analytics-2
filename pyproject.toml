@@ -1,0 +1,45 @@
+[project]
+name = "offball-source-models"
+version = "1.0.0"
+description = "Source OLTP data models feeding the Databricks Sports Entertainment MVM lakehouse model"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+# The model derivation tooling has no runtime dependencies on purpose: it reads
+# the upstream model.json with the standard library alone, so the derived CSVs
+# can be regenerated anywhere Python runs.
+dependencies = []
+
+[project.optional-dependencies]
+# Needed only to run the test suite, which talks to a live PostgreSQL 18.
+test = [
+    "pytest>=8.0",
+    "psycopg[binary]>=3.2",
+]
+
+[project.scripts]
+# Regenerates everything derived from the upstream model, in dependency order.
+offball-extract = "tools.extract_model:main"
+offball-common = "tools.build_common_ddl:main"
+offball-mapping = "tools.build_mapping:main"
+offball-audit = "tools.gen_audit:main"
+offball-check = "tools.check_mapping:main"
+offball-dictionary = "tools.build_dictionary:main"
+offball-column-mapping = "tools.build_column_mapping:main"
+offball-schema-readme = "tools.gen_schema_readme:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["tools"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Quiet, but show which assertion failed and why.
+addopts = "-ra --strict-markers"
+markers = [
+    "database: requires a live PostgreSQL 18 (docker compose up -d)",
+]

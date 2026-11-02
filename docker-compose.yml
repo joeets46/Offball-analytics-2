@@ -1,0 +1,72 @@
+# PostgreSQL 18 for loading and testing the source OLTP model.
+#
+#   docker compose up -d
+#   docker compose logs -f postgres     # watch startup
+#   docker compose down                 # stop, keep data
+#   docker compose down -v              # stop and discard the volume
+#
+# Port 55432 by default. Not 5432, and not 5433 either: a developer machine
+# often has a PostgreSQL on both -- a host install on one and another
+# container on the other. A high port avoids silently connecting to the
+# wrong server, which fails as an authentication error and looks nothing
+# like a port clash. Override POSTGRES_PORT in .env if you prefer.
+#
+# Credentials come from .env, which is gitignored. Copy .env.example to .env
+# first; the defaults below are development-only and are not secrets.
+
+name: offball
+
+services:
+  postgres:
+    image: postgres:18
+    container_name: offball-pg18
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-offball}
+      POSTGRES_USER: ${POSTGRES_USER:-offball}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-offball}
+      # The model declares TIMESTAMPTZ throughout and relies on the server
+      # reading timestamps as UTC. Pinning it here keeps a load reproducible
+      # regardless of the host timezone.
+      PGTZ: UTC
+      TZ: UTC
+      # C collation makes index ordering and text comparison deterministic
+      # across platforms, which matters because several schemas carry
+      # blank-padded CHAR business keys.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "${POSTGRES_PORT:-55432}:5432"
+    volumes:
+      # PostgreSQL 18 changed this. The image now expects a single mount at
+      # /var/lib/postgresql and places the cluster in a version-specific
+      # subdirectory, so that `pg_upgrade --link` works without crossing a
+      # mount boundary. Mounting the old /var/lib/postgresql/data path makes
+      # the 18 image refuse to start.
+      - postgres_data:/var/lib/postgresql
+      # Mounted read-only so a container process cannot alter the model, and so
+      # psql inside the container can run the loader directly:
+      #   docker compose exec postgres psql -U offball -d offball \
+      #     -v ON_ERROR_STOP=1 -f /model/sql/00_create_all.sql
+      - ./sql:/model/sql:ro
+      - ./oltp:/model/oltp:ro
+    healthcheck:
+      # pg_isready alone returns true before the database finishes creating, so
+      # the check runs a real query.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-offball} -d ${POSTGRES_DB:-offball} -q && psql -U ${POSTGRES_USER:-offball} -d ${POSTGRES_DB:-offball} -tAc 'select 1' > /dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    # The model is index-heavy (1,431 indexes) and the load is one long
+    # transaction-per-statement stream, so a little more working memory makes
+    # a visible difference on a full rebuild.
+    command:
+      - postgres
+      - -c
+      - maintenance_work_mem=256MB
+      - -c
+      - max_locks_per_transaction=512
+
+volumes:
+  postgres_data:
+    name: offball_postgres_data

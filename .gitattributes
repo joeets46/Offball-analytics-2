@@ -1,0 +1,22 @@
+# Normalise line endings. Without this, every SQL and CSV file shows as
+# modified on a Windows checkout and diffs become unreadable.
+* text=auto eol=lf
+
+# Generated CSVs are data, not prose: keep them LF and diffable.
+*.csv text eol=lf
+*.sql text eol=lf
+*.dbml text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+
+# Shell scripts must stay LF or they will not run.
+*.sh text eol=lf
+
+# Treat the lock file as generated so it does not clutter review.
+uv.lock linguist-generated=true
+tools/derived/*.csv linguist-generated=true
+dictionary/*.csv linguist-generated=true
+oltp/*/ddl/70_audit.sql linguist-generated=true
+sql/01_common.sql linguist-generated=true

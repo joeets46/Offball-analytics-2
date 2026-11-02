@@ -1,0 +1,396 @@
+// =========================================================================
+// Logical model -- Venue & Access
+//
+// Subject area 2 of 5. Upstream MVM domains: venue, security.
+//
+// The two structural choices that matter here:
+//   * seating_area is recursive, because real venues nest to a depth that
+//     differs between venues and between configurations of one venue.
+//   * access_grant covers a ticket and a staff pass, because both are
+//     permission for a person to be in a place during a period.
+// =========================================================================
+
+Project venue_access {
+  database_type: 'logical'
+}
+
+Table venue {
+  venue_id identifier [pk]
+  venue_code code [not null, unique]
+  name name [not null]
+  legal_name name
+  marketing_name name [note: 'Naming-rights name, which changes on a sponsorship cycle while the operational name stays put.']
+  venue_type_id identifier [not null]
+  address_id identifier
+  local_timezone timezone [not null]
+  latitude coordinate
+  longitude coordinate
+  year_opened quantity
+  is_indoor boolean [not null]
+  has_retractable_roof boolean [not null]
+  note: 'A building where events happen.'
+}
+
+Table venue_type {
+  venue_type_id identifier [pk]
+  type_code code [not null, unique]
+  name name [not null]
+}
+
+Table seating_area {
+  seating_area_id identifier [pk]
+  venue_id identifier [not null]
+  parent_seating_area_id identifier
+  area_level_id identifier [not null]
+  area_code code [not null]
+  label name [not null]
+  orientation orientation
+  indexes { (venue_id, area_code) [unique] }
+  note: '''
+    Recursive. A real venue goes tier -> block -> section -> row, and the depth
+    differs by venue and by configuration. The upstream model fixes three
+    levels (venue, seating_section, seat), which is wrong for most venues.
+  '''
+}
+
+Table area_level {
+  area_level_id identifier [pk]
+  level_code code [not null, unique]
+  name name [not null]
+  level_ordinal quantity [not null, note: 'Depth from the building downward, so the hierarchy can be validated.']
+}
+
+Table seat {
+  seat_id identifier [pk]
+  seating_area_id identifier [not null]
+  seat_label name [not null]
+  seat_ordinal quantity [not null]
+  seat_status seat_status [not null]
+  indexes { (seating_area_id, seat_label) [unique] }
+  note: 'One physical place to sit. Authoritative for whether a seat exists at all.'
+}
+
+Table seat_attribute {
+  seat_attribute_id identifier [pk]
+  attribute_code code [not null, unique]
+  name name [not null]
+  attribute_category seat_attribute_category [not null]
+  is_accessibility_relevant boolean [not null, note: 'Drives statutory capacity ratios, so it is flagged rather than inferred from the category.']
+  reduces_sellable_capacity boolean [not null]
+}
+
+Table seat_attribute_assignment {
+  seat_id identifier [pk]
+  seat_attribute_id identifier [pk]
+  effective_from day [pk]
+  effective_to day
+  note: '''
+    Associative and effective-dated. Attributes change with a reconfiguration.
+    The upstream model flattens these into booleans and STRING columns on
+    venue.seat, losing both the vocabulary and the history.
+  '''
+}
+
+Table seating_configuration {
+  seating_configuration_id identifier [pk]
+  venue_id identifier [not null]
+  configuration_code code [not null]
+  name name [not null]
+  configuration_type_id identifier [not null]
+  total_capacity quantity [not null]
+  sellable_capacity quantity [not null]
+  accessible_capacity quantity [not null]
+  version_number quantity [not null]
+  supersedes_configuration_id identifier
+  safety_certificate_reference code
+  safety_certificate_expires_on day
+  indexes { (venue_id, configuration_code, version_number) [unique] }
+  note: '''
+    A reusable arrangement of a venue. Versioned and superseded rather than
+    updated, so a historical event keeps pointing at the configuration as it
+    was. The upstream venue.capacity_config collapses the reusable
+    configuration and its per-event application into one row, losing the reuse.
+  '''
+}
+
+Table configuration_type {
+  configuration_type_id identifier [pk]
+  type_code code [not null, unique]
+  name name [not null]
+}
+
+Table configuration_area {
+  seating_configuration_id identifier [pk]
+  seating_area_id identifier [pk]
+  allocation_type allocation_type [not null]
+  allocated_seat_count quantity [not null]
+  override_label name [note: 'A configuration may relabel an area: section 101 becomes Floor C for an end-stage concert.']
+  note: 'Associative. Retained upstream as venue.config_section_allocation, one of only six associative tables the MVM keeps.'
+}
+
+Table event_configuration {
+  event_id identifier [pk]
+  seating_configuration_id identifier [not null]
+  adjusted_capacity quantity
+  adjustment_reason text
+  seats_sold quantity [not null]
+  seats_held quantity [not null]
+  admitted_count quantity [note: 'The gate count, which is not the sold count. The gap is the no-show rate.']
+  note: 'A configuration applied to one event, with event-specific adjustments. Split from seating_configuration precisely to preserve the reuse.'
+}
+
+// -------------------------------------------------------------------------
+// Access control
+// -------------------------------------------------------------------------
+
+Table access_zone {
+  access_zone_id identifier [pk]
+  venue_id identifier [not null]
+  zone_code code [not null]
+  name name [not null]
+  zone_category zone_category [not null]
+  clearance_level quantity [not null, note: 'Nested: a zone requires at least this level on the presented grant.']
+  indexes { (venue_id, zone_code) [unique] }
+}
+
+Table access_point {
+  access_point_id identifier [pk]
+  venue_id identifier [not null]
+  access_zone_id identifier [not null]
+  point_code code [not null]
+  name name [not null]
+  point_type access_point_type [not null]
+  direction access_direction [not null]
+  throughput_per_hour quantity [note: 'Drives queue modelling and doors-open planning.']
+  is_accessible boolean [not null]
+  indexes { (venue_id, point_code) [unique] }
+}
+
+Table access_grant {
+  access_grant_id identifier [pk]
+  grant_kind grant_kind [not null, note: 'Discriminator: ticket | credential | parking | hospitality']
+  event_id identifier [note: 'Null for a standing season-long grant.']
+  party_id identifier [note: 'Null while a ticket is unassigned or the holder is unidentified.']
+  clearance_level quantity [not null]
+  valid_from instant [not null]
+  valid_to instant
+  grant_status grant_status [not null]
+  revoked_at instant
+  revocation_reason text
+  note: '''
+    Supertype. A ticket and a staff pass are both permission for a person to be
+    in a place during a period; the subtypes differ in that one is sold and one
+    is issued. The upstream model has ticketing.access_entitlement and
+    security.credential as unrelated tables.
+  '''
+}
+
+Table ticket_grant {
+  access_grant_id identifier [pk]
+  seat_id identifier [note: 'Null for general admission.']
+  order_line_id identifier [not null]
+  face_value money [not null]
+  is_complimentary boolean [not null]
+  note: 'Subtype where grant_kind = ticket. Sold, so it has an order line and a price.'
+}
+
+Table credential_grant {
+  access_grant_id identifier [pk]
+  credential_type credential_type [not null]
+  issuing_organisation name
+  background_check_status background_check_status [not null]
+  photo_on_file boolean [not null]
+  note: 'Subtype where grant_kind = credential. Issued rather than sold, so it has a vetting status instead of a price.'
+}
+
+Table access_grant_zone {
+  access_grant_id identifier [pk]
+  access_zone_id identifier [pk]
+  note: '''
+    Associative. A credential reaching four zones is four rows. No upstream
+    equivalent exists, so the target model can state only one zone per grant.
+  '''
+}
+
+Table admission {
+  admission_id identifier [pk]
+  access_grant_id identifier [note: 'Null for an unmatched presentation, which is itself the interesting case.']
+  access_point_id identifier [not null]
+  event_id identifier [not null]
+  presented_at instant [not null]
+  admission_result admission_result [not null]
+  direction access_direction [not null]
+  was_manual_override boolean [not null]
+  override_reason text
+  captured_offline boolean [not null, note: 'Readers buffer when the network drops at gates, so these arrive late and out of order.']
+  recorded_at instant [not null]
+  note: '''
+    An actual presentation, including every refusal. Separate from access_grant
+    because a sold ticket and an arrival are different facts, and the
+    rejections are what fraud investigation reads.
+  '''
+}
+
+Table screening_outcome {
+  screening_outcome_id identifier [pk]
+  access_point_id identifier [not null]
+  event_id identifier [not null]
+  screened_at instant [not null]
+  screening_result screening_result [not null]
+  prohibited_item_category code
+  note: '''
+    Deliberately carries no reference to a grant or a party. Screening is
+    anonymous throughput unless it escalates to an incident, and keeping it
+    that way is a data-minimisation decision rather than an omission.
+  '''
+}
+
+Table venue_incident {
+  venue_incident_id identifier [pk]
+  venue_id identifier [not null]
+  event_id identifier
+  access_zone_id identifier
+  incident_category incident_category [not null]
+  severity severity [not null]
+  occurred_at instant [not null]
+  reported_at instant [not null]
+  description text [not null]
+  persons_involved_count quantity [not null]
+  authorities_involved boolean [not null]
+  incident_status incident_status [not null]
+  note: '''
+    One entity for security and safety incidents. The upstream model has
+    security.security_incident and venue.safety_incident separately, and both
+    map to the same source table, which is the evidence that they are one
+    thing.
+  '''
+}
+
+Table ejection {
+  ejection_id identifier [pk]
+  venue_incident_id identifier [not null]
+  access_grant_id identifier
+  party_id identifier
+  ejection_reason ejection_reason [not null]
+  ejected_at instant [not null]
+  ban_issued boolean [not null]
+  ban_expires_on day
+  note: 'Neither the grant nor the party is mandatory: an ejected person is often unidentified.'
+}
+
+// -------------------------------------------------------------------------
+// Facilities
+// -------------------------------------------------------------------------
+
+Table facility_asset {
+  facility_asset_id identifier [pk]
+  venue_id identifier [not null]
+  seating_area_id identifier
+  asset_code code [not null]
+  name name [not null]
+  asset_class_id identifier [not null]
+  fixed_asset_id identifier [note: 'The financial asset record -- see 05-corporate.dbml.']
+  quantity quantity [not null]
+  is_accessibility_provision boolean [not null]
+  compliance_status compliance_status
+  last_assessed_on day
+  indexes { (venue_id, asset_code) [unique] }
+  note: '''
+    A durable thing in a venue that is maintained. One entity covering lifts,
+    pitches, scoreboards, concession stands and accessibility provisions, which
+    the upstream model splits across venue.facility, venue.concession_stand and
+    venue.accessibility_feature.
+  '''
+}
+
+Table asset_class {
+  asset_class_id identifier [pk]
+  class_code code [not null, unique]
+  name name [not null]
+}
+
+Table maintenance_event {
+  maintenance_event_id identifier [pk]
+  facility_asset_id identifier
+  venue_id identifier [not null]
+  maintenance_kind maintenance_kind [not null, note: 'notification | order | inspection. One entity, because the first becomes the second.']
+  reported_at instant [not null]
+  authorised_at instant [note: 'Null while a notification has no order raised. The report-to-authorisation lag is a real facilities measure the upstream model cannot show.']
+  completed_at instant
+  priority priority [not null]
+  is_breakdown boolean [not null]
+  downtime_hours quantity
+  planned_cost money
+  actual_cost money
+  cost_centre_id identifier
+  note: 'Work done, or needing doing. The upstream venue.maintenance_work_order merges notification and order, losing the lag between them.'
+}
+
+Table parking_facility {
+  parking_facility_id identifier [pk]
+  venue_id identifier [not null]
+  facility_code code [not null]
+  name name [not null]
+  parking_type parking_type [not null]
+  total_spaces quantity [not null]
+  accessible_spaces quantity [not null]
+  walk_minutes_to_gate quantity
+  indexes { (venue_id, facility_code) [unique] }
+}
+
+Table parking_allocation {
+  parking_allocation_id identifier [pk]
+  parking_facility_id identifier [not null]
+  event_id identifier
+  allocation_type allocation_type [not null]
+  allocated_spaces quantity [not null]
+  sold_spaces quantity [not null]
+  price_per_space money
+  note: 'One entity for the standing allocation and its per-event activation, distinguished by whether event_id is set.'
+}
+
+// -------------------------------------------------------------------------
+// Relationships
+// -------------------------------------------------------------------------
+
+Ref: venue.venue_type_id > venue_type.venue_type_id
+Ref: seating_area.venue_id > venue.venue_id
+Ref: seating_area.parent_seating_area_id > seating_area.seating_area_id
+Ref: seating_area.area_level_id > area_level.area_level_id
+Ref: seat.seating_area_id > seating_area.seating_area_id
+Ref: seat_attribute_assignment.seat_id > seat.seat_id
+Ref: seat_attribute_assignment.seat_attribute_id > seat_attribute.seat_attribute_id
+
+Ref: seating_configuration.venue_id > venue.venue_id
+Ref: seating_configuration.configuration_type_id > configuration_type.configuration_type_id
+Ref: seating_configuration.supersedes_configuration_id > seating_configuration.seating_configuration_id
+Ref: configuration_area.seating_configuration_id > seating_configuration.seating_configuration_id
+Ref: configuration_area.seating_area_id > seating_area.seating_area_id
+Ref: event_configuration.seating_configuration_id > seating_configuration.seating_configuration_id
+
+Ref: access_zone.venue_id > venue.venue_id
+Ref: access_point.venue_id > venue.venue_id
+Ref: access_point.access_zone_id > access_zone.access_zone_id
+
+Ref: ticket_grant.access_grant_id - access_grant.access_grant_id
+Ref: ticket_grant.seat_id > seat.seat_id
+Ref: credential_grant.access_grant_id - access_grant.access_grant_id
+Ref: access_grant_zone.access_grant_id > access_grant.access_grant_id
+Ref: access_grant_zone.access_zone_id > access_zone.access_zone_id
+
+Ref: admission.access_grant_id > access_grant.access_grant_id
+Ref: admission.access_point_id > access_point.access_point_id
+Ref: screening_outcome.access_point_id > access_point.access_point_id
+
+Ref: venue_incident.venue_id > venue.venue_id
+Ref: venue_incident.access_zone_id > access_zone.access_zone_id
+Ref: ejection.venue_incident_id > venue_incident.venue_incident_id
+Ref: ejection.access_grant_id > access_grant.access_grant_id
+
+Ref: facility_asset.venue_id > venue.venue_id
+Ref: facility_asset.seating_area_id > seating_area.seating_area_id
+Ref: facility_asset.asset_class_id > asset_class.asset_class_id
+Ref: maintenance_event.facility_asset_id > facility_asset.facility_asset_id
+Ref: maintenance_event.venue_id > venue.venue_id
+Ref: parking_facility.venue_id > venue.venue_id
+Ref: parking_allocation.parking_facility_id > parking_facility.parking_facility_id

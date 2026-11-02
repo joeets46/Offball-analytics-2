@@ -1,0 +1,201 @@
+mvm_domain,division,mvm_subdomain,mvm_table,mvm_type,primary_key,attribute_count,in_scope,scope_reason,system_affinity,affinity_top
+event,operations,event_scheduling,fixture,master,fixture_id,52,yes,,sap_s4:8 tm_axs:8 archtics:5 hudl:2 adobe_aep:2 dalet:2 sfdc_crm:1,sap_s4
+event,operations,event_scheduling,calendar,master,calendar_id,41,yes,,dalet:4 archtics:4 tm_axs:4 sap_s4:3 adobe_aep:2 workday_ap:1,dalet
+event,operations,event_scheduling,tournament,master,tournament_id,52,yes,,adobe_aep:3 sap_s4:2 workday_ap:1 archtics:1 dalet:1 tm_axs:1,adobe_aep
+event,operations,event_scheduling,bracket,transactional,bracket_id,45,yes,,adobe_aep:1,adobe_aep
+event,operations,match_operations,match_result,transactional,match_result_id,47,yes,,dalet:1 hudl:1,dalet
+event,operations,match_operations,scoring_event,transactional,scoring_event_id,43,yes,,hudl:9 archtics:1,hudl
+event,operations,match_operations,production_schedule,master,production_schedule_id,48,yes,,dalet:3 sfdc_crm:3,dalet
+event,operations,match_operations,participant,transactional,participant_id,49,yes,,sap_s4:3 dalet:3 tm_axs:2 sfdc_crm:2 archtics:2 hudl:2 adobe_aep:1 sap_sfsf:1,sap_s4
+event,operations,match_operations,officiating_assignment,transactional,officiating_assignment_id,40,yes,,sap_s4:4,sap_s4
+event,operations,match_operations,event_incident,transactional,event_incident_id,50,yes,,hudl:3 dalet:2 sap_s4:2 sfdc_crm:2 tm_axs:1,hudl
+event,operations,match_operations,venue_assignment,transactional,venue_assignment_id,45,yes,,archtics:7 sap_s4:4 tm_axs:3 dalet:1 workday_ap:1 sfdc_crm:1,archtics
+event,operations,event_scheduling,competition_round,reference,competition_round_id,48,yes,,tm_axs:4 archtics:4 dalet:2 sfdc_crm:2 sap_s4:1 sap_sfsf:1 shopify:1 workday_ap:1 hudl:1,tm_axs
+event,operations,event_scheduling,broadcast_window,master,broadcast_window_id,55,yes,,dalet:12 sap_s4:2,dalet
+event,operations,event_scheduling,type,master,type_id,32,yes,,,
+venue,operations,facility_assets,facility,master,facility_id,39,yes,,archtics:9 tm_axs:7 sap_s4:7 dalet:3 sfdc_crm:2 adobe_aep:2,archtics
+venue,operations,seating_inventory,seating_section,master,seating_section_id,45,yes,,archtics:25 tm_axs:7 sfdc_crm:2 dalet:1 adobe_aep:1,archtics
+venue,operations,seating_inventory,seat,master,seat_id,42,yes,,archtics:28 tm_axs:8 sap_s4:1 sfdc_crm:1,archtics
+venue,operations,seating_inventory,capacity_config,master,capacity_config_id,47,yes,,archtics:30 tm_axs:9 sap_s4:4 sfdc_crm:2 dalet:1,archtics
+venue,operations,facility_assets,parking_lot,master,parking_lot_id,48,yes,,archtics:7 tm_axs:5 sap_s4:4 sfdc_crm:1,archtics
+venue,operations,venue_operations,maintenance_work_order,transactional,maintenance_work_order_id,54,yes,,sap_s4:35,sap_s4
+venue,operations,venue_operations,safety_inspection,transactional,safety_inspection_id,52,no,No CMMS/EHS system among the 10 named systems,,
+venue,operations,venue_operations,safety_incident,transactional,safety_incident_id,53,yes,,sap_s4:1 workday_ap:1,sap_s4
+venue,operations,venue_operations,event_day_ops,transactional,event_day_ops_id,43,yes,,tm_axs:2,tm_axs
+venue,operations,facility_assets,concession_stand,master,concession_stand_id,46,yes,,sap_s4:13 archtics:4 adobe_aep:2 sap_sfsf:1,sap_s4
+venue,operations,facility_assets,suite,master,suite_id,51,yes,,sap_s4:20 sfdc_crm:11 archtics:9 workday_ap:6 tm_axs:2,sap_s4
+venue,operations,facility_assets,accessibility_feature,master,accessibility_feature_id,49,yes,,sap_s4:10 adobe_aep:2 tm_axs:2 archtics:2 workday_ap:1,sap_s4
+venue,operations,venue_operations,staff_plan,,staff_plan_id,47,yes,,sap_sfsf:7 sap_s4:4 workday_ap:1,sap_sfsf
+venue,operations,facility_assets,venue,master,venue_id,45,yes,,sap_s4:9 archtics:6 tm_axs:6 adobe_aep:5 sfdc_crm:3 dalet:2 workday_ap:2,sap_s4
+venue,operations,venue_operations,parking_activation,associative,parking_activation_id,9,yes,,,
+venue,operations,seating_inventory,config_section_allocation,associative,config_section_allocation_id,8,yes,,archtics:5,archtics
+athlete,operations,athlete_identity,roster,master,roster_id,46,yes,,sap_sfsf:4 sap_s4:2 hudl:1 archtics:1,sap_sfsf
+athlete,operations,athlete_identity,athlete_profile,master,athlete_profile_id,38,yes,,sap_sfsf:10 adobe_aep:4 dalet:3 hudl:3 sfdc_crm:1,sap_sfsf
+athlete,operations,contract_management,contract,master,contract_id,49,yes,,sap_s4:15 sap_sfsf:6 sfdc_crm:1,sap_s4
+athlete,operations,performance_compliance,performance_stat,transactional,performance_stat_id,53,yes,,hudl:3,hudl
+athlete,operations,performance_compliance,injury_record,transactional,injury_record_id,49,yes,,sap_s4:2 dalet:1 sap_sfsf:1 hudl:1,sap_s4
+athlete,operations,athlete_identity,draft_selection,transactional,draft_selection_id,45,yes,,sap_sfsf:2 sap_s4:2 hudl:1,sap_sfsf
+athlete,operations,athlete_identity,eligibility_status,master,eligibility_status_id,41,yes,,sap_sfsf:1 tm_axs:1,sap_sfsf
+athlete,operations,contract_management,nil_agreement,master,nil_agreement_id,57,yes,,sap_s4:12 sfdc_crm:4 adobe_aep:2 workday_ap:1 dalet:1 archtics:1 shopify:1,sap_s4
+athlete,operations,contract_management,agent_relationship,master,agent_relationship_id,43,yes,,sfdc_crm:5 sap_sfsf:1,sfdc_crm
+athlete,operations,performance_compliance,suspension_record,transactional,suspension_record_id,56,yes,,sap_sfsf:3 sap_s4:3 sfdc_crm:2 dalet:1,sap_sfsf
+athlete,operations,contract_management,salary_cap_entry,transactional,salary_cap_entry_id,48,yes,,workday_ap:4 sap_s4:2,workday_ap
+athlete,operations,athlete_identity,free_agency_status,master,free_agency_status_id,47,yes,,sap_s4:6 sap_sfsf:4,sap_s4
+athlete,operations,contract_management,agent,master,agent_id,42,yes,,,
+athlete,operations,contract_management,agency,master,agency_id,43,yes,,,
+fan,business,fan_identity,fan_profile,master,fan_profile_id,42,yes,,adobe_aep:11 sfdc_crm:8 tm_axs:1 archtics:1,adobe_aep
+fan,business,fan_identity,account,master,account_id,45,yes,,sfdc_crm:36 adobe_aep:8 archtics:3 tm_axs:2 sap_s4:1,sfdc_crm
+fan,business,loyalty_engagement,loyalty_program,master,loyalty_program_id,56,yes,,sfdc_crm:27 adobe_aep:10 sap_s4:5 archtics:2 tm_axs:2 shopify:1,sfdc_crm
+fan,business,loyalty_engagement,loyalty_enrollment,master,loyalty_enrollment_id,50,yes,,sfdc_crm:28 adobe_aep:23 archtics:5 tm_axs:1,sfdc_crm
+fan,business,loyalty_engagement,loyalty_transaction,transactional,loyalty_transaction_id,47,yes,,sfdc_crm:21 adobe_aep:7 sap_s4:6 tm_axs:4 shopify:3 archtics:2,sfdc_crm
+fan,business,loyalty_engagement,membership,master,membership_id,66,yes,,sap_s4:12 sfdc_crm:12 archtics:10 adobe_aep:8 tm_axs:8 dalet:1 shopify:1,sap_s4
+fan,business,fan_identity,segment,master,segment_id,46,yes,,adobe_aep:26 sfdc_crm:21 tm_axs:1 archtics:1,adobe_aep
+fan,business,fan_identity,segment_assignment,transactional,segment_assignment_id,39,yes,,sfdc_crm:29 adobe_aep:27 tm_axs:2 shopify:1,sfdc_crm
+fan,business,fan_identity,consent_preference,master,consent_preference_id,41,yes,,adobe_aep:8 sfdc_crm:3,adobe_aep
+fan,business,outreach_communications,engagement_event,transactional,engagement_event_id,57,yes,,adobe_aep:28 sfdc_crm:7 dalet:4 archtics:4 tm_axs:3 shopify:1 hudl:1,adobe_aep
+fan,business,outreach_communications,communication,transactional,communication_id,51,yes,,sfdc_crm:28 adobe_aep:27,sfdc_crm
+fan,business,outreach_communications,service_case,transactional,service_case_id,58,yes,,sfdc_crm:31 archtics:4 adobe_aep:4 tm_axs:2 sap_s4:2,sfdc_crm
+fan,business,fan_identity,payment_method,master,payment_method_id,45,yes,,tm_axs:6 shopify:5 sfdc_crm:3 adobe_aep:3,tm_axs
+fan,business,loyalty_engagement,club,master,club_id,52,yes,,sap_s4:7 sfdc_crm:7 adobe_aep:5 archtics:2 tm_axs:1 shopify:1,sap_s4
+fan,business,loyalty_engagement,campaign,master,campaign_id,43,yes,,,
+fan,business,loyalty_engagement,club_membership,associative,club_membership_id,10,yes,,adobe_aep:1,adobe_aep
+ticketing,business,inventory_pricing,ticket_inventory,master,ticket_inventory_id,50,yes,,archtics:25 tm_axs:23 sap_s4:6 sfdc_crm:1 adobe_aep:1,archtics
+ticketing,business,transaction_management,ticket_order,transactional,ticket_order_id,55,yes,,tm_axs:22 sap_s4:14 archtics:12 sfdc_crm:6 adobe_aep:3,tm_axs
+ticketing,business,transaction_management,ticket_order_line,transactional,ticket_order_line_id,46,yes,,tm_axs:25 sap_s4:16 archtics:15 sfdc_crm:2 adobe_aep:2,tm_axs
+ticketing,business,inventory_pricing,price_tier,reference,price_tier_id,47,yes,,tm_axs:32 archtics:11 sap_s4:11 sfdc_crm:2 shopify:1 workday_ap:1,tm_axs
+ticketing,business,season_sales,season_ticket_package,master,season_ticket_package_id,54,yes,,archtics:25 tm_axs:13 sap_s4:9 sfdc_crm:9 adobe_aep:2 shopify:2 workday_ap:1,archtics
+ticketing,business,season_sales,season_ticket_account,transactional,season_ticket_account_id,46,yes,,archtics:26 sap_s4:13 tm_axs:9 sfdc_crm:7 adobe_aep:4,archtics
+ticketing,business,season_sales,group_sale,transactional,group_sale_id,51,yes,,sap_s4:25 tm_axs:20 archtics:13 sfdc_crm:7,sap_s4
+ticketing,business,transaction_management,resale,transactional,resale_id,55,yes,,tm_axs:30 archtics:16 sap_s4:9 sfdc_crm:2 adobe_aep:1,tm_axs
+ticketing,business,access_control,access_entitlement,master,access_entitlement_id,55,yes,,tm_axs:27 archtics:20 sap_s4:5 sfdc_crm:3 adobe_aep:3,tm_axs
+ticketing,business,access_control,gate_scan,transactional,gate_scan_id,41,yes,,tm_axs:27 archtics:12 sfdc_crm:1 adobe_aep:1,tm_axs
+ticketing,business,transaction_management,ticket_payment,transactional,ticket_payment_id,48,yes,,tm_axs:18 sap_s4:14 sfdc_crm:3 adobe_aep:3 archtics:2,tm_axs
+ticketing,business,transaction_management,refund,transactional,refund_id,49,yes,,tm_axs:13 sap_s4:13 sfdc_crm:6 archtics:1,tm_axs
+ticketing,business,inventory_pricing,hold_allocation,transactional,hold_allocation_id,48,yes,,tm_axs:23 archtics:18 sap_s4:3 sfdc_crm:1 adobe_aep:1,tm_axs
+ticketing,business,access_control,ticket_transfer,master,ticket_transfer_id,44,yes,,tm_axs:34 archtics:11 sfdc_crm:2 sap_s4:1 adobe_aep:1,tm_axs
+ticketing,business,inventory_pricing,price_zone,master,price_zone_id,35,yes,,tm_axs:1 archtics:1,tm_axs
+broadcast,business,rights_licensing,media_rights_deal,master,media_rights_deal_id,48,yes,,dalet:12 sfdc_crm:11 sap_s4:5 workday_ap:1 adobe_aep:1,dalet
+broadcast,business,production_distribution,broadcast_schedule,master,broadcast_schedule_id,49,yes,,dalet:28 sap_s4:2 sfdc_crm:1,dalet
+broadcast,business,production_distribution,channel,master,channel_id,49,yes,,dalet:8 sfdc_crm:2 sap_s4:2 adobe_aep:2,dalet
+broadcast,business,rights_licensing,blackout_rule,reference,blackout_rule_id,50,yes,,dalet:1,dalet
+broadcast,business,production_distribution,live_feed,master,live_feed_id,47,yes,,dalet:7,dalet
+broadcast,business,audience_engagement,streaming_subscription,master,streaming_subscription_id,50,yes,,adobe_aep:6 sfdc_crm:3 sap_s4:3,adobe_aep
+broadcast,business,audience_engagement,media_asset,master,media_asset_id,48,yes,,dalet:17 adobe_aep:1,dalet
+broadcast,business,rights_licensing,rights_window,master,rights_window_id,45,yes,,sap_s4:15 dalet:9 sfdc_crm:3 workday_ap:2,sap_s4
+broadcast,business,production_distribution,production,master,production_id,51,yes,,dalet:27 sap_s4:3 archtics:1 sap_sfsf:1 sfdc_crm:1,dalet
+broadcast,business,audience_engagement,audience_rating,transactional,audience_rating_id,53,yes,,dalet:4 adobe_aep:2,dalet
+broadcast,business,rights_licensing,rights_holder,master,rights_holder_id,38,yes,,,
+broadcast,business,rights_licensing,licensee,master,licensee_id,45,yes,,,
+sponsorship,business,deal_management,sponsor,master,sponsor_id,39,yes,,sfdc_crm:6 sap_s4:5 workday_ap:1,sfdc_crm
+sponsorship,business,deal_management,deal,master,deal_id,58,yes,,sap_s4:8 sfdc_crm:6 adobe_aep:6 workday_ap:3 archtics:2 dalet:1,sap_s4
+sponsorship,business,deal_management,deal_term,master,deal_term_id,57,yes,,sap_s4:20 sfdc_crm:7 dalet:1,sap_s4
+sponsorship,business,activation_performance,activation,master,activation_id,64,yes,,sfdc_crm:12 dalet:3 archtics:2 sap_s4:2,sfdc_crm
+sponsorship,business,activation_performance,activation_fulfillment,transactional,activation_fulfillment_id,47,yes,,sfdc_crm:21 dalet:4 sap_s4:3 archtics:2,sfdc_crm
+sponsorship,business,deal_management,naming_right,master,naming_right_id,58,yes,,sap_s4:12 sfdc_crm:8 workday_ap:5 archtics:2 dalet:2 adobe_aep:2,sap_s4
+sponsorship,business,inventory_allocation,ad_inventory,master,ad_inventory_id,48,yes,,sfdc_crm:13 archtics:2 adobe_aep:2 sap_s4:2 dalet:1 workday_ap:1,sfdc_crm
+sponsorship,business,inventory_allocation,inventory_allocation,transactional,inventory_allocation_id,49,yes,,sfdc_crm:19 sap_s4:10 dalet:4 archtics:2 adobe_aep:2,sfdc_crm
+sponsorship,business,activation_performance,performance_metric,transactional,performance_metric_id,55,yes,,sfdc_crm:6 adobe_aep:4 dalet:1,sfdc_crm
+sponsorship,business,deal_management,payment_schedule,master,payment_schedule_id,48,yes,,sap_s4:29 sfdc_crm:6 workday_ap:2,sap_s4
+sponsorship,business,inventory_allocation,property,master,property_id,45,yes,,,
+sponsorship,business,inventory_allocation,inventory_unit,master,inventory_unit_id,42,yes,,,
+merchandise,business,product_catalog,sku_catalog,master,sku_catalog_id,51,yes,,sap_s4:22 shopify:21 adobe_aep:1 workday_ap:1 archtics:1,sap_s4
+merchandise,business,product_catalog,inventory_position,master,inventory_position_id,52,yes,,sap_s4:37 shopify:23 workday_ap:2,sap_s4
+merchandise,business,product_catalog,retail_location,master,retail_location_id,46,yes,,sap_s4:18 shopify:11 archtics:2 adobe_aep:1 sap_sfsf:1,sap_s4
+merchandise,business,order_fulfillment,merch_order,transactional,merch_order_id,50,yes,,shopify:21 sap_s4:12 sfdc_crm:3 adobe_aep:3 archtics:1,shopify
+merchandise,business,order_fulfillment,order_line,transactional,order_line_id,45,yes,,shopify:33 sap_s4:29 archtics:1,shopify
+merchandise,business,supplier_licensing,licensing_agreement,master,licensing_agreement_id,54,yes,,sap_s4:6 shopify:1,sap_s4
+merchandise,business,supplier_licensing,royalty_payment,transactional,royalty_payment_id,51,yes,,sap_s4:10 shopify:2,sap_s4
+merchandise,business,order_fulfillment,fulfillment_shipment,transactional,fulfillment_shipment_id,54,yes,,shopify:28 sap_s4:10 sfdc_crm:1,shopify
+merchandise,business,order_fulfillment,return_request,transactional,return_request_id,50,yes,,sap_s4:35 shopify:31 sfdc_crm:3 archtics:1,sap_s4
+merchandise,business,product_catalog,price_list,master,price_list_id,48,yes,,sap_s4:32 shopify:18 adobe_aep:3 tm_axs:1 archtics:1 sfdc_crm:1,sap_s4
+merchandise,business,product_catalog,promotion,master,promotion_id,61,yes,,shopify:25 sap_s4:10 sfdc_crm:7 adobe_aep:5 workday_ap:1,shopify
+merchandise,business,supplier_licensing,supplier,master,supplier_id,41,yes,,sap_s4:30 shopify:3 sfdc_crm:1,sap_s4
+merchandise,business,product_catalog,product_category,master,product_category_id,36,yes,,shopify:1,shopify
+merchandise,business,supplier_licensing,supplier_category_authorization,associative,supplier_category_authorization_id,10,yes,,sap_s4:1 shopify:1,sap_s4
+content,operations,asset_management,asset,master,asset_id,55,yes,,dalet:32 adobe_aep:3,dalet
+content,operations,production_distribution,production_order,transactional,production_order_id,60,yes,,dalet:24 sap_s4:2 sfdc_crm:1,dalet
+content,operations,production_distribution,ingest_job,transactional,ingest_job_id,52,yes,,dalet:43 archtics:1,dalet
+content,operations,production_distribution,publish_event,transactional,publish_event_id,50,yes,,dalet:15 sfdc_crm:1 adobe_aep:1,dalet
+content,operations,asset_management,metadata_tag,master,metadata_tag_id,40,yes,,dalet:25 adobe_aep:12 sfdc_crm:1,dalet
+content,operations,asset_management,collection,master,collection_id,48,yes,,dalet:17 adobe_aep:6 sap_s4:2 sfdc_crm:1,dalet
+content,operations,production_distribution,license,master,license_id,61,yes,,sap_s4:18 dalet:11 sfdc_crm:1,sap_s4
+content,operations,production_distribution,editorial_brief,master,editorial_brief_id,55,yes,,dalet:22 adobe_aep:3 sap_s4:1 sfdc_crm:1,dalet
+content,operations,production_distribution,platform_channel,reference,platform_channel_id,45,yes,,dalet:15 adobe_aep:4,dalet
+content,operations,asset_management,category,master,category_id,37,yes,,dalet:1,dalet
+content,operations,asset_management,collection_item,associative,collection_item_id,7,yes,,,
+content,operations,asset_management,asset_tag,associative,asset_tag_id,9,yes,,,
+league,operations,league_structure,league,master,league_id,42,yes,,adobe_aep:1,adobe_aep
+league,operations,league_structure,conference,master,conference_id,44,yes,,sfdc_crm:2 adobe_aep:2 tm_axs:1 archtics:1 workday_ap:1 sap_s4:1,sfdc_crm
+league,operations,league_structure,division,master,division_id,40,yes,,sap_s4:2 adobe_aep:2 dalet:1 tm_axs:1 archtics:1 sfdc_crm:1 workday_ap:1 hudl:1,sap_s4
+league,operations,league_structure,franchise,master,franchise_id,43,yes,,sap_s4:5 adobe_aep:2 sfdc_crm:2 archtics:1 dalet:1 shopify:1 workday_ap:1,sap_s4
+league,operations,competitive_operations,season,master,season_id,42,yes,,tm_axs:1 adobe_aep:1 shopify:1,tm_axs
+league,operations,competitive_operations,league_schedule,transactional,league_schedule_id,40,no,No league competition-management system among the 10 named systems,tm_axs:6 adobe_aep:3 archtics:2 dalet:2 sap_s4:2 sfdc_crm:1,tm_axs
+league,operations,competitive_operations,standing,transactional,standing_id,46,no,No league competition-management system among the 10 named systems,,
+league,operations,competitive_operations,playoff_bracket,master,playoff_bracket_id,42,no,No league competition-management system among the 10 named systems,tm_axs:3 archtics:2 sap_s4:2 dalet:1 sfdc_crm:1,tm_axs
+league,operations,competitive_operations,game_result,transactional,game_result_id,47,no,No league competition-management system among the 10 named systems,hudl:1,hudl
+league,operations,competitive_operations,official,master,official_id,42,no,No league competition-management system among the 10 named systems,sap_sfsf:9 sfdc_crm:2,sap_sfsf
+league,operations,competitive_operations,disciplinary_action,transactional,disciplinary_action_id,51,no,No league competition-management system among the 10 named systems,sap_s4:5 sfdc_crm:1,sap_s4
+league,operations,roster_transactions,salary_cap,reference,salary_cap_id,47,no,No league competition-management system among the 10 named systems,sap_s4:1,sap_s4
+league,operations,roster_transactions,draft,master,draft_id,44,no,No league competition-management system among the 10 named systems,,
+league,operations,roster_transactions,draft_pick,transactional,draft_pick_id,39,no,No league competition-management system among the 10 named systems,dalet:1,dalet
+league,operations,roster_transactions,trade_transaction,transactional,trade_transaction_id,44,no,No league competition-management system among the 10 named systems,sap_s4:6 sfdc_crm:1,sap_s4
+league,operations,roster_transactions,transaction_window,,transaction_window_id,45,no,No league competition-management system among the 10 named systems,sap_s4:1 sfdc_crm:1,sap_s4
+league,operations,league_structure,team,master,team_id,38,yes,,,
+league,operations,competitive_operations,official_assignment,associative,official_assignment_id,8,no,No league competition-management system among the 10 named systems,,
+finance,corporate,accounting_structure,gl_account,master,gl_account_id,42,yes,,sap_s4:38 workday_ap:1,sap_s4
+finance,corporate,accounting_structure,cost_center,master,cost_center_id,38,yes,,sap_s4:34 workday_ap:4 sap_sfsf:1,sap_s4
+finance,corporate,accounting_structure,profit_center,master,profit_center_id,40,yes,,sap_s4:28 workday_ap:7 dalet:1 sap_sfsf:1,sap_s4
+finance,corporate,accounting_structure,company_code,master,company_code_id,41,yes,,sap_s4:35 workday_ap:1,sap_s4
+finance,corporate,transaction_processing,journal_entry,transactional,journal_entry_id,39,yes,,sap_s4:33 tm_axs:1 shopify:1 workday_ap:1,sap_s4
+finance,corporate,revenue_planning,budget,master,budget_id,40,yes,,sap_s4:26 workday_ap:20,sap_s4
+finance,corporate,transaction_processing,ar_invoice,transactional,ar_invoice_id,45,yes,,sap_s4:34 sfdc_crm:2,sap_s4
+finance,corporate,transaction_processing,ap_invoice,transactional,ap_invoice_id,47,yes,,sap_s4:37,sap_s4
+finance,corporate,transaction_processing,payment,transactional,payment_id,44,yes,,sap_s4:36,sap_s4
+finance,corporate,revenue_planning,fixed_asset,master,fixed_asset_id,44,yes,,workday_ap:2,workday_ap
+finance,corporate,revenue_planning,revenue_recognition_schedule,master,revenue_recognition_schedule_id,43,yes,,sap_s4:19 workday_ap:2,sap_s4
+finance,corporate,accounting_structure,fiscal_period,master,fiscal_period_id,31,yes,,,
+finance,corporate,transaction_processing,payment_run,master,payment_run_id,34,yes,,,
+finance,corporate,accounting_structure,ledger,master,ledger_id,30,yes,,sap_s4:1,sap_s4
+compliance,corporate,regulatory_obligations,regulatory_filing,master,regulatory_filing_id,48,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",,
+compliance,corporate,regulatory_obligations,governing_body,reference,governing_body_id,45,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",sfdc_crm:2 sap_s4:1,sfdc_crm
+compliance,corporate,regulatory_obligations,obligation,master,obligation_id,42,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",sap_s4:1 sfdc_crm:1,sap_s4
+compliance,corporate,regulatory_obligations,policy,master,policy_id,40,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",sap_sfsf:2 dalet:1,sap_sfsf
+compliance,corporate,audit_investigations,audit_engagement,transactional,audit_engagement_id,55,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",,
+compliance,corporate,audit_investigations,audit_finding,transactional,audit_finding_id,53,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",sap_s4:1 tm_axs:1 sfdc_crm:1 shopify:1,sap_s4
+compliance,corporate,athlete_integrity,doping_test,transactional,doping_test_id,47,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",,
+compliance,corporate,athlete_integrity,doping_violation,transactional,doping_violation_id,48,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",,
+compliance,corporate,athlete_integrity,whereabouts_filing,transactional,whereabouts_filing_id,44,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",,
+compliance,corporate,athlete_integrity,eligibility_certification,master,eligibility_certification_id,47,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",,
+compliance,corporate,audit_investigations,arbitration_case,transactional,arbitration_case_id,53,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",sap_s4:2,sap_s4
+compliance,corporate,data_privacy,privacy_request,transactional,privacy_request_id,48,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",adobe_aep:5 sfdc_crm:2,adobe_aep
+compliance,corporate,data_privacy,data_processing_record,master,data_processing_record_id,48,yes,,adobe_aep:4 tm_axs:3 sfdc_crm:3 sap_sfsf:2 shopify:1 hudl:1,adobe_aep
+compliance,corporate,audit_investigations,investigation,master,investigation_id,53,no,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",,
+gaming,business,wagering_operations,betting_market,master,betting_market_id,50,no,No sportsbook or DFS platform among the 10 named systems,,
+gaming,business,wagering_operations,odds_feed,transactional,odds_feed_id,48,no,No sportsbook or DFS platform among the 10 named systems,,
+gaming,business,wagering_operations,wager,transactional,wager_id,53,no,No sportsbook or DFS platform among the 10 named systems,,
+gaming,business,player_management,bettor_account,master,bettor_account_id,48,no,No sportsbook or DFS platform among the 10 named systems,sfdc_crm:2 adobe_aep:1,sfdc_crm
+gaming,business,wagering_operations,prop_bet,master,prop_bet_id,52,no,No sportsbook or DFS platform among the 10 named systems,,
+gaming,business,fantasy_contest,fantasy_league,master,fantasy_league_id,47,no,No sportsbook or DFS platform among the 10 named systems,adobe_aep:4 sap_s4:4 sfdc_crm:1,adobe_aep
+gaming,business,fantasy_contest,fantasy_roster,transactional,fantasy_roster_id,45,no,No sportsbook or DFS platform among the 10 named systems,adobe_aep:1,adobe_aep
+gaming,business,fantasy_contest,fantasy_team,master,fantasy_team_id,43,no,No sportsbook or DFS platform among the 10 named systems,,
+gaming,business,player_management,wallet,master,wallet_id,45,no,No sportsbook or DFS platform among the 10 named systems,,
+gaming,business,regulatory_compliance,jurisdiction,reference,jurisdiction_id,36,no,No sportsbook or DFS platform among the 10 named systems,sap_s4:2,sap_s4
+gaming,business,player_management,responsible_gaming_limit,master,responsible_gaming_limit_id,37,no,No sportsbook or DFS platform among the 10 named systems,adobe_aep:1,adobe_aep
+gaming,business,player_management,self_exclusion,transactional,self_exclusion_id,47,no,No sportsbook or DFS platform among the 10 named systems,sfdc_crm:1 adobe_aep:1,sfdc_crm
+gaming,business,regulatory_compliance,regulatory_report,master,regulatory_report_id,49,no,No sportsbook or DFS platform among the 10 named systems,sap_s4:1,sap_s4
+gaming,business,fantasy_contest,contest,master,contest_id,61,no,No sportsbook or DFS platform among the 10 named systems,,
+gaming,business,fantasy_contest,contest_entry,transactional,contest_entry_id,47,no,No sportsbook or DFS platform among the 10 named systems,sfdc_crm:1,sfdc_crm
+gaming,business,fantasy_contest,payout,transactional,payout_id,49,no,No sportsbook or DFS platform among the 10 named systems,,
+gaming,business,regulatory_compliance,operator,master,operator_id,45,no,No sportsbook or DFS platform among the 10 named systems,,
+gaming,business,wagering_operations,selection,master,selection_id,40,no,No sportsbook or DFS platform among the 10 named systems,,
+security,operations,access_control,credential,master,credential_id,48,yes,,tm_axs:7 archtics:4 sap_sfsf:3 sfdc_crm:1 dalet:1,tm_axs
+security,operations,access_control,access_zone,master,access_zone_id,47,yes,,tm_axs:10 archtics:7 dalet:1 sfdc_crm:1,tm_axs
+security,operations,access_control,credential_assignment,transactional,credential_assignment_id,47,yes,,sfdc_crm:1 tm_axs:1 archtics:1,sfdc_crm
+security,operations,access_control,access_event,transactional,access_event_id,43,yes,,tm_axs:3,tm_axs
+security,operations,venue_screening,screening_checkpoint,master,screening_checkpoint_id,43,yes,,archtics:4 tm_axs:2,archtics
+security,operations,venue_screening,screening_event,transactional,screening_event_id,43,yes,,tm_axs:2,tm_axs
+security,operations,venue_screening,security_incident,transactional,security_incident_id,52,yes,,tm_axs:4 sap_s4:2 archtics:2 sfdc_crm:1 adobe_aep:1,tm_axs
+security,operations,venue_screening,ejection_record,transactional,ejection_record_id,50,yes,,archtics:5 tm_axs:3 sfdc_crm:1,archtics
+security,operations,emergency_management,emergency_response_plan,master,emergency_response_plan_id,49,no,No emergency-management system among the 10 named systems,archtics:1,archtics
+security,operations,emergency_management,emergency_activation,transactional,emergency_activation_id,49,no,No emergency-management system among the 10 named systems,tm_axs:1,tm_axs
+security,operations,emergency_management,plan_zone_designation,associative,plan_zone_designation_id,11,no,No emergency-management system among the 10 named systems,,

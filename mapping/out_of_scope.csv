@@ -1,0 +1,48 @@
+mvm_domain,mvm_subdomain,mvm_table,mvm_type,mvm_attribute_count,reason,would_require
+venue,venue_operations,safety_inspection,transactional,52,No CMMS/EHS system among the 10 named systems,a CMMS or EHS system for inspection scheduling
+league,competitive_operations,league_schedule,transactional,40,No league competition-management system among the 10 named systems,"a league competition-management system (scheduling, standings, officiating, discipline)"
+league,competitive_operations,standing,transactional,46,No league competition-management system among the 10 named systems,"a league competition-management system (scheduling, standings, officiating, discipline)"
+league,competitive_operations,playoff_bracket,master,42,No league competition-management system among the 10 named systems,"a league competition-management system (scheduling, standings, officiating, discipline)"
+league,competitive_operations,game_result,transactional,47,No league competition-management system among the 10 named systems,"a league competition-management system (scheduling, standings, officiating, discipline)"
+league,competitive_operations,official,master,42,No league competition-management system among the 10 named systems,"a league competition-management system (scheduling, standings, officiating, discipline)"
+league,competitive_operations,disciplinary_action,transactional,51,No league competition-management system among the 10 named systems,"a league competition-management system (scheduling, standings, officiating, discipline)"
+league,roster_transactions,salary_cap,reference,47,No league competition-management system among the 10 named systems,"a league transaction system (draft, trades, salary cap administration)"
+league,roster_transactions,draft,master,44,No league competition-management system among the 10 named systems,"a league transaction system (draft, trades, salary cap administration)"
+league,roster_transactions,draft_pick,transactional,39,No league competition-management system among the 10 named systems,"a league transaction system (draft, trades, salary cap administration)"
+league,roster_transactions,trade_transaction,transactional,44,No league competition-management system among the 10 named systems,"a league transaction system (draft, trades, salary cap administration)"
+league,roster_transactions,transaction_window,,45,No league competition-management system among the 10 named systems,"a league transaction system (draft, trades, salary cap administration)"
+league,competitive_operations,official_assignment,associative,8,No league competition-management system among the 10 named systems,"a league competition-management system (scheduling, standings, officiating, discipline)"
+compliance,regulatory_obligations,regulatory_filing,master,48,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",a policy and regulatory-obligation register
+compliance,regulatory_obligations,governing_body,reference,45,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",a policy and regulatory-obligation register
+compliance,regulatory_obligations,obligation,master,42,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",a policy and regulatory-obligation register
+compliance,regulatory_obligations,policy,master,40,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",a policy and regulatory-obligation register
+compliance,audit_investigations,audit_engagement,transactional,55,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",a GRC or investigation case-management system
+compliance,audit_investigations,audit_finding,transactional,53,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",a GRC or investigation case-management system
+compliance,athlete_integrity,doping_test,transactional,47,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",WADA ADAMS (anti-doping test and whereabouts management)
+compliance,athlete_integrity,doping_violation,transactional,48,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",WADA ADAMS (anti-doping test and whereabouts management)
+compliance,athlete_integrity,whereabouts_filing,transactional,44,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",WADA ADAMS (anti-doping test and whereabouts management)
+compliance,athlete_integrity,eligibility_certification,master,47,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",WADA ADAMS (anti-doping test and whereabouts management)
+compliance,audit_investigations,arbitration_case,transactional,53,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",a GRC or investigation case-management system
+compliance,data_privacy,privacy_request,transactional,48,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",a DSAR / privacy request portal
+compliance,audit_investigations,investigation,master,53,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems",a GRC or investigation case-management system
+gaming,wagering_operations,betting_market,master,50,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,wagering_operations,odds_feed,transactional,48,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,wagering_operations,wager,transactional,53,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,player_management,bettor_account,master,48,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,wagering_operations,prop_bet,master,52,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,fantasy_contest,fantasy_league,master,47,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,fantasy_contest,fantasy_roster,transactional,45,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,fantasy_contest,fantasy_team,master,43,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,player_management,wallet,master,45,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,regulatory_compliance,jurisdiction,reference,36,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,player_management,responsible_gaming_limit,master,37,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,player_management,self_exclusion,transactional,47,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,regulatory_compliance,regulatory_report,master,49,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,fantasy_contest,contest,master,61,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,fantasy_contest,contest_entry,transactional,47,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,fantasy_contest,payout,transactional,49,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,regulatory_compliance,operator,master,45,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+gaming,wagering_operations,selection,master,40,No sportsbook or DFS platform among the 10 named systems,a sportsbook / wagering engine and a daily-fantasy contest platform
+security,emergency_management,emergency_response_plan,master,49,No emergency-management system among the 10 named systems,an emergency management / mass-notification system
+security,emergency_management,emergency_activation,transactional,49,No emergency-management system among the 10 named systems,an emergency management / mass-notification system
+security,emergency_management,plan_zone_designation,associative,11,No emergency-management system among the 10 named systems,an emergency management / mass-notification system

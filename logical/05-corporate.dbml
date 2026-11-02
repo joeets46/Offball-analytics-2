@@ -1,0 +1,565 @@
+// =========================================================================
+// Logical model -- Corporate
+//
+// Subject area 5 of 5. Upstream MVM domains: finance, compliance (partial).
+//
+// This file also holds the two supertypes the other four areas depend on:
+//
+//   party      -- a person or organisation. Fan, athlete, agent, official,
+//                 employee and counterparty are all subtypes, which is what
+//                 lets one human be two of them.
+//   agreement  -- a dated commitment between two parties with financial terms.
+//                 Playing contract, rights deal, sponsorship, licence and
+//                 suite lease are all subtypes -- and in the physical tier all
+//                 five genuinely come from one SAP table, which is the
+//                 evidence that the supertype is real.
+// =========================================================================
+
+Project corporate {
+  database_type: 'logical'
+}
+
+// -------------------------------------------------------------------------
+// Party -- the supertype the whole model leans on
+// -------------------------------------------------------------------------
+
+Table party {
+  party_id identifier [pk]
+  party_kind party_kind [not null, note: 'Discriminator: person | organisation']
+  display_name name [not null]
+  party_status party_status [not null]
+  created_on day [not null]
+  note: '''
+    A person or an organisation. Fan, athlete, agent, official, employee,
+    counterparty and supplier are all subtypes.
+
+    The reason this exists: the same human is often two of them -- an academy
+    coach who holds a season ticket, a retired athlete who becomes an agent.
+    The upstream model repeats name, address and contact structure across 7+
+    tables, so that person is several unrelated rows with no way to connect them.
+  '''
+}
+
+Table person {
+  party_id identifier [pk]
+  family_name name [not null]
+  given_name name
+  middle_name name
+  preferred_name name
+  date_of_birth day
+  gender gender
+  note: 'Subtype where party_kind = person. Identifying attributes only; everything role-specific lives on the role subtype.'
+}
+
+Table organisation {
+  party_id identifier [pk]
+  legal_name name [not null]
+  trading_name name
+  organisation_type organisation_type [not null]
+  registration_number code
+  tax_identifier code
+  industry_code code
+  website url
+  parent_party_id identifier [note: 'Corporate hierarchy: a brand under a holding company, a regional subsidiary under a global sponsor.']
+  note: 'Subtype where party_kind = organisation.'
+}
+
+Table party_role {
+  party_id identifier [pk]
+  party_role_kind party_role_kind [pk, note: 'fan | athlete | agent | official | employee | counterparty | supplier | licensor']
+  valid_from day [not null]
+  valid_to day
+  note: '''
+    Associative, and the key to the whole supertype. One party holds several
+    roles, concurrently or over time. Modelling roles as separate top-level
+    tables -- which is what the upstream model does -- makes that impossible
+    to state.
+  '''
+}
+
+Table address {
+  address_id identifier [pk]
+  address_line_1 name
+  address_line_2 name
+  locality name
+  administrative_area code
+  postal_code code
+  country_code country_code [not null]
+  note: 'Normalized out of every entity that had address columns inline. The upstream model repeats them across more than a dozen tables.'
+}
+
+Table party_address {
+  party_id identifier [pk]
+  address_purpose address_purpose [pk, note: 'home | mailing | billing | registered | temporary']
+  effective_from day [pk]
+  address_id identifier [not null]
+  effective_to day
+  note: 'Associative and effective-dated: people move, and the history matters for tax and registration.'
+}
+
+Table party_contact_point {
+  party_id identifier [pk]
+  contact_purpose contact_purpose [pk, note: 'business | personal | emergency | billing']
+  contact_kind contact_kind [pk, note: 'email | phone | mobile | social_handle']
+  contact_value name [not null]
+  is_verified boolean [not null]
+  note: 'Associative. Business and personal contact points are governed differently under most privacy regimes, which is why the purpose is part of the key.'
+}
+
+// -------------------------------------------------------------------------
+// Agreement -- the second supertype
+// -------------------------------------------------------------------------
+
+Table agreement {
+  agreement_id identifier [pk]
+  agreement_number code [not null, unique]
+  agreement_kind agreement_kind [not null, note: 'Discriminator: playing_contract | nil | media_rights | content_licence | merchandise_licence | naming_right | sponsorship | suite_lease | supply']
+  first_party_id identifier [not null]
+  second_party_id identifier [not null]
+  agreement_status agreement_status [not null]
+  starts_on day
+  ends_on day
+  term_months quantity
+  auto_renew boolean [not null]
+  notice_days quantity
+  total_value money
+  currency_code currency_code
+  executed_at instant
+  terminated_on day
+  termination_reason text
+  note: '''
+    A dated commitment between two parties with financial terms.
+
+    Nine kinds of agreement in the upstream model reach one SAP table (veda) in
+    the physical tier. That is not a modelling convenience -- it is what the
+    source system actually does, and it is the strongest evidence in the whole
+    project that this supertype is a real thing rather than an abstraction.
+  '''
+}
+
+Table agreement_term {
+  agreement_term_id identifier [pk]
+  agreement_id identifier [not null]
+  term_kind agreement_term_kind [not null]
+  description text [not null]
+  committed_quantity quantity
+  delivered_quantity quantity
+  unit_value money
+  starts_on day
+  ends_on day
+  note: 'What an agreement actually commits to. Target sponsorship.deal_term is this entity, narrowed to sponsorship.'
+}
+
+Table payment_schedule_line {
+  payment_schedule_line_id identifier [pk]
+  agreement_id identifier [not null]
+  instalment_number quantity [not null]
+  due_on day [not null]
+  amount money [not null]
+  currency_code currency_code [not null]
+  invoice_id identifier
+  schedule_status payment_schedule_status [not null]
+  indexes { (agreement_id, instalment_number) [unique] }
+  note: 'One entity for every kind of instalment plan, from a sponsorship fee to a naming-rights payment to a season-ticket direct debit.'
+}
+
+// -------------------------------------------------------------------------
+// Financial structure
+// -------------------------------------------------------------------------
+
+Table legal_entity {
+  legal_entity_id identifier [pk]
+  party_id identifier [not null, note: 'A legal entity is an organisation, so it is a party.']
+  entity_code code [not null, unique]
+  functional_currency currency_code [not null]
+  chart_of_accounts_id identifier [not null]
+  fiscal_calendar_id identifier [not null]
+  entity_role legal_entity_role [not null, note: 'operating | league | franchise | holding | venue_opco. Explicit because the upstream model uses company code to stand in for the league structure.']
+}
+
+Table chart_of_accounts {
+  chart_of_accounts_id identifier [pk]
+  chart_code code [not null, unique]
+  name name [not null]
+}
+
+Table account {
+  account_id identifier [pk]
+  chart_of_accounts_id identifier [not null]
+  account_number code [not null]
+  name name [not null]
+  account_class account_class [not null, note: 'revenue | expense | asset | liability | equity']
+  is_balance_sheet boolean [not null]
+  parent_account_id identifier
+  indexes { (chart_of_accounts_id, account_number) [unique] }
+  note: 'A classification of money. Recursive, because a chart of accounts rolls up.'
+}
+
+Table account_entity_settings {
+  account_id identifier [pk]
+  legal_entity_id identifier [pk]
+  account_currency currency_code [not null]
+  is_open_item_managed boolean [not null, note: 'Required for a clearing account, and the reason receivables and payables can be aged at all.']
+  is_posting_blocked boolean [not null]
+  note: '''
+    Associative. The same account can be open-item managed in one entity and
+    not another, which is why target finance.gl_account is only unique per
+    company code -- and why it needs a three-table join upstream.
+  '''
+}
+
+Table cost_centre {
+  cost_centre_id identifier [pk]
+  legal_entity_id identifier [not null]
+  centre_code code [not null]
+  name name [not null]
+  valid_from day [not null]
+  valid_to day [not null]
+  responsible_party_id identifier
+  indexes { (legal_entity_id, centre_code, valid_to) [unique] }
+  note: '''
+    Where money is spent. Effective-dated, with the validity date in the key:
+    a reorganisation creates a new row rather than updating the old one, and
+    the upstream model keeps only one row per centre.
+  '''
+}
+
+Table profit_centre {
+  profit_centre_id identifier [pk]
+  legal_entity_id identifier
+  centre_code code [not null]
+  name name [not null]
+  valid_from day [not null]
+  valid_to day [not null]
+  hierarchy_node code
+  franchise_id identifier [note: 'Set where a profit centre represents a club, which is how the upstream league structure is sourced.']
+  indexes { (centre_code, valid_to) [unique] }
+}
+
+Table fiscal_calendar {
+  fiscal_calendar_id identifier [pk]
+  calendar_code code [not null, unique]
+  name name [not null]
+  posting_periods_per_year quantity [not null]
+  special_periods_per_year quantity [not null]
+}
+
+Table financial_period {
+  financial_period_id identifier [pk]
+  fiscal_calendar_id identifier [not null]
+  fiscal_year quantity [not null]
+  period_number quantity [not null]
+  starts_on day [not null]
+  ends_on day [not null]
+  period_status period_status [not null, note: 'Open, closed or adjustment. The status is what blocks a posting at month end.']
+  indexes { (fiscal_calendar_id, fiscal_year, period_number) [unique] }
+}
+
+Table season_period_mapping {
+  season_id identifier [pk]
+  financial_period_id identifier [pk]
+  note: '''
+    Associative, and an honest admission. A sports season and a fiscal year are
+    different things that happen to both be annual; mapping one to the other is
+    the weakest join in the model, and making it explicit is better than
+    hiding it inside a shared key.
+  '''
+}
+
+Table ledger {
+  ledger_id identifier [pk]
+  ledger_code code [not null, unique]
+  name name [not null]
+  is_leading boolean [not null]
+  accounting_principle accounting_principle [not null, note: 'IFRS | US_GAAP | LOCAL | TAX | MGMT']
+  note: '''
+    Parallel ledgers. One document valued under two principles produces two
+    sets of lines; the upstream finance.journal_entry has a single ledger
+    column, so an IFRS and a local-GAAP view of the same posting arrive looking
+    like a duplicate.
+  '''
+}
+
+// -------------------------------------------------------------------------
+// Financial transactions
+// -------------------------------------------------------------------------
+
+Table financial_document {
+  financial_document_id identifier [pk]
+  legal_entity_id identifier [not null]
+  document_number code [not null]
+  fiscal_year quantity [not null]
+  document_type code [not null]
+  ledger_id identifier [not null]
+  document_day day [not null]
+  posting_day day [not null]
+  financial_period_id identifier [not null]
+  entered_at instant [not null]
+  entered_by_party_id identifier
+  document_currency currency_code [not null]
+  exchange_rate quantity
+  reverses_document_id identifier [note: 'A correction is a second, reversing document. Posted documents are immutable, which is the whole basis of auditability.']
+  source_system_code code
+  source_reference code [note: 'Traces a ledger entry back to the order that caused it -- the reconciliation path.']
+  indexes { (legal_entity_id, document_number, fiscal_year) [unique] }
+}
+
+Table financial_transaction {
+  financial_transaction_id identifier [pk]
+  financial_document_id identifier [not null]
+  line_number quantity [not null]
+  account_id identifier [not null]
+  signed_amount money [not null, note: 'Signed here, deliberately. The source system stores an unsigned amount with the direction in a separate character, and extracts that miss that produce a trial balance that does not net to zero.']
+  document_currency_amount money [not null]
+  group_currency_amount money
+  cost_centre_id identifier
+  profit_centre_id identifier
+  counterparty_party_id identifier
+  product_id identifier
+  venue_id identifier
+  event_id identifier [note: 'Event-level profitability is the point of carrying this: a fixture is the primary profit-generating unit.']
+  tax_code code
+  clearing_document_id identifier
+  cleared_on day
+  due_on day
+  line_text text
+  indexes { (financial_document_id, line_number) [unique] }
+}
+
+Table invoice {
+  invoice_id identifier [pk]
+  invoice_number code [not null, unique]
+  legal_entity_id identifier [not null]
+  counterparty_party_id identifier [not null]
+  direction invoice_direction [not null, note: 'receivable | payable. One entity for both, because an invoice is a claim for money in either direction.']
+  invoice_day day [not null]
+  due_on day
+  net_amount money [not null]
+  tax_amount money [not null]
+  currency_code currency_code [not null]
+  invoice_status invoice_status [not null]
+  financial_document_id identifier [note: 'Null until released to accounting, which is a standing month-end worklist.']
+  agreement_id identifier
+  sales_order_id identifier
+  approval_status approval_status [note: 'Set for payables: a three-way-match variance holds an invoice back from payment.']
+}
+
+Table settlement {
+  settlement_id identifier [pk]
+  settlement_reference code [not null]
+  legal_entity_id identifier [not null]
+  counterparty_party_id identifier [not null]
+  settlement_run_id identifier
+  direction invoice_direction [not null]
+  amount money [not null]
+  currency_code currency_code [not null]
+  settled_on day [not null]
+  payment_method code [not null]
+  financial_document_id identifier
+  note: 'Money actually moving. Separate from invoice because one settlement clears several invoices and one invoice may be settled in parts.'
+}
+
+Table settlement_run {
+  settlement_run_id identifier [pk]
+  run_reference code [not null, unique]
+  legal_entity_id identifier [not null]
+  run_day day [not null]
+  is_proposal boolean [not null, note: 'A proposal is not a payment. Reporting that ignores this overstates cash out.']
+  total_amount money [not null]
+}
+
+Table settlement_allocation {
+  settlement_id identifier [pk]
+  invoice_id identifier [pk]
+  allocated_amount money [not null]
+  discount_taken money [not null]
+  note: 'Associative, resolving the many-to-many between settlements and invoices that partial payment creates.'
+}
+
+Table fixed_asset {
+  fixed_asset_id identifier [pk]
+  legal_entity_id identifier [not null]
+  asset_number code [not null]
+  sub_number code [not null]
+  name name [not null]
+  asset_class_code code [not null]
+  capitalised_on day
+  deactivated_on day
+  cost_centre_id identifier
+  venue_id identifier [note: 'Venue infrastructure is the bulk of a sports organisation asset base, so this is what connects finance to the building.']
+  indexes { (legal_entity_id, asset_number, sub_number) [unique] }
+}
+
+Table fixed_asset_valuation {
+  fixed_asset_id identifier [pk]
+  fiscal_year quantity [pk]
+  depreciation_area code [pk]
+  acquisition_value money [not null]
+  accumulated_depreciation money [not null]
+  planned_depreciation money [not null]
+  note: 'Associative. Several depreciation areas mean several valuations of one asset; the upstream finance.fixed_asset keeps one.'
+}
+
+// -------------------------------------------------------------------------
+// Planning
+// -------------------------------------------------------------------------
+
+Table plan_version {
+  plan_version_id identifier [pk]
+  version_code code [not null, unique]
+  name name [not null]
+  version_kind plan_version_kind [not null, note: 'actual | budget | forecast | scenario | baseline']
+  is_plan_of_record boolean [not null, note: 'Exactly one per model. Loading a scenario as though it were the approved budget is a materially wrong answer, not a rounding difference.']
+  parent_version_id identifier
+  approved_at instant
+  approved_by_party_id identifier
+  note: '''
+    The version dimension, and the thing the upstream model loses entirely.
+    finance.budget has one amount column, so an approved budget and a what-if
+    arrive indistinguishable.
+  '''
+}
+
+Table budget_line {
+  budget_line_id identifier [pk]
+  plan_version_id identifier [not null]
+  account_id identifier [not null]
+  financial_period_id identifier [not null]
+  cost_centre_id identifier
+  profit_centre_id identifier
+  event_id identifier
+  amount money [not null]
+  is_calculated boolean [not null, note: 'A calculated cell is formula output, not a plan. Loading it as a planned figure double counts against its inputs.']
+  indexes { (plan_version_id, account_id, financial_period_id, cost_centre_id, profit_centre_id, event_id) [unique] }
+}
+
+Table plan_driver {
+  plan_driver_id identifier [pk]
+  plan_version_id identifier [not null]
+  driver_code code [not null]
+  name name [not null]
+  driver_kind driver_kind [not null]
+  target_account_id identifier
+  driver_basis code [note: 'Attendance, average ticket yield, home fixtures, rights instalments.']
+  note: '''
+    The calculation behind a planned number. No upstream counterpart, so a
+    budget arrives in the lakehouse as a figure with no explanation: "why is
+    matchday revenue up 12%" is answerable here and nowhere downstream.
+  '''
+}
+
+// -------------------------------------------------------------------------
+// Data governance
+// -------------------------------------------------------------------------
+
+Table processing_record {
+  processing_record_id identifier [pk]
+  record_code code [not null, unique]
+  processing_purpose name [not null]
+  data_category data_category [not null]
+  lawful_basis lawful_basis [not null]
+  controller_legal_entity_id identifier [not null]
+  retention_months quantity
+  cross_border_transfer boolean [not null]
+  note: '''
+    What personal data is used for, and on what basis. The only compliance
+    entity in scope: the rest of the upstream compliance domain needs a GRC
+    system, a DSAR portal or WADA ADAMS, none of which is a named source.
+  '''
+}
+
+Table processing_record_consent_purpose {
+  processing_record_id identifier [pk]
+  consent_purpose_id identifier [pk]
+  note: 'Associative. A processing activity relying on consent has to name which consent, or the lawful basis is unprovable.'
+}
+
+Table data_subject_request {
+  data_subject_request_id identifier [pk]
+  request_reference code [not null, unique]
+  party_id identifier
+  request_kind dsr_kind [not null, note: 'access | erasure | rectification | portability | objection']
+  regulation jurisdiction [not null]
+  submitted_at instant [not null]
+  statutory_due_on day [not null, note: 'The statutory clock. Missing it is the breach.']
+  completed_at instant
+  request_status dsr_status [not null]
+  note: '''
+    Modeled here for completeness, but note the scope boundary: no named source
+    system is a DSAR intake portal, so in the physical tier only the execution
+    side exists (adobe_aep.privacy_job) and the intake does not.
+  '''
+}
+
+// -------------------------------------------------------------------------
+// Relationships
+// -------------------------------------------------------------------------
+
+Ref: person.party_id - party.party_id
+Ref: organisation.party_id - party.party_id
+Ref: organisation.parent_party_id > party.party_id
+Ref: party_role.party_id > party.party_id
+Ref: party_address.party_id > party.party_id
+Ref: party_address.address_id > address.address_id
+Ref: party_contact_point.party_id > party.party_id
+
+Ref: agreement.first_party_id > party.party_id
+Ref: agreement.second_party_id > party.party_id
+Ref: agreement_term.agreement_id > agreement.agreement_id
+Ref: payment_schedule_line.agreement_id > agreement.agreement_id
+Ref: payment_schedule_line.invoice_id > invoice.invoice_id
+
+Ref: legal_entity.party_id > party.party_id
+Ref: legal_entity.chart_of_accounts_id > chart_of_accounts.chart_of_accounts_id
+Ref: legal_entity.fiscal_calendar_id > fiscal_calendar.fiscal_calendar_id
+Ref: account.chart_of_accounts_id > chart_of_accounts.chart_of_accounts_id
+Ref: account.parent_account_id > account.account_id
+Ref: account_entity_settings.account_id > account.account_id
+Ref: account_entity_settings.legal_entity_id > legal_entity.legal_entity_id
+Ref: cost_centre.legal_entity_id > legal_entity.legal_entity_id
+Ref: cost_centre.responsible_party_id > party.party_id
+Ref: profit_centre.legal_entity_id > legal_entity.legal_entity_id
+Ref: financial_period.fiscal_calendar_id > fiscal_calendar.fiscal_calendar_id
+Ref: season_period_mapping.financial_period_id > financial_period.financial_period_id
+
+Ref: financial_document.legal_entity_id > legal_entity.legal_entity_id
+Ref: financial_document.ledger_id > ledger.ledger_id
+Ref: financial_document.financial_period_id > financial_period.financial_period_id
+Ref: financial_document.reverses_document_id > financial_document.financial_document_id
+Ref: financial_document.entered_by_party_id > party.party_id
+Ref: financial_transaction.financial_document_id > financial_document.financial_document_id
+Ref: financial_transaction.account_id > account.account_id
+Ref: financial_transaction.cost_centre_id > cost_centre.cost_centre_id
+Ref: financial_transaction.profit_centre_id > profit_centre.profit_centre_id
+Ref: financial_transaction.counterparty_party_id > party.party_id
+Ref: financial_transaction.clearing_document_id > financial_document.financial_document_id
+
+Ref: invoice.legal_entity_id > legal_entity.legal_entity_id
+Ref: invoice.counterparty_party_id > party.party_id
+Ref: invoice.financial_document_id > financial_document.financial_document_id
+Ref: invoice.agreement_id > agreement.agreement_id
+Ref: settlement.legal_entity_id > legal_entity.legal_entity_id
+Ref: settlement.counterparty_party_id > party.party_id
+Ref: settlement.settlement_run_id > settlement_run.settlement_run_id
+Ref: settlement.financial_document_id > financial_document.financial_document_id
+Ref: settlement_run.legal_entity_id > legal_entity.legal_entity_id
+Ref: settlement_allocation.settlement_id > settlement.settlement_id
+Ref: settlement_allocation.invoice_id > invoice.invoice_id
+
+Ref: fixed_asset.legal_entity_id > legal_entity.legal_entity_id
+Ref: fixed_asset.cost_centre_id > cost_centre.cost_centre_id
+Ref: fixed_asset_valuation.fixed_asset_id > fixed_asset.fixed_asset_id
+
+Ref: plan_version.parent_version_id > plan_version.plan_version_id
+Ref: plan_version.approved_by_party_id > party.party_id
+Ref: budget_line.plan_version_id > plan_version.plan_version_id
+Ref: budget_line.account_id > account.account_id
+Ref: budget_line.financial_period_id > financial_period.financial_period_id
+Ref: budget_line.cost_centre_id > cost_centre.cost_centre_id
+Ref: budget_line.profit_centre_id > profit_centre.profit_centre_id
+Ref: plan_driver.plan_version_id > plan_version.plan_version_id
+Ref: plan_driver.target_account_id > account.account_id
+
+Ref: processing_record.controller_legal_entity_id > legal_entity.legal_entity_id
+Ref: processing_record_consent_purpose.processing_record_id > processing_record.processing_record_id
+Ref: data_subject_request.party_id > party.party_id

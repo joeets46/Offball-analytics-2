@@ -1,0 +1,154 @@
+mvm_table,total_columns,pii_columns,strictest_classification,needs_pii_satellite,pii_column_names
+athlete.injury_record,49,22,restricted,yes,actual_rtp_date body_part body_side concussion_protocol_triggered days_lost_actual days_lost_estimated expected_rtp_date icd10_code injury_date injury_description injury_mechanism injury_type is_recurrence is_wada_reportable medical_staff_notes reported_date rtp_clearance_stage severity_grade surgery_date surgery_required treatment_protocol tue_reference
+broadcast.rights_holder,38,13,restricted,yes,bank_account_name bank_account_number bank_routing_number bank_swift_code headquarters_address_line1 headquarters_address_line2 headquarters_city headquarters_postal_code headquarters_state_province primary_contact_email primary_contact_name primary_contact_phone tax_identification_number
+fan.fan_profile,42,11,restricted,yes,aep_profile_reference birth_date communication_opt_in_email country_of_residence_code crm_contact_reference display_name email first_name last_name phone postal_code
+fan.payment_method,45,10,restricted,yes,bank_account_last_four billing_address_line1 billing_address_line2 billing_city billing_postal_code billing_state_province card_last_four cardholder_name gift_card_balance token_value
+ticketing.ticket_payment,48,10,restricted,yes,card_expiry_month card_expiry_year discount_amount gross_amount masked_card_reference net_amount processor_transaction_token refund_amount service_fee_amount tax_amount
+athlete.agency,43,9,restricted,yes,compliance_officer_email headquarters_address_line1 headquarters_address_line2 headquarters_city headquarters_postal_code headquarters_state_province primary_contact_email primary_contact_phone tax_identification_number
+athlete.agent,42,9,restricted,yes,full_name office_address_line1 office_address_line2 office_city office_postal_code office_state_province primary_email primary_phone tax_identification_number
+broadcast.licensee,45,9,restricted,yes,business_address_line1 business_address_line2 business_city business_postal_code business_state_province primary_contact_email primary_contact_name primary_contact_phone tax_identification_number
+fan.account,45,9,restricted,yes,fan_profile_id card_last_four crm_account_number marketing_email_opt_in_flag membership_number pci_payment_token primary_email primary_phone username
+merchandise.merch_order,50,9,confidential,yes,discount_amount gross_amount ip_address net_total payment_reference shipping_amount shipping_country_code shipping_postal_code tax_amount
+merchandise.retail_location,46,9,restricted,yes,address_line_1 address_line_2 city contact_email contact_phone latitude longitude postal_code state_province
+finance.ar_invoice,45,8,confidential,yes,amount_paid deferred_revenue_amount discount_amount gross_amount local_currency_amount net_amount tax_amount write_off_amount
+ticketing.ticket_order_line,46,8,confidential,yes,discount_amount dynamic_price face_value facility_fee line_total resale_original_price service_fee tax_amount
+athlete.athlete_profile,38,7,restricted,yes,country_of_birth_code date_of_birth legal_first_name legal_last_name legal_middle_name nationality_code preferred_name
+merchandise.fulfillment_shipment,54,7,restricted,yes,recipient_email recipient_name recipient_phone shipping_address_line1 shipping_address_line2 shipping_city shipping_postal_code
+merchandise.supplier,41,7,restricted,yes,address_line1 bank_account_ref city postal_code primary_contact_email primary_contact_phone sap_vendor_account_number
+ticketing.ticket_order,55,7,restricted,yes,discount_amount face_value_amount order_total_amount payment_reference refund_amount service_fee_amount tax_amount
+finance.payment,44,6,restricted,yes,discount_amount gross_amount local_currency_amount net_amount swift_reference withholding_tax_amount
+venue.concession_stand,46,6,restricted,yes,geo_latitude geo_longitude health_inspection_score health_inspection_status last_health_inspection_date next_health_inspection_date
+venue.facility,39,6,restricted,yes,address_line1 address_line2 home_tenant_name latitude longitude postal_code
+venue.venue,45,6,restricted,yes,address_line1 address_line2 home_tenant_name latitude longitude postal_code
+merchandise.return_request,50,5,restricted,yes,customer_email net_refund_amount refund_amount restocking_fee unit_price
+security.credential,48,5,restricted,yes,biometric_linked biometric_type emergency_contact_name emergency_contact_phone photo_url
+ticketing.refund,49,5,confidential,yes,gross_refund_amount net_refund_amount payment_transaction_ref service_fee_refund_amount tax_refund_amount
+athlete.salary_cap_entry,48,4,restricted,yes,salary_cap_entry_id primary_salary_athlete_athlete_profile_id primary_salary_franchise_id salary_cap_id
+fan.membership,66,4,confidential,yes,discount_amount fee membership_number net_fee
+fan.consent_preference,41,3,restricted,yes,primary_consent_fan_profile_id tertiary_consent_parental_guardian_fan_profile_id ip_address
+finance.company_code,41,3,confidential,yes,city postal_code street_address
+finance.gl_account,42,3,restricted,yes,account_number alternative_account_number house_bank_account
+league.league,42,3,restricted,yes,gender_category salary_cap_currency_code salary_cap_enabled
+security.ejection_record,50,3,restricted,yes,ejected_party_id_number ejected_party_name medical_assistance_required_flag
+security.security_incident,52,3,restricted,yes,involved_party_id_number involved_party_name medical_referral_required
+ticketing.group_sale,51,3,restricted,yes,coordinator_email coordinator_name coordinator_phone
+ticketing.ticket_transfer,44,3,restricted,yes,recipient_display_name recipient_email recipient_phone
+venue.parking_lot,48,3,restricted,yes,address_line1 latitude longitude
+venue.suite,51,3,restricted,yes,primary_contact_email primary_contact_name primary_contact_phone
+athlete.agent_relationship,43,2,confidential,yes,primary_contact_email primary_contact_phone
+athlete.draft_selection,45,2,restricted,yes,athlete_nationality medical_clearance_status
+athlete.free_agency_status,47,2,restricted,yes,compensation_tier draft_pick_compensation_flag
+fan.loyalty_transaction,47,2,confidential,yes,monetary_value redemption_value
+league.division,40,2,restricted,yes,salary_cap_applicable salary_cap_currency
+league.season,42,2,restricted,yes,salary_cap_currency salary_cap_year_flag
+security.access_event,43,2,restricted,yes,biometric_verified_flag reader_device_code
+security.credential_assignment,47,2,restricted,yes,holder_id_number holder_photo_url
+ticketing.gate_scan,41,2,restricted,yes,device_code is_mobile_ticket
+venue.event_day_ops,43,2,restricted,yes,medical_staff_count medical_station_ready
+athlete.eligibility_status,41,1,confidential,yes,visa_permit_number
+athlete.roster,46,1,confidential,yes,nationality_code
+broadcast.audience_rating,53,1,confidential,yes,demo_gender
+broadcast.streaming_subscription,50,1,confidential,yes,device_code
+content.ingest_job,52,1,confidential,yes,source_device_identifier
+event.bracket,45,1,confidential,yes,gender_category
+event.competition_round,48,1,confidential,yes,gender_category
+event.participant,49,1,confidential,yes,nationality_country
+event.tournament,52,1,confidential,yes,gender_category
+fan.engagement_event,57,1,confidential,yes,ip_address
+fan.loyalty_enrollment,50,1,confidential,yes,membership_card_number
+fan.service_case,58,1,confidential,yes,refund_amount
+league.conference,44,1,restricted,yes,salary_cap_applicable
+league.franchise,43,1,restricted,yes,salary_cap_currency_code
+league.team,38,1,restricted,yes,salary_cap_currency
+merchandise.sku_catalog,51,1,confidential,yes,gender_target
+ticketing.access_entitlement,55,1,confidential,yes,face_value_amount
+ticketing.price_zone,35,1,restricted,yes,mobile_entry_enabled
+ticketing.resale,55,1,confidential,yes,payment_reference
+ticketing.season_ticket_account,46,1,restricted,yes,account_number
+athlete.contract,49,0,confidential,,
+athlete.nil_agreement,57,0,confidential,,
+athlete.performance_stat,53,0,,,
+athlete.suspension_record,56,0,confidential,,
+broadcast.blackout_rule,50,0,confidential,,
+broadcast.broadcast_schedule,49,0,confidential,,
+broadcast.channel,49,0,confidential,,
+broadcast.live_feed,47,0,,,
+broadcast.media_asset,48,0,,,
+broadcast.media_rights_deal,48,0,confidential,,
+broadcast.production,51,0,confidential,,
+broadcast.rights_window,45,0,confidential,,
+compliance.data_processing_record,48,0,,,
+content.asset,55,0,,,
+content.asset_tag,9,0,,,
+content.category,37,0,,,
+content.collection,48,0,confidential,,
+content.collection_item,7,0,,,
+content.editorial_brief,55,0,,,
+content.license,61,0,confidential,,
+content.metadata_tag,40,0,,,
+content.platform_channel,45,0,confidential,,
+content.production_order,60,0,confidential,,
+content.publish_event,50,0,,,
+event.broadcast_window,55,0,confidential,,
+event.calendar,41,0,,,
+event.event_incident,50,0,confidential,,
+event.fixture,52,0,,,
+event.match_result,47,0,,,
+event.officiating_assignment,40,0,confidential,,
+event.production_schedule,48,0,,,
+event.scoring_event,43,0,,,
+event.type,32,0,,,
+event.venue_assignment,45,0,confidential,,
+fan.campaign,43,0,confidential,,
+fan.club,52,0,confidential,,
+fan.club_membership,10,0,,,
+fan.communication,51,0,,,
+fan.loyalty_program,56,0,confidential,,
+fan.segment,46,0,,,
+fan.segment_assignment,39,0,,,
+finance.ap_invoice,47,0,confidential,,
+finance.budget,40,0,confidential,,
+finance.cost_center,38,0,confidential,,
+finance.fiscal_period,31,0,,,
+finance.fixed_asset,44,0,confidential,,
+finance.journal_entry,39,0,confidential,,
+finance.ledger,30,0,,,
+finance.payment_run,34,0,internal,,
+finance.profit_center,40,0,confidential,,
+finance.revenue_recognition_schedule,43,0,confidential,,
+merchandise.inventory_position,52,0,confidential,,
+merchandise.licensing_agreement,54,0,confidential,,
+merchandise.order_line,45,0,confidential,,
+merchandise.price_list,48,0,confidential,,
+merchandise.product_category,36,0,confidential,,
+merchandise.promotion,61,0,confidential,,
+merchandise.royalty_payment,51,0,confidential,,
+merchandise.supplier_category_authorization,10,0,,,
+security.access_zone,47,0,,,
+security.screening_checkpoint,43,0,,,
+security.screening_event,43,0,,,
+sponsorship.activation,64,0,confidential,,
+sponsorship.activation_fulfillment,47,0,confidential,,
+sponsorship.ad_inventory,48,0,confidential,,
+sponsorship.deal,58,0,confidential,,
+sponsorship.deal_term,57,0,confidential,,
+sponsorship.inventory_allocation,49,0,confidential,,
+sponsorship.inventory_unit,42,0,,,
+sponsorship.naming_right,58,0,confidential,,
+sponsorship.payment_schedule,48,0,confidential,,
+sponsorship.performance_metric,55,0,confidential,,
+sponsorship.property,45,0,confidential,,
+sponsorship.sponsor,39,0,confidential,,
+ticketing.hold_allocation,48,0,confidential,,
+ticketing.price_tier,47,0,confidential,,
+ticketing.season_ticket_package,54,0,confidential,,
+ticketing.ticket_inventory,50,0,confidential,,
+venue.accessibility_feature,49,0,confidential,,
+venue.capacity_config,47,0,,,
+venue.config_section_allocation,8,0,,,
+venue.maintenance_work_order,54,0,confidential,,
+venue.parking_activation,9,0,,,
+venue.safety_incident,53,0,confidential,,
+venue.seat,42,0,,,
+venue.seating_section,45,0,,,
+venue.staff_plan,47,0,confidential,,

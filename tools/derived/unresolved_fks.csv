@@ -1,0 +1,214 @@
+mvm_domain,mvm_table,column_name,fk_to,target_domain,target_table,reason
+event,fixture,league_schedule_id,league.league_schedule.league_schedule_id,league,league_schedule,No league competition-management system among the 10 named systems
+event,calendar,calendar_governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,calendar,calendar_scheduling_authority_governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,calendar,compliance_obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,tournament,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,tournament,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,bracket,playoff_bracket_id,league.playoff_bracket.playoff_bracket_id,league,playoff_bracket,No league competition-management system among the 10 named systems
+event,match_result,playoff_bracket_id,league.playoff_bracket.playoff_bracket_id,league,playoff_bracket,No league competition-management system among the 10 named systems
+event,match_result,primary_match_official_id,league.official.official_id,league,official,No league competition-management system among the 10 named systems
+event,production_schedule,emergency_response_plan_id,security.emergency_response_plan.emergency_response_plan_id,security,emergency_response_plan,No emergency-management system among the 10 named systems
+event,production_schedule,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,participant,eligibility_certification_id,compliance.eligibility_certification.eligibility_certification_id,compliance,eligibility_certification,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,participant,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,officiating_assignment,eligibility_certification_id,compliance.eligibility_certification.eligibility_certification_id,compliance,eligibility_certification,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,officiating_assignment,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,officiating_assignment,primary_officiating_official_id,league.official.official_id,league,official,No league competition-management system among the 10 named systems
+event,event_incident,disciplinary_action_id,league.disciplinary_action.disciplinary_action_id,league,disciplinary_action,No league competition-management system among the 10 named systems
+event,event_incident,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,event_incident,official_id,league.official.official_id,league,official,No league competition-management system among the 10 named systems
+event,event_incident,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,venue_assignment,emergency_response_plan_id,security.emergency_response_plan.emergency_response_plan_id,security,emergency_response_plan,No emergency-management system among the 10 named systems
+event,venue_assignment,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,competition_round,playoff_bracket_id,league.playoff_bracket.playoff_bracket_id,league,playoff_bracket,No league competition-management system among the 10 named systems
+event,broadcast_window,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+event,type,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,facility,jurisdiction_id,gaming.jurisdiction.jurisdiction_id,gaming,jurisdiction,No sportsbook or DFS platform among the 10 named systems
+venue,capacity_config,obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,capacity_config,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,parking_lot,obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,maintenance_work_order,audit_finding_id,compliance.audit_finding.audit_finding_id,compliance,audit_finding,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,maintenance_work_order,compliance_obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,maintenance_work_order,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,maintenance_work_order,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,maintenance_work_order,triggering_safety_inspection_id,venue.safety_inspection.safety_inspection_id,venue,safety_inspection,No CMMS/EHS system among the 10 named systems
+venue,safety_incident,emergency_response_plan_id,security.emergency_response_plan.emergency_response_plan_id,security,emergency_response_plan,No emergency-management system among the 10 named systems
+venue,safety_incident,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,safety_incident,obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,event_day_ops,emergency_response_plan_id,security.emergency_response_plan.emergency_response_plan_id,security,emergency_response_plan,No emergency-management system among the 10 named systems
+venue,event_day_ops,obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,concession_stand,obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,accessibility_feature,compliance_obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,staff_plan,emergency_response_plan_id,security.emergency_response_plan.emergency_response_plan_id,security,emergency_response_plan,No emergency-management system among the 10 named systems
+venue,staff_plan,obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+venue,staff_plan,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,roster,eligibility_certification_id,compliance.eligibility_certification.eligibility_certification_id,compliance,eligibility_certification,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,roster,transaction_window_id,league.transaction_window.transaction_window_id,league,transaction_window,No league competition-management system among the 10 named systems
+athlete,contract,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,contract,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,contract,transaction_window_id,league.transaction_window.transaction_window_id,league,transaction_window,No league competition-management system among the 10 named systems
+athlete,performance_stat,game_result_id,league.game_result.game_result_id,league,game_result,No league competition-management system among the 10 named systems
+athlete,injury_record,game_result_id,league.game_result.game_result_id,league,game_result,No league competition-management system among the 10 named systems
+athlete,injury_record,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,draft_selection,draft_pick_id,league.draft_pick.draft_pick_id,league,draft_pick,No league competition-management system among the 10 named systems
+athlete,draft_selection,eligibility_certification_id,compliance.eligibility_certification.eligibility_certification_id,compliance,eligibility_certification,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,draft_selection,primary_draft_class_draft_id,league.draft.draft_id,league,draft,No league competition-management system among the 10 named systems
+athlete,eligibility_status,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,nil_agreement,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,nil_agreement,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,nil_agreement,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,agent_relationship,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,agent_relationship,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,suspension_record,disciplinary_action_id,league.disciplinary_action.disciplinary_action_id,league,disciplinary_action,No league competition-management system among the 10 named systems
+athlete,suspension_record,doping_violation_id,compliance.doping_violation.doping_violation_id,compliance,doping_violation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,suspension_record,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,suspension_record,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,suspension_record,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,salary_cap_entry,salary_cap_id,league.salary_cap.salary_cap_id,league,salary_cap,No league competition-management system among the 10 named systems
+athlete,free_agency_status,compensatory_draft_pick_id,league.draft_pick.draft_pick_id,league,draft_pick,No league competition-management system among the 10 named systems
+athlete,free_agency_status,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,free_agency_status,transaction_window_id,league.transaction_window.transaction_window_id,league,transaction_window,No league competition-management system among the 10 named systems
+athlete,agent,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+athlete,agency,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+fan,loyalty_program,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+fan,loyalty_enrollment,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+fan,loyalty_transaction,contest_id,gaming.contest.contest_id,gaming,contest,No sportsbook or DFS platform among the 10 named systems
+fan,loyalty_transaction,wager_id,gaming.wager.wager_id,gaming,wager,No sportsbook or DFS platform among the 10 named systems
+fan,membership,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+fan,segment,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+fan,consent_preference,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+fan,engagement_event,contest_id,gaming.contest.contest_id,gaming,contest,No sportsbook or DFS platform among the 10 named systems
+fan,engagement_event,game_result_id,league.game_result.game_result_id,league,game_result,No league competition-management system among the 10 named systems
+fan,communication,bettor_account_id,gaming.bettor_account.bettor_account_id,gaming,bettor_account,No sportsbook or DFS platform among the 10 named systems
+fan,communication,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+fan,service_case,bettor_account_id,gaming.bettor_account.bettor_account_id,gaming,bettor_account,No sportsbook or DFS platform among the 10 named systems
+fan,service_case,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+fan,service_case,official_id,league.official.official_id,league,official,No league competition-management system among the 10 named systems
+fan,payment_method,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+fan,club,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+fan,campaign,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+ticketing,ticket_inventory,league_schedule_id,league.league_schedule.league_schedule_id,league,league_schedule,No league competition-management system among the 10 named systems
+ticketing,group_sale,league_schedule_id,league.league_schedule.league_schedule_id,league,league_schedule,No league competition-management system among the 10 named systems
+ticketing,resale,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+ticketing,resale,obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+ticketing,resale,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+ticketing,refund,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+ticketing,hold_allocation,league_schedule_id,league.league_schedule.league_schedule_id,league,league_schedule,No league competition-management system among the 10 named systems
+broadcast,media_rights_deal,compliance_obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,broadcast_schedule,league_schedule_id,league.league_schedule.league_schedule_id,league,league_schedule,No league competition-management system among the 10 named systems
+broadcast,broadcast_schedule,playoff_bracket_id,league.playoff_bracket.playoff_bracket_id,league,playoff_bracket,No league competition-management system among the 10 named systems
+broadcast,broadcast_schedule,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,broadcast_schedule,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,channel,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,channel,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,channel,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,blackout_rule,obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,blackout_rule,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,live_feed,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,streaming_subscription,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,media_asset,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,rights_window,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,rights_window,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,production,emergency_response_plan_id,security.emergency_response_plan.emergency_response_plan_id,security,emergency_response_plan,No emergency-management system among the 10 named systems
+broadcast,production,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,production,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,rights_holder,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+broadcast,licensee,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,sponsor,operator_id,gaming.operator.operator_id,gaming,operator,No sportsbook or DFS platform among the 10 named systems
+sponsorship,deal,compliance_obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,deal,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,deal,jurisdiction_id,gaming.jurisdiction.jurisdiction_id,gaming,jurisdiction,No sportsbook or DFS platform among the 10 named systems
+sponsorship,deal,operator_id,gaming.operator.operator_id,gaming,operator,No sportsbook or DFS platform among the 10 named systems
+sponsorship,deal,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,deal_term,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,deal_term,jurisdiction_id,gaming.jurisdiction.jurisdiction_id,gaming,jurisdiction,No sportsbook or DFS platform among the 10 named systems
+sponsorship,deal_term,operator_id,gaming.operator.operator_id,gaming,operator,No sportsbook or DFS platform among the 10 named systems
+sponsorship,deal_term,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,deal_term,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,activation,betting_market_id,gaming.betting_market.betting_market_id,gaming,betting_market,No sportsbook or DFS platform among the 10 named systems
+sponsorship,activation,contest_id,gaming.contest.contest_id,gaming,contest,No sportsbook or DFS platform among the 10 named systems
+sponsorship,activation,operator_id,gaming.operator.operator_id,gaming,operator,No sportsbook or DFS platform among the 10 named systems
+sponsorship,activation,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,activation,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,activation_fulfillment,contest_id,gaming.contest.contest_id,gaming,contest,No sportsbook or DFS platform among the 10 named systems
+sponsorship,activation_fulfillment,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,naming_right,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,naming_right,jurisdiction_id,gaming.jurisdiction.jurisdiction_id,gaming,jurisdiction,No sportsbook or DFS platform among the 10 named systems
+sponsorship,naming_right,operator_id,gaming.operator.operator_id,gaming,operator,No sportsbook or DFS platform among the 10 named systems
+sponsorship,naming_right,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,ad_inventory,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,ad_inventory,jurisdiction_id,gaming.jurisdiction.jurisdiction_id,gaming,jurisdiction,No sportsbook or DFS platform among the 10 named systems
+sponsorship,ad_inventory,operator_id,gaming.operator.operator_id,gaming,operator,No sportsbook or DFS platform among the 10 named systems
+sponsorship,ad_inventory,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,inventory_allocation,operator_id,gaming.operator.operator_id,gaming,operator,No sportsbook or DFS platform among the 10 named systems
+sponsorship,performance_metric,audit_engagement_id,compliance.audit_engagement.audit_engagement_id,compliance,audit_engagement,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,performance_metric,betting_market_id,gaming.betting_market.betting_market_id,gaming,betting_market,No sportsbook or DFS platform among the 10 named systems
+sponsorship,performance_metric,contest_id,gaming.contest.contest_id,gaming,contest,No sportsbook or DFS platform among the 10 named systems
+sponsorship,payment_schedule,operator_id,gaming.operator.operator_id,gaming,operator,No sportsbook or DFS platform among the 10 named systems
+sponsorship,payment_schedule,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,property,jurisdiction_id,gaming.jurisdiction.jurisdiction_id,gaming,jurisdiction,No sportsbook or DFS platform among the 10 named systems
+sponsorship,property,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+sponsorship,inventory_unit,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,sku_catalog,brand_compliance_policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,inventory_position,brand_compliance_policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,retail_location,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,licensing_agreement,compliance_obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,licensing_agreement,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,licensing_agreement,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,licensing_agreement,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,royalty_payment,audit_engagement_id,compliance.audit_engagement.audit_engagement_id,compliance,audit_engagement,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,royalty_payment,compliance_obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,royalty_payment,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,royalty_payment,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,fulfillment_shipment,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,return_request,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,promotion,compliance_obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,promotion,contest_id,gaming.contest.contest_id,gaming,contest,No sportsbook or DFS platform among the 10 named systems
+merchandise,promotion,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,supplier,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+merchandise,product_category,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+content,asset,draft_id,league.draft.draft_id,league,draft,No league competition-management system among the 10 named systems
+content,asset,game_result_id,league.game_result.game_result_id,league,game_result,No league competition-management system among the 10 named systems
+content,asset,governing_policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+content,asset,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+content,asset,playoff_bracket_id,league.playoff_bracket.playoff_bracket_id,league,playoff_bracket,No league competition-management system among the 10 named systems
+content,production_order,compliance_policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+content,production_order,contest_id,gaming.contest.contest_id,gaming,contest,No sportsbook or DFS platform among the 10 named systems
+content,production_order,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+content,production_order,playoff_bracket_id,league.playoff_bracket.playoff_bracket_id,league,playoff_bracket,No league competition-management system among the 10 named systems
+content,ingest_job,game_result_id,league.game_result.game_result_id,league,game_result,No league competition-management system among the 10 named systems
+content,ingest_job,playoff_bracket_id,league.playoff_bracket.playoff_bracket_id,league,playoff_bracket,No league competition-management system among the 10 named systems
+content,publish_event,betting_market_id,gaming.betting_market.betting_market_id,gaming,betting_market,No sportsbook or DFS platform among the 10 named systems
+content,publish_event,contest_id,gaming.contest.contest_id,gaming,contest,No sportsbook or DFS platform among the 10 named systems
+content,publish_event,emergency_activation_id,security.emergency_activation.emergency_activation_id,security,emergency_activation,No emergency-management system among the 10 named systems
+content,publish_event,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+content,publish_event,playoff_bracket_id,league.playoff_bracket.playoff_bracket_id,league,playoff_bracket,No league competition-management system among the 10 named systems
+content,metadata_tag,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+content,collection,playoff_bracket_id,league.playoff_bracket.playoff_bracket_id,league,playoff_bracket,No league competition-management system among the 10 named systems
+content,license,gaming_operator_id,gaming.operator.operator_id,gaming,operator,No sportsbook or DFS platform among the 10 named systems
+content,license,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+content,editorial_brief,compliance_policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+content,editorial_brief,contest_id,gaming.contest.contest_id,gaming,contest,No sportsbook or DFS platform among the 10 named systems
+content,editorial_brief,disciplinary_action_id,league.disciplinary_action.disciplinary_action_id,league,disciplinary_action,No league competition-management system among the 10 named systems
+content,editorial_brief,trade_transaction_id,league.trade_transaction.trade_transaction_id,league,trade_transaction,No league competition-management system among the 10 named systems
+content,platform_channel,broadcast_policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+content,platform_channel,operator_id,gaming.operator.operator_id,gaming,operator,No sportsbook or DFS platform among the 10 named systems
+content,platform_channel,regulatory_filing_id,compliance.regulatory_filing.regulatory_filing_id,compliance,regulatory_filing,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+content,category,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+league,league,primary_governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+league,conference,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+league,season,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+compliance,data_processing_record,compliance_obligation_id,compliance.obligation.obligation_id,compliance,obligation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+compliance,data_processing_record,governing_body_id,compliance.governing_body.governing_body_id,compliance,governing_body,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+compliance,data_processing_record,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+security,credential,eligibility_certification_id,compliance.eligibility_certification.eligibility_certification_id,compliance,eligibility_certification,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+security,credential,official_id,league.official.official_id,league,official,No league competition-management system among the 10 named systems
+security,credential_assignment,league_schedule_id,league.league_schedule.league_schedule_id,league,league_schedule,No league competition-management system among the 10 named systems
+security,screening_event,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+security,security_incident,game_result_id,league.game_result.game_result_id,league,game_result,No league competition-management system among the 10 named systems
+security,security_incident,league_schedule_id,league.league_schedule.league_schedule_id,league,league_schedule,No league competition-management system among the 10 named systems
+security,ejection_record,ejecting_official_id,league.official.official_id,league,official,No league competition-management system among the 10 named systems
+security,ejection_record,game_result_id,league.game_result.game_result_id,league,game_result,No league competition-management system among the 10 named systems
+security,ejection_record,investigation_id,compliance.investigation.investigation_id,compliance,investigation,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"
+security,ejection_record,policy_id,compliance.policy.policy_id,compliance,policy,"No WADA ADAMS, GRC/policy register, or DSAR portal among the 10 named systems"

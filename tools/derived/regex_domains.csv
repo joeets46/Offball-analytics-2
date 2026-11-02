@@ -1,0 +1,165 @@
+domain_type,pattern,used_by_columns,used_by_tables,used_in
+dom_iso3_code,^[A-Z]{3}$,139,91,athlete.athlete_profile athlete.contract athlete.draft_selection athlete.eligibility_status athlete.free_agency_status athlete.injury_record athlete.nil_agreement athlete.roster athlete.salary_cap_entry athlete.suspension_record broadcast.audience_rating broadcast.broadcast_schedule
+dom_controlling_area,^[A-Z0-9]{4}$,13,3,finance.company_code finance.gl_account finance.journal_entry
+dom_email,"^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$",10,10,athlete.agent_relationship fan.account fan.fan_profile merchandise.fulfillment_shipment merchandise.retail_location merchandise.return_request merchandise.supplier ticketing.group_sale ticketing.ticket_transfer venue.suite
+dom_url,^https?://[^\s/$.?#].[^\s]*$,9,7,content.platform_channel fan.club league.conference league.franchise league.league merchandise.supplier sponsorship.sponsor
+dom_language_code,"^[a-z]{2,3}(-[A-Z]{2})?$",8,7,broadcast.broadcast_schedule broadcast.channel broadcast.live_feed broadcast.media_asset broadcast.production content.collection content.platform_channel
+dom_language_code_2,^[a-z]{2}(-[A-Z]{2})?$,7,7,content.metadata_tag content.production_order fan.club fan.communication fan.consent_preference fan.fan_profile sponsorship.sponsor
+dom_fixture_code,"^[A-Z0-9_-]{3,30}$",6,6,broadcast.blackout_rule broadcast.live_feed event.bracket event.fixture merchandise.promotion venue.capacity_config
+dom_source_system_code,"^[A-Z0-9_]{2,20}$",6,6,broadcast.blackout_rule broadcast.rights_window league.conference security.credential ticketing.hold_allocation ticketing.price_tier
+dom_ob_unit_code,"^[A-Z0-9_-]{2,20}$",6,4,broadcast.live_feed finance.cost_center league.division security.access_zone
+dom_color_code,^#[0-9A-Fa-f]{6}$,5,5,league.division merchandise.sku_catalog security.access_zone security.credential venue.seat
+dom_state_province,"^[A-Z]{2,3}$",5,5,athlete.agent_relationship broadcast.blackout_rule broadcast.streaming_subscription finance.company_code venue.parking_lot
+dom_department_code,"^[A-Z0-9_-]{1,10}$",5,1,finance.profit_center
+dom_version,^v\d+\.\d+$,4,4,event.calendar security.screening_checkpoint ticketing.season_ticket_package ticketing.ticket_transfer
+dom_result_reference_code,"^[A-Z0-9\-]{4,30}$",4,4,broadcast.rights_window event.match_result event.participant security.screening_checkpoint
+dom_channel_code,"^[A-Z0-9_-]{2,30}$",4,4,broadcast.channel content.platform_channel event.broadcast_window event.competition_round
+dom_section_code,"^[A-Z0-9\-]{1,20}$",4,4,security.screening_checkpoint venue.parking_lot venue.seat venue.seating_section
+dom_sap_fi_document_number,^[0-9]{10}$,4,4,finance.ap_invoice finance.journal_entry merchandise.supplier sponsorship.payment_schedule
+dom_sap_changed_by,"^[A-Z0-9_]{1,12}$",4,2,finance.cost_center finance.profit_center
+dom_document_number_range,^[A-Z0-9]{2}$,4,2,finance.company_code finance.journal_entry
+dom_url_2,^https?://.+,3,2,content.asset event.tournament
+dom_alternate_commentary_language_code,"^[a-z]{2,3}$",3,2,broadcast.rights_window event.broadcast_window
+dom_hvac_zone_code,"^[A-Z0-9\-]{1,15}$",3,2,venue.parking_lot venue.seating_section
+dom_lot_code,"^[A-Z0-9\-]{2,20}$",3,2,merchandise.inventory_position venue.parking_lot
+dom_feature_code,"^[A-Z0-9\-]{3,20}$",3,3,athlete.roster ticketing.season_ticket_package venue.accessibility_feature
+dom_card_last_four,^[0-9]{4}$,3,2,fan.account fan.payment_method
+dom_club_code,"^[A-Z0-9_-]{3,20}$",3,3,fan.club league.season merchandise.retail_location
+dom_order_number,"^[A-Z0-9\-]{6,30}$",3,3,merchandise.sku_catalog ticketing.resale ticketing.ticket_order
+dom_coordinator_phone,"^\+?[0-9\s\-().]{7,20}$",3,3,merchandise.supplier security.credential ticketing.group_sale
+dom_sport_code,"^[A-Z]{2,10}$",3,3,content.metadata_tag league.conference league.league
+dom_account_number,"^[0-9]{6,10}$",3,3,finance.company_code finance.gl_account finance.revenue_recognition_schedule
+dom_crm_contact_reference,"^[A-Z0-9]{10,20}$",2,2,event.participant fan.loyalty_enrollment
+dom_reference_number,^INC-[0-9]{4}-[0-9]{6}$,2,2,event.event_incident venue.safety_incident
+dom_row_label_end,"^[A-Z0-9]{1,5}$",2,1,venue.seating_section
+dom_floor_plan_version,^v[0-9]+\.[0-9]+$,2,2,venue.capacity_config venue.event_day_ops
+dom_stand_code,"^[A-Z0-9]{2,20}$",2,2,security.screening_checkpoint venue.concession_stand
+dom_case_number,^INJ-[0-9]{4}-[0-9]{6}$,2,2,athlete.injury_record content.ingest_job
+dom_exclusivity_territory,"^[A-Z]{3}(,[A-Z]{3})*$",2,2,athlete.nil_agreement merchandise.promotion
+dom_primary_contact_phone,"^\+?[1-9]\d{1,14}$",2,2,athlete.agent_relationship fan.fan_profile
+dom_language,"^[a-z]{2,3}(-[A-Z]{2,3})?$",2,2,content.asset fan.account
+dom_primary_phone,"^\+?[1-9]\d{6,14}$",2,2,fan.account ticketing.ticket_transfer
+dom_new_entitlement_token,"^[A-Za-z0-9\-_]{10,64}$",2,1,ticketing.resale
+dom_parental_rating,TV-G|TV-PG|TV-14|TV-MA|NR,2,2,broadcast.channel broadcast.media_asset
+dom_shopify_inventory_item_code,"^[0-9]{8,20}$",2,1,merchandise.inventory_position
+dom_sku_code,"^[A-Z0-9\-]{3,30}$",2,2,merchandise.inventory_position merchandise.order_line
+dom_operating_hours_weekday,^([01]\d|2[0-3]):[0-5]\d-([01]\d|2[0-3]):[0-5]\d$,2,1,merchandise.retail_location
+dom_league_code,"^[A-Z0-9]{2,10}$",2,2,league.division league.league
+dom_activity_type_code,"^[A-Z0-9_-]{1,16}$",2,1,finance.cost_center
+dom_controlling_area_code,"^[A-Z0-9]{1,4}$",2,2,finance.cost_center finance.profit_center
+dom_cost_center_category,"^[A-Z0-9]{1,2}$",2,2,finance.cost_center finance.profit_center
+dom_department_code_2,"^[A-Z0-9_-]{2,16}$",2,1,finance.cost_center
+dom_short_name,"^.{1,20}$",2,2,finance.cost_center finance.profit_center
+dom_hierarchy_node_code,"^[A-Z0-9_-]{1,20}$",2,1,finance.profit_center
+dom_iso2_code,^[A-Z]{2}$,2,2,finance.ar_invoice finance.company_code
+dom_posting_key,^[0-9]{2}$,2,1,finance.journal_entry
+dom_iana_timezone,^[A-Za-z]+/[A-Za-z_]+$,1,1,event.fixture
+dom_social_media_hashtag,^#[A-Za-z0-9_]+$,1,1,event.tournament
+dom_schedule_reference_code,"^PS-[A-Z0-9]{4,12}-[0-9]{4}$",1,1,event.production_schedule
+dom_accreditation_code,"^[A-Z0-9]{4,20}$",1,1,event.participant
+dom_uniform_color_code,"^[A-Z]{3,10}$",1,1,event.participant
+dom_assignment_reference_number,"^[A-Z]{2,6}-OFF-[0-9]{4}-[0-9]{6}$",1,1,event.officiating_assignment
+dom_assignment_code,"^EVA-[A-Z0-9]{4,12}$",1,1,event.venue_assignment
+dom_window_reference_code,"^[A-Z0-9_-]{3,40}$",1,1,event.broadcast_window
+dom_archtics_section_code,"^[A-Z0-9\-]{1,30}$",1,1,venue.seating_section
+dom_entry_gate_code,"^[A-Z0-9\-]{1,10}$",1,1,venue.seating_section
+dom_notification_number,"^QM[0-9]{8,12}$",1,1,venue.maintenance_work_order
+dom_work_order_number,"^WO-[0-9]{8,12}$",1,1,venue.maintenance_work_order
+dom_ops_reference_number,^EDO-[0-9]{4}-[0-9]{6}$,1,1,venue.event_day_ops
+dom_asset_tag,"^[A-Z0-9\-]{4,25}$",1,1,venue.accessibility_feature
+dom_plan_reference_number,"^VSP-[A-Z0-9]{4,12}$",1,1,venue.staff_plan
+dom_venue_code,"^[A-Z0-9]{3,12}$",1,1,venue.venue
+dom_url_3,^https?://.+$,1,1,athlete.athlete_profile
+dom_social_handle,"^@[A-Za-z0-9_.]{1,50}$",1,1,athlete.athlete_profile
+dom_social_handle_2,"^@[A-Za-z0-9_]{1,50}$",1,1,athlete.athlete_profile
+dom_icd10_code,"^[A-Z][0-9]{2}(\.[A-Z0-9]{1,4})?$",1,1,athlete.injury_record
+dom_selection_code,"^[A-Z]{2,5}-[0-9]{4}-R[0-9]{1,2}-P[0-9]{1,3}$",1,1,athlete.draft_selection
+dom_agreement_number,^NIL-[0-9]{4}-[0-9]{6}$,1,1,athlete.nil_agreement
+dom_relationship_number,^AR-[0-9]{8}$,1,1,athlete.agent_relationship
+dom_fa_reference_number,"^FA-[A-Z]{2,5}-[0-9]{4}-[0-9]{6}$",1,1,athlete.free_agency_status
+dom_crm_account_number,"^[A-Z0-9]{6,20}$",1,1,fan.account
+dom_membership_number,"^[A-Z0-9]{8,16}$",1,1,fan.account
+dom_pci_payment_token,"^[A-Za-z0-9\-_]{16,64}$",1,1,fan.account
+dom_username,"^[a-zA-Z0-9._\-]{3,50}$",1,1,fan.account
+dom_currency_symbol,"^.{1,10}$",1,1,fan.loyalty_program
+dom_program_code,"^[A-Z0-9_]{3,30}$",1,1,fan.loyalty_program
+dom_enrollment_number,"^LYL-[A-Z0-9]{8,16}$",1,1,fan.loyalty_enrollment
+dom_transaction_reference_number,^LT-[0-9]{10}$,1,1,fan.loyalty_transaction
+dom_membership_number_2,"^[A-Z0-9\-]{6,20}$",1,1,fan.membership
+dom_segment_code,"^[A-Z0-9_-]{3,50}$",1,1,fan.segment
+dom_consent_version,^[0-9]+\.[0-9]+(\.[0-9]+)?$,1,1,fan.consent_preference
+dom_app_version,^\d+\.\d+\.\d+$,1,1,fan.engagement_event
+dom_geo_region_code,"^[A-Z]{2}-[A-Z0-9]{1,3}$",1,1,fan.engagement_event
+dom_case_number_2,^CAS-[0-9]{8}$,1,1,fan.service_case
+dom_bin_number,"^[0-9]{6,8}$",1,1,fan.payment_method
+dom_wallet_provider,Apple Pay|Google Pay|PayPal|Samsung Pay|Venmo|Other,1,1,fan.payment_method
+dom_barcode,"^[A-Z0-9]{8,32}$",1,1,ticketing.ticket_order_line
+dom_sap_material_number,"^[A-Z0-9]{1,18}$",1,1,ticketing.season_ticket_package
+dom_account_number_2,"^STH-[A-Z0-9]{6,12}$",1,1,ticketing.season_ticket_account
+dom_sale_number,^GRP-[0-9]{4}-[0-9]{6}$,1,1,ticketing.group_sale
+dom_masked_card_reference,"^[*X]{8,12}[0-9]{4}$",1,1,ticketing.ticket_payment
+dom_refund_number,^RFD-[0-9]{10}$,1,1,ticketing.refund
+dom_voucher_code,^VCH-[A-Z0-9]{12}$,1,1,ticketing.refund
+dom_transfer_reference_number,"^TXF-[A-Z0-9]{10,16}$",1,1,ticketing.ticket_transfer
+dom_rating_classification,TV-G|TV-PG|TV-14|TV-MA|TV-Y|TV-Y7,1,1,broadcast.broadcast_schedule
+dom_audio_format,stereo|5.1|7.1|Dolby_Atmos|mono,1,1,broadcast.channel
+dom_encoding_standard,H.264|H.265|AV1|MPEG-2|VP9,1,1,broadcast.channel
+dom_aspect_ratio,16:9|4:3|21:9|1:1,1,1,broadcast.live_feed
+dom_audio_format_2,stereo|5.1_surround|7.1_surround|mono|dolby_atmos,1,1,broadcast.live_feed
+dom_encoding_format,H.264|H.265|AV1|MPEG-2|JPEG2000|ProRes,1,1,broadcast.live_feed
+dom_hdr_format,none|HDR10|HDR10+|HLG|Dolby_Vision,1,1,broadcast.live_feed
+dom_redundancy_config,none|1+1|2+1|n+1|full_mesh,1,1,broadcast.live_feed
+dom_subscription_number,"^SUB-[A-Z0-9]{8,16}$",1,1,broadcast.streaming_subscription
+dom_aspect_ratio_2,16:9|4:3|21:9|1:1|9:16,1,1,broadcast.media_asset
+dom_checksum,^[a-fA-F0-9]{64}$,1,1,broadcast.media_asset
+dom_production_code,"^PRD-[A-Z0-9]{4,12}$",1,1,broadcast.production
+dom_demo_age_band,18-24|25-34|35-44|45-54|55-64|65+,1,1,broadcast.audience_rating
+dom_measurement_methodology,Panel|Census|Hybrid|Modeled|Self-Reported,1,1,broadcast.audience_rating
+dom_measurement_reference_code,"^[A-Z0-9_-]{4,50}$",1,1,broadcast.audience_rating
+dom_measurement_source,Nielsen|BARB|OzTAM|Comscore|Internal Streaming Analytics|Other,1,1,broadcast.audience_rating
+dom_reporting_period_type,Live|Live+1|Live+3|Live+7|Live+35|VOD,1,1,broadcast.audience_rating
+dom_naics_code,^[0-9]{6}$,1,1,sponsorship.sponsor
+dom_stock_ticker,"^[A-Z]{1,5}$",1,1,sponsorship.sponsor
+dom_term_reference_number,"^[A-Z]{2,6}-DT-[0-9]{4,10}$",1,1,sponsorship.deal_term
+dom_activation_code,"^ACT-[A-Z0-9]{4,12}$",1,1,sponsorship.activation
+dom_fulfillment_reference_number,^ACT-FUL-[0-9]{8}-[A-Z0-9]{4}$,1,1,sponsorship.activation_fulfillment
+dom_asset_code,"^[A-Z]{2,6}-[A-Z0-9]{3,10}-[0-9]{4,8}$",1,1,sponsorship.ad_inventory
+dom_metric_reference_code,^PM-[0-9]{8}-[A-Z0-9]{4}$,1,1,sponsorship.performance_metric
+dom_forecast_period,^[0-9]{4}-Q[1-4]$,1,1,sponsorship.payment_schedule
+dom_schedule_number,^PS-[0-9]{4}-[0-9]{6}$,1,1,sponsorship.payment_schedule
+dom_barcode_2,"^[0-9]{8,14}$",1,1,merchandise.sku_catalog
+dom_harmonized_tariff_code,"^[0-9]{4}(\.[0-9]{2}){0,3}$",1,1,merchandise.sku_catalog
+dom_size_code,"^[A-Z0-9\-\/]{1,10}$",1,1,merchandise.sku_catalog
+dom_order_number_2,"^ORD-[A-Z0-9]{8,20}$",1,1,merchandise.merch_order
+dom_payment_reference_number,^RPY-[0-9]{4}-[0-9]{6}$,1,1,merchandise.royalty_payment
+dom_rma_number,"^RMA-[0-9]{8,12}$",1,1,merchandise.return_request
+dom_geographic_scope,^[A-Z]{3}(\|[A-Z]{3})*$,1,1,merchandise.price_list
+dom_price_list_code,"^PL-[A-Z0-9]{4,20}$",1,1,merchandise.price_list
+dom_supplier_code,"^SUP-[A-Z0-9]{4,12}$",1,1,merchandise.supplier
+dom_aspect_ratio_3,16:9|4:3|1:1|9:16|21:9,1,1,content.asset
+dom_aspect_ratio_4,16:9|9:16|1:1|4:3|4:5|21:9,1,1,content.production_order
+dom_cdn_delivery_url,^https://[a-zA-Z0-9._/-]+$,1,1,content.production_order
+dom_order_number_3,^PO-[0-9]{4}-[0-9]{6}$,1,1,content.production_order
+dom_checksum_algorithm,MD5|SHA-1|SHA-256|SHA-512|xxHash,1,1,content.ingest_job
+dom_tag_code,"^[A-Z0-9_]{2,50}$",1,1,content.metadata_tag
+dom_dam_collection_code,"^COL-[A-Z0-9]{6,20}$",1,1,content.collection
+dom_slug,^[a-z0-9]+(?:-[a-z0-9]+)*$,1,1,content.collection
+dom_license_number,"^LIC-[A-Z]{2,6}-[0-9]{4}-[0-9]{6}$",1,1,content.license
+dom_brief_reference_code,"^EB-[A-Z]{2,6}-[0-9]{4}-[0-9]{5}$",1,1,content.editorial_brief
+dom_language_code_3,^[a-z]{2}-[A-Z]{2}$,1,1,content.editorial_brief
+dom_abbreviation,"^[A-Z]{2,5}$",1,1,league.franchise
+dom_field_status_group,^[A-Z][0-9]{3}$,1,1,finance.gl_account
+dom_sort_key,^[0-9]{3}$,1,1,finance.gl_account
+dom_legal_entity_identifier,^[A-Z0-9]{20}$,1,1,finance.company_code
+dom_functional_area,"^[A-Z0-9]{4,16}$",1,1,finance.journal_entry
+dom_dispute_reason_code,"^[A-Z0-9]{2,6}$",1,1,finance.ar_invoice
+dom_invoice_number,"^[A-Z]{2,4}-[0-9]{8,12}$",1,1,finance.ar_invoice
+dom_payment_terms_code,"^[A-Z0-9]{2,4}$",1,1,finance.ar_invoice
+dom_schedule_number_2,^RRS-[0-9]{4}-[0-9]{6}$,1,1,finance.revenue_recognition_schedule
+dom_processing_activity_reference,"^RoPA-[A-Z]{2,10}-[0-9]{4,8}$",1,1,compliance.data_processing_record
+dom_credential_number,"^CRED-[A-Z]{2,6}-[0-9]{6,10}$",1,1,security.credential
+dom_evacuation_route_code,"^[A-Z0-9_-]{1,15}$",1,1,security.access_zone
+dom_assignment_number,^CA-[0-9]{4}-[0-9]{6}$,1,1,security.credential_assignment
+dom_screening_reference_number,^SCR-[0-9]{4}-[0-9]{8}-[A-Z0-9]{6}$,1,1,security.screening_event
+dom_reference_number_2,^SEC-[0-9]{4}-[0-9]{6}$,1,1,security.security_incident
+dom_ejection_reference_number,^EJ-[0-9]{4}-[0-9]{6}$,1,1,security.ejection_record

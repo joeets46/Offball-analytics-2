@@ -1,0 +1,638 @@
+// =========================================================================
+// Logical model -- Commerce & Fan
+//
+// Subject area 3 of 5. Upstream MVM domains: ticketing, fan, merchandise.
+//
+// The defining choice here is that `sales_order` is ONE supertype. A ticket
+// order, a merchandise order, a subscription and a season-ticket renewal are
+// the same conceptual act. The upstream model has four separate order tables
+// because four separate systems produce them -- a source-system distinction
+// promoted into the business model, and the reason fan lifetime value needs a
+// union downstream instead of a sum.
+// =========================================================================
+
+Project commerce_fan {
+  database_type: 'logical'
+}
+
+// -------------------------------------------------------------------------
+// Fan identity
+//
+// `fan` is a subtype of `party` (05-corporate.dbml), which is what lets the
+// same human be a fan, an employee and a season-ticket holder without being
+// three unrelated records.
+// -------------------------------------------------------------------------
+
+Table fan {
+  fan_id identifier [pk]
+  party_id identifier [not null]
+  first_seen_on day [not null]
+  lifecycle_stage fan_lifecycle_stage [not null, note: 'prospect | first_time | returning | regular | lapsed | reactivated']
+  note: 'A person who follows, attends or buys. Identity lives on party; this holds the following relationship.'
+}
+
+Table fan_account {
+  fan_account_id identifier [pk]
+  account_number code [not null, unique]
+  account_type fan_account_type [not null, note: 'individual | household | corporate | group | reseller']
+  account_status account_status [not null]
+  opened_on day [not null]
+  closed_on day
+  merged_into_account_id identifier [note: 'Soft merge: a duplicate points at its survivor so historical orders keep resolving.']
+  note: '''
+    A commercial relationship, not a person. One household account covers four
+    fans; one fan holds accounts in three systems. Conflating fan and account
+    is the commonest cause of double-counted supporters.
+  '''
+}
+
+Table fan_account_member {
+  fan_account_id identifier [pk]
+  fan_id identifier [pk]
+  member_role account_member_role [not null, note: 'primary | authorised | beneficiary']
+  added_on day [not null]
+  removed_on day
+  note: 'Associative, and the entity that resolves the account-to-fan cardinality in both directions. No upstream equivalent.'
+}
+
+Table membership {
+  membership_id identifier [pk]
+  fan_account_id identifier [not null]
+  membership_product_id identifier [not null]
+  season_id identifier
+  membership_status membership_status [not null]
+  starts_on day [not null]
+  ends_on day
+  tenure_start_season_year quantity [note: 'Drives relocation and renewal priority, the most contested logic in season-ticket administration.']
+  consecutive_seasons quantity [not null]
+  priority_score quantity [not null]
+  note: '''
+    A continuing, paid entitlement: a season ticket, a supporters club, a
+    loyalty tier. One entity, because all three are "a paid, dated,
+    renewable relationship with benefits".
+  '''
+}
+
+Table membership_product {
+  membership_product_id identifier [pk]
+  product_id identifier [not null]
+  membership_kind membership_kind [not null]
+  included_event_count quantity
+  includes_playoffs boolean [not null]
+  includes_parking boolean [not null]
+  note: 'Subtype of product. What a membership entitles the holder to.'
+}
+
+Table membership_seat {
+  membership_id identifier [pk]
+  seat_id identifier [pk]
+  season_id identifier [pk]
+  assigned_price money [not null]
+  seat_licence_id identifier [note: 'A personal seat licence, which is a property right separable from the membership.']
+  note: '''
+    Associative. A corporate holder with twelve seats across two plans is
+    twelve rows. The upstream ticketing.season_ticket_account flattens this
+    onto one row, which cannot represent seats held across two plans.
+  '''
+}
+
+Table seat_licence {
+  seat_licence_id identifier [pk]
+  seat_id identifier [not null]
+  holder_fan_account_id identifier
+  licence_number code [not null, unique]
+  original_price money [not null]
+  issued_on day [not null]
+  expires_on day
+  licence_status seat_licence_status [not null]
+  is_transferable boolean [not null]
+  note: '''
+    A property right in a seat, independent of any membership and tradeable on
+    its own. No target table corresponds -- a few columns on
+    ticketing.season_ticket_account are all that survives, so a licence
+    outliving its holder cannot be represented downstream.
+  '''
+}
+
+Table renewal_decision {
+  renewal_decision_id identifier [pk]
+  membership_id identifier [not null]
+  from_season_id identifier [not null]
+  to_season_id identifier [not null]
+  decision renewal_decision_outcome [not null]
+  invited_on day [not null]
+  deadline_on day [not null]
+  responded_on day
+  prior_seat_count quantity [not null]
+  renewed_seat_count quantity [note: 'Kept alongside the prior count so partial churn is visible. An account dropping six seats to two is a renewal in the upstream model.']
+  decline_reason decline_reason
+  note: 'The annual decision, tracked separately from the resulting membership because the campaign is managed and reported on in its own right.'
+}
+
+// -------------------------------------------------------------------------
+// Segmentation, consent and interaction
+// -------------------------------------------------------------------------
+
+Table segment {
+  segment_id identifier [pk]
+  segment_code code [not null, unique]
+  name name [not null]
+  definition_expression text [not null, note: 'The rule IS the segment. The upstream fan.segment keeps a name and a description, so what a segment means is not recoverable.']
+  evaluation_method evaluation_method [not null, note: 'batch | streaming | edge. Governs qualification latency.']
+  segment_status segment_status [not null]
+}
+
+Table fan_segment {
+  fan_id identifier [pk]
+  segment_id identifier [pk]
+  membership_state segment_membership_state [not null, note: 'realized | existing | exiting. Exiting is the actionable state and has no upstream equivalent.']
+  confidence quantity [note: 'For modelled and lookalike segments.']
+  first_qualified_at instant [not null]
+  last_qualified_at instant [not null]
+  exited_at instant
+  note: 'Associative, retained upstream as fan.segment_assignment -- but upstream carries a flag rather than a three-state status.'
+}
+
+Table consent {
+  consent_id identifier [pk]
+  fan_id identifier [not null]
+  consent_purpose_id identifier [not null]
+  consent_state consent_state [not null, note: 'allow | deny | unknown. Three states, because not-asked is not the same as declined.']
+  capture_method capture_method [not null]
+  capture_evidence_reference code [note: 'An affirmative consent must be evidenced: the controller carries the burden of demonstrating it.']
+  captured_by_system code [not null]
+  effective_from instant [not null]
+  effective_to instant
+  note: 'What a fan has permitted, for what purpose, when, and how that is provable.'
+}
+
+Table consent_purpose {
+  consent_purpose_id identifier [pk]
+  purpose_code code [not null, unique]
+  name name [not null]
+  lawful_basis lawful_basis
+  jurisdiction jurisdiction [note: 'GDPR default-deny and CCPA default-allow are genuinely different defaults.']
+  default_state consent_state [not null]
+}
+
+Table interaction {
+  interaction_id identifier [pk]
+  fan_id identifier [note: 'Null for an unresolved identity. An event observed against a cookie before the graph resolves it is still a real interaction.']
+  interaction_type_id identifier [not null]
+  occurred_at instant [not null]
+  recorded_at instant [not null, note: 'The extraction watermark. Mobile clients buffer offline and backfill, so occurrence time is not monotonic.']
+  channel channel [not null]
+  event_id identifier
+  order_id identifier
+  is_conversion boolean [not null]
+  note: '''
+    Something a fan did, or something done to them. Append-only and immutable,
+    and the highest-volume entity in the model.
+  '''
+}
+
+Table interaction_type {
+  interaction_type_id identifier [pk]
+  type_code code [not null, unique]
+  name name [not null]
+  interaction_category interaction_category [not null]
+  is_conversion boolean [not null]
+}
+
+Table outbound_message {
+  outbound_message_id identifier [pk]
+  fan_id identifier [not null]
+  campaign_id identifier
+  channel channel [not null]
+  message_outcome message_outcome [not null]
+  suppression_reason suppression_reason [note: 'A message not sent because consent was absent is a compliance record, not a delivery failure. The upstream fan.communication merges the two.']
+  sent_at instant
+  note: 'A message the organisation sent, or decided not to send. The decision not to send is the half that matters for compliance.'
+}
+
+Table campaign {
+  campaign_id identifier [pk]
+  campaign_code code [not null, unique]
+  name name [not null]
+  campaign_type campaign_type [not null]
+  parent_campaign_id identifier
+  entry_segment_id identifier
+  agreement_id identifier [note: 'Set when the campaign is a sponsorship activation -- see 04-media-rights.dbml.']
+  starts_on day
+  ends_on day
+  budgeted_cost money
+  actual_cost money
+}
+
+Table service_case {
+  service_case_id identifier [pk]
+  case_number code [not null, unique]
+  fan_id identifier
+  fan_account_id identifier
+  parent_case_id identifier
+  case_type case_type [not null]
+  case_status case_status [not null]
+  priority priority [not null]
+  origin_channel channel [not null]
+  opened_at instant [not null]
+  first_responded_at instant
+  closed_at instant
+  sla_breached boolean [not null]
+  satisfaction_score quantity
+  order_id identifier [note: 'What the case is about, when it is about a purchase.']
+}
+
+// -------------------------------------------------------------------------
+// Products
+// -------------------------------------------------------------------------
+
+Table product {
+  product_id identifier [pk]
+  product_code code [not null, unique]
+  name name [not null]
+  product_kind product_kind [not null, note: 'Discriminator: ticket | merchandise | membership | subscription | sponsorship_asset | parking']
+  product_category_id identifier
+  is_active boolean [not null]
+  note: 'Supertype. Anything that can be sold. The upstream model has separate catalogs per domain, which is why a fan basket spanning a shirt and a ticket cannot be expressed.'
+}
+
+Table product_category {
+  product_category_id identifier [pk]
+  parent_category_id identifier
+  category_code code [not null, unique]
+  name name [not null]
+  note: 'Recursive, because retail taxonomies nest and the depth differs by category.'
+}
+
+Table merchandise_product {
+  product_id identifier [pk]
+  product_group_id identifier [not null]
+  sku code [not null, unique]
+  size_label name
+  colour_label name
+  personalisation_allowed boolean [not null, note: 'A personalised item is non-returnable, which is why the flag belongs on the product.']
+  is_licensed boolean [not null]
+  licensor_party_id identifier
+  note: 'Subtype where product_kind = merchandise. One sellable variant.'
+}
+
+Table product_group {
+  product_group_id identifier [pk]
+  group_code code [not null, unique]
+  name name [not null]
+  note: '''
+    The product grouping a shopper perceives: "Home Shirt 2026" with eighteen
+    size and name variants. The upstream merchandise.sku_catalog is the variant
+    alone, so product-level reporting has to be rebuilt by matching on title.
+  '''
+}
+
+Table price {
+  price_id identifier [pk]
+  product_id identifier [not null]
+  price_list_id identifier [not null]
+  currency_code currency_code [not null]
+  face_value money [not null]
+  effective_from instant [not null]
+  effective_to instant
+  note: 'Effective-dated and per list, because dynamic pricing rescales during a sale and past orders must stay explicable.'
+}
+
+Table price_list {
+  price_list_id identifier [pk]
+  list_code code [not null, unique]
+  name name [not null]
+  channel channel
+  event_id identifier
+}
+
+Table stock_position {
+  product_id identifier [pk]
+  stock_location_id identifier [pk]
+  available_quantity quantity [not null, note: 'Can be negative where the product permits overselling, so it is deliberately unconstrained.']
+  committed_quantity quantity [not null, note: 'Sold but not yet shipped. The upstream model has one quantity, so committed stock reads as available.']
+  inbound_quantity quantity [not null]
+  last_counted_on day
+}
+
+Table stock_location {
+  stock_location_id identifier [pk]
+  location_code code [not null, unique]
+  name name [not null]
+  location_type stock_location_type [not null]
+  venue_id identifier
+}
+
+Table inventory_hold {
+  inventory_hold_id identifier [pk]
+  product_id identifier
+  seat_id identifier
+  event_id identifier [not null]
+  hold_reason_id identifier [not null]
+  held_quantity quantity
+  held_for_party_id identifier
+  hold_status hold_status [not null]
+  held_from instant [not null]
+  release_due_at instant
+  note: 'Inventory withheld from sale, seat-specific or as a block. Held inventory is unsold revenue, so the reason is reported on.'
+}
+
+Table hold_reason {
+  hold_reason_id identifier [pk]
+  reason_code code [not null, unique]
+  name name [not null]
+  hold_category hold_category [not null]
+  is_permanent boolean [not null, note: 'A kill is permanently removed (camera platform, obstructed view); a hold can be released back to sale.']
+}
+
+// -------------------------------------------------------------------------
+// Orders -- supertype and subtypes
+// -------------------------------------------------------------------------
+
+Table sales_order {
+  sales_order_id identifier [pk]
+  order_number code [not null, unique]
+  fan_account_id identifier [note: 'Null for a guest purchase, which is normal and which the upstream model has no way to represent.']
+  order_kind order_kind [not null, note: 'Discriminator: ticket | merchandise | subscription | renewal | hospitality']
+  order_status order_status [not null]
+  sales_channel_id identifier [not null]
+  currency_code currency_code [not null]
+  ordered_at instant [not null]
+  completed_at instant
+  cancelled_at instant
+  subtotal_amount money [not null]
+  fee_amount money [not null]
+  tax_amount money [not null]
+  discount_amount money [not null]
+  note: 'Supertype. One entity for every kind of purchase, which is what makes fan lifetime value a sum rather than a union.'
+}
+
+Table order_line {
+  order_line_id identifier [pk]
+  sales_order_id identifier [not null]
+  line_number quantity [not null]
+  product_id identifier [not null]
+  price_id identifier
+  quantity quantity [not null]
+  unit_price money [not null]
+  line_discount_amount money [not null]
+  line_status order_line_status [not null]
+  fulfilment_requirement fulfilment_requirement [not null, note: 'none | access_grant | shipment | activation. What has to happen for the line to be satisfied.']
+  indexes { (sales_order_id, line_number) [unique] }
+}
+
+Table order_line_personalisation {
+  order_line_id identifier [pk]
+  personalisation_key code [pk]
+  personalisation_value name [not null]
+  note: '''
+    Associative. Shirt name and number for sports kit. The upstream
+    merchandise.order_line has no equivalent, so customisation is lost -- and
+    with it the reason the item cannot be resold.
+  '''
+}
+
+Table sales_channel {
+  sales_channel_id identifier [pk]
+  channel_code code [not null, unique]
+  name name [not null]
+  channel_group channel_group [not null]
+  charges_service_fee boolean [not null]
+}
+
+Table discount_application {
+  discount_application_id identifier [pk]
+  sales_order_id identifier [not null]
+  order_line_id identifier
+  promotion_id identifier [not null]
+  allocated_amount money [not null, note: 'What this discount actually cost on this line. The only place promotion effectiveness can be measured; no upstream table retains it.']
+}
+
+Table promotion {
+  promotion_id identifier [pk]
+  promotion_code code [not null, unique]
+  name name [not null]
+  discount_type discount_type [not null]
+  discount_value quantity [not null]
+  max_redemptions quantity
+  redemption_count quantity [not null]
+  valid_from instant [not null]
+  valid_to instant
+}
+
+// -------------------------------------------------------------------------
+// Settlement and fulfilment
+// -------------------------------------------------------------------------
+
+Table payment {
+  payment_id identifier [pk]
+  sales_order_id identifier [not null]
+  payment_instrument_id identifier
+  payment_status payment_status [not null]
+  currency_code currency_code [not null]
+  authorized_amount money [not null]
+  captured_amount money [not null]
+  refunded_amount money [not null]
+  authorized_at instant [not null]
+  captured_at instant
+  settled_at instant
+  financial_transaction_id identifier [note: 'Set once the revenue posts to the ledger. Null is the reconciliation gap finance reports on.']
+}
+
+Table payment_attempt {
+  payment_attempt_id identifier [pk]
+  payment_id identifier [not null]
+  attempt_number quantity [not null]
+  attempt_type payment_attempt_type [not null]
+  gateway_name name [not null]
+  gateway_reference code [not null]
+  is_approved boolean [not null]
+  decline_reason code
+  amount money [not null]
+  occurred_at instant [not null]
+  indexes { (payment_id, attempt_type, attempt_number) [unique] }
+  note: '''
+    Every gateway attempt, including declines. The upstream model keeps only
+    the settled result, so an order that took four declines before succeeding
+    looks identical to one that worked first time.
+  '''
+}
+
+Table payment_instrument {
+  payment_instrument_id identifier [pk]
+  fan_account_id identifier [not null]
+  processor_name name [not null]
+  processor_token code [not null]
+  instrument_type instrument_type [not null]
+  card_brand card_brand
+  card_last_four code
+  expiry_month quantity
+  expiry_year quantity
+  is_default boolean [not null]
+  indexes { (processor_name, processor_token) [unique] }
+  note: 'Tokenized only. No primary account number is stored, which is what makes it safe to carry payment attributes against a fan at all.'
+}
+
+Table refund {
+  refund_id identifier [pk]
+  refund_number code [not null, unique]
+  sales_order_id identifier [not null]
+  payment_id identifier
+  order_line_id identifier
+  refund_reason refund_reason [not null]
+  refund_amount money [not null]
+  fee_refunded_amount money [not null, note: 'Fees are frequently non-refundable except on cancellation, so the split has to survive into the ledger.']
+  refund_status refund_status [not null]
+  requested_at instant [not null]
+  approved_at instant
+  processed_at instant
+}
+
+Table shipment {
+  shipment_id identifier [pk]
+  sales_order_id identifier [not null]
+  stock_location_id identifier [not null]
+  shipment_status shipment_status [not null]
+  carrier_name name
+  tracking_reference code
+  dispatched_at instant
+  delivered_at instant
+  estimated_delivery_at instant
+  note: 'One order line can ship across several shipments from several locations, which is why this is not an attribute of the line.'
+}
+
+Table shipment_line {
+  shipment_id identifier [pk]
+  order_line_id identifier [pk]
+  quantity quantity [not null]
+  note: 'Associative, resolving the many-to-many between shipments and order lines that a split dispatch creates.'
+}
+
+Table product_return {
+  product_return_id identifier [pk]
+  sales_order_id identifier [not null]
+  return_status return_status [not null]
+  requested_at instant [not null]
+  closed_at instant
+  decline_reason return_decline_reason [note: 'A personalised shirt cannot be returned, and the decline reason is the evidence for that.']
+}
+
+Table product_return_line {
+  product_return_id identifier [pk]
+  order_line_id identifier [pk]
+  quantity quantity [not null]
+  return_reason return_reason [not null, note: 'Separating too-small from too-large is what makes the data actionable on the size curve.']
+  received_condition received_condition [note: 'Determines whether the item restocks or is written off -- very different margin consequences.']
+}
+
+Table ticket_transfer {
+  ticket_transfer_id identifier [pk]
+  access_grant_id identifier [not null]
+  from_fan_account_id identifier [not null]
+  to_fan_account_id identifier [note: 'Null until accepted: a transfer is offered to an address before the recipient has an account.']
+  to_contact_point name [not null]
+  transfer_status transfer_status [not null]
+  offered_at instant [not null]
+  responded_at instant
+}
+
+Table resale_listing {
+  resale_listing_id identifier [pk]
+  access_grant_id identifier [not null]
+  seller_fan_account_id identifier [not null]
+  listed_price money [not null]
+  price_cap_applied money [note: 'Most leagues and many jurisdictions cap resale at a multiple of face value; the cap in force is recorded so a listing can be explained later.']
+  listing_status listing_status [not null]
+  listed_at instant [not null]
+  buyer_fan_account_id identifier
+  sold_at instant
+  platform_fee money
+  seller_payout money
+}
+
+Table loyalty_ledger_entry {
+  loyalty_ledger_entry_id identifier [pk]
+  membership_id identifier [not null]
+  entry_type loyalty_entry_type [not null, note: 'accrual | redemption | adjustment | expiry']
+  points_delta quantity [not null, note: 'Signed. A redemption is negative, which is what makes the balance a sum rather than a case expression.']
+  sales_order_id identifier
+  occurred_at instant [not null]
+  expires_on day
+  note: 'A points ledger rather than a balance, so the balance is derivable and auditable. The upstream fan.loyalty_transaction is close to this.'
+}
+
+// -------------------------------------------------------------------------
+// Relationships
+// -------------------------------------------------------------------------
+
+Ref: fan_account.merged_into_account_id > fan_account.fan_account_id
+Ref: fan_account_member.fan_account_id > fan_account.fan_account_id
+Ref: fan_account_member.fan_id > fan.fan_id
+
+Ref: membership.fan_account_id > fan_account.fan_account_id
+Ref: membership.membership_product_id > membership_product.membership_product_id
+Ref: membership_product.product_id - product.product_id
+Ref: membership_seat.membership_id > membership.membership_id
+Ref: membership_seat.seat_licence_id > seat_licence.seat_licence_id
+Ref: seat_licence.holder_fan_account_id > fan_account.fan_account_id
+Ref: renewal_decision.membership_id > membership.membership_id
+
+Ref: fan_segment.fan_id > fan.fan_id
+Ref: fan_segment.segment_id > segment.segment_id
+Ref: consent.fan_id > fan.fan_id
+Ref: consent.consent_purpose_id > consent_purpose.consent_purpose_id
+Ref: interaction.fan_id > fan.fan_id
+Ref: interaction.interaction_type_id > interaction_type.interaction_type_id
+Ref: interaction.order_id > sales_order.sales_order_id
+Ref: outbound_message.fan_id > fan.fan_id
+Ref: outbound_message.campaign_id > campaign.campaign_id
+Ref: campaign.parent_campaign_id > campaign.campaign_id
+Ref: campaign.entry_segment_id > segment.segment_id
+Ref: service_case.fan_id > fan.fan_id
+Ref: service_case.fan_account_id > fan_account.fan_account_id
+Ref: service_case.parent_case_id > service_case.service_case_id
+Ref: service_case.order_id > sales_order.sales_order_id
+
+Ref: product.product_category_id > product_category.product_category_id
+Ref: product_category.parent_category_id > product_category.product_category_id
+Ref: merchandise_product.product_id - product.product_id
+Ref: merchandise_product.product_group_id > product_group.product_group_id
+Ref: price.product_id > product.product_id
+Ref: price.price_list_id > price_list.price_list_id
+Ref: stock_position.product_id > product.product_id
+Ref: stock_position.stock_location_id > stock_location.stock_location_id
+Ref: inventory_hold.product_id > product.product_id
+Ref: inventory_hold.hold_reason_id > hold_reason.hold_reason_id
+
+Ref: sales_order.fan_account_id > fan_account.fan_account_id
+Ref: sales_order.sales_channel_id > sales_channel.sales_channel_id
+Ref: order_line.sales_order_id > sales_order.sales_order_id
+Ref: order_line.product_id > product.product_id
+Ref: order_line.price_id > price.price_id
+Ref: order_line_personalisation.order_line_id > order_line.order_line_id
+Ref: discount_application.sales_order_id > sales_order.sales_order_id
+Ref: discount_application.order_line_id > order_line.order_line_id
+Ref: discount_application.promotion_id > promotion.promotion_id
+
+Ref: payment.sales_order_id > sales_order.sales_order_id
+Ref: payment.payment_instrument_id > payment_instrument.payment_instrument_id
+Ref: payment_attempt.payment_id > payment.payment_id
+Ref: payment_instrument.fan_account_id > fan_account.fan_account_id
+Ref: refund.sales_order_id > sales_order.sales_order_id
+Ref: refund.payment_id > payment.payment_id
+Ref: refund.order_line_id > order_line.order_line_id
+
+Ref: shipment.sales_order_id > sales_order.sales_order_id
+Ref: shipment.stock_location_id > stock_location.stock_location_id
+Ref: shipment_line.shipment_id > shipment.shipment_id
+Ref: shipment_line.order_line_id > order_line.order_line_id
+Ref: product_return.sales_order_id > sales_order.sales_order_id
+Ref: product_return_line.product_return_id > product_return.product_return_id
+Ref: product_return_line.order_line_id > order_line.order_line_id
+
+Ref: ticket_transfer.from_fan_account_id > fan_account.fan_account_id
+Ref: ticket_transfer.to_fan_account_id > fan_account.fan_account_id
+Ref: resale_listing.seller_fan_account_id > fan_account.fan_account_id
+Ref: resale_listing.buyer_fan_account_id > fan_account.fan_account_id
+Ref: loyalty_ledger_entry.membership_id > membership.membership_id
+Ref: loyalty_ledger_entry.sales_order_id > sales_order.sales_order_id

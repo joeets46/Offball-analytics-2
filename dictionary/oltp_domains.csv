@@ -1,0 +1,56 @@
+domain_type,base_type,is_nullable,constraint_definition,used_by_columns,description
+dom_account_number,character varying(10),yes,"CHECK (((VALUE)::text ~ '^[0-9]{6,10}$'::text))",2,"Pattern ^[0-9]{6,10}$ -- 3 columns in 3 target tables."
+dom_activity_type_code,character varying(16),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9_-]{1,16}$'::text))",0,"Pattern ^[A-Z0-9_-]{1,16}$ -- 2 columns in 1 target tables."
+dom_alternate_commentary_language_code,character varying(3),yes,"CHECK (((VALUE)::text ~ '^[a-z]{2,3}$'::text))",0,"Pattern ^[a-z]{2,3}$ -- 3 columns in 2 target tables."
+dom_card_last_four,character varying(4),yes,CHECK (((VALUE)::text ~ '^[0-9]{4}$'::text)),3,Pattern ^[0-9]{4}$ -- 3 columns in 2 target tables.
+dom_case_number,character varying(15),yes,CHECK (((VALUE)::text ~ '^INJ-[0-9]{4}-[0-9]{6}$'::text)),0,Pattern ^INJ-[0-9]{4}-[0-9]{6}$ -- 2 columns in 2 target tables.
+dom_channel_code,character varying(30),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9_-]{2,30}$'::text))",1,"Pattern ^[A-Z0-9_-]{2,30}$ -- 4 columns in 4 target tables."
+dom_club_code,character varying(20),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9_-]{3,20}$'::text))",0,"Pattern ^[A-Z0-9_-]{3,20}$ -- 3 columns in 3 target tables."
+dom_color_code,character varying(6),yes,CHECK (((VALUE)::text ~ '^#[0-9A-Fa-f]{6}$'::text)),6,Pattern ^#[0-9A-Fa-f]{6}$ -- 5 columns in 5 target tables.
+dom_controlling_area,character varying(4),yes,CHECK (((VALUE)::text ~ '^[A-Z0-9]{4}$'::text)),2,Pattern ^[A-Z0-9]{4}$ -- 13 columns in 3 target tables.
+dom_controlling_area_code,character varying(4),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9]{1,4}$'::text))",0,"Pattern ^[A-Z0-9]{1,4}$ -- 2 columns in 2 target tables."
+dom_coordinator_phone,character varying(20),yes,"CHECK (((VALUE)::text ~ '^\+?[0-9\s\-().]{7,20}$'::text))",0,"Pattern ^\+?[0-9\s\-().]{7,20}$ -- 3 columns in 3 target tables."
+dom_cost_center_category,character varying(2),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9]{1,2}$'::text))",0,"Pattern ^[A-Z0-9]{1,2}$ -- 2 columns in 2 target tables."
+dom_crm_contact_reference,character varying(20),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9]{10,20}$'::text))",0,"Pattern ^[A-Z0-9]{10,20}$ -- 2 columns in 2 target tables."
+dom_department_code,character varying(10),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9_-]{1,10}$'::text))",0,"Pattern ^[A-Z0-9_-]{1,10}$ -- 5 columns in 1 target tables."
+dom_department_code_2,character varying(16),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9_-]{2,16}$'::text))",0,"Pattern ^[A-Z0-9_-]{2,16}$ -- 2 columns in 1 target tables."
+dom_document_number_range,character varying(2),yes,CHECK (((VALUE)::text ~ '^[A-Z0-9]{2}$'::text)),0,Pattern ^[A-Z0-9]{2}$ -- 4 columns in 2 target tables.
+dom_email,text,yes,"CHECK ((VALUE ~ '^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$'::text))",13,"Pattern ^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$ -- 10 columns in 10 target tables."
+dom_exclusivity_territory,text,yes,"CHECK ((VALUE ~ '^[A-Z]{3}(,[A-Z]{3})*$'::text))",0,"Pattern ^[A-Z]{3}(,[A-Z]{3})*$ -- 2 columns in 2 target tables."
+dom_feature_code,character varying(20),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9\-]{3,20}$'::text))",0,"Pattern ^[A-Z0-9\-]{3,20}$ -- 3 columns in 3 target tables."
+dom_fixture_code,character varying(30),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9_-]{3,30}$'::text))",2,"Pattern ^[A-Z0-9_-]{3,30}$ -- 6 columns in 6 target tables."
+dom_floor_plan_version,text,yes,CHECK ((VALUE ~ '^v[0-9]+\.[0-9]+$'::text)),0,Pattern ^v[0-9]+\.[0-9]+$ -- 2 columns in 2 target tables.
+dom_hierarchy_node_code,character varying(20),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9_-]{1,20}$'::text))",0,"Pattern ^[A-Z0-9_-]{1,20}$ -- 2 columns in 1 target tables."
+dom_hvac_zone_code,character varying(15),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9\-]{1,15}$'::text))",0,"Pattern ^[A-Z0-9\-]{1,15}$ -- 3 columns in 2 target tables."
+dom_iana_timezone,text,yes,CHECK ((VALUE ~ '^[A-Za-z]+/[A-Za-z_]+$'::text)),4,Pattern ^[A-Za-z]+/[A-Za-z_]+$ -- 1 columns in 1 target tables.
+dom_iso2_code,character varying(2),yes,CHECK (((VALUE)::text ~ '^[A-Z]{2}$'::text)),0,Pattern ^[A-Z]{2}$ -- 2 columns in 2 target tables.
+dom_iso3_code,character varying(3),yes,CHECK (((VALUE)::text ~ '^[A-Z]{3}$'::text)),49,Pattern ^[A-Z]{3}$ -- 139 columns in 91 target tables.
+dom_language,character varying(10),yes,"CHECK (((VALUE)::text ~ '^[a-z]{2,3}(-[A-Z]{2,3})?$'::text))",0,"Pattern ^[a-z]{2,3}(-[A-Z]{2,3})?$ -- 2 columns in 2 target tables."
+dom_language_code,character varying(9),yes,"CHECK (((VALUE)::text ~ '^[a-z]{2,3}(-[A-Z]{2})?$'::text))",8,"Pattern ^[a-z]{2,3}(-[A-Z]{2})?$ -- 8 columns in 7 target tables."
+dom_language_code_2,character varying(8),yes,CHECK (((VALUE)::text ~ '^[a-z]{2}(-[A-Z]{2})?$'::text)),0,Pattern ^[a-z]{2}(-[A-Z]{2})?$ -- 7 columns in 7 target tables.
+dom_league_code,character varying(10),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9]{2,10}$'::text))",0,"Pattern ^[A-Z0-9]{2,10}$ -- 2 columns in 2 target tables."
+dom_lot_code,character varying(20),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9\-]{2,20}$'::text))",0,"Pattern ^[A-Z0-9\-]{2,20}$ -- 3 columns in 2 target tables."
+dom_new_entitlement_token,character varying(64),yes,"CHECK (((VALUE)::text ~ '^[A-Za-z0-9\-_]{10,64}$'::text))",0,"Pattern ^[A-Za-z0-9\-_]{10,64}$ -- 2 columns in 1 target tables."
+dom_ob_unit_code,character varying(20),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9_-]{2,20}$'::text))",0,"Pattern ^[A-Z0-9_-]{2,20}$ -- 6 columns in 4 target tables."
+dom_operating_hours_weekday,character varying(21),yes,CHECK (((VALUE)::text ~ '^([01]\d|2[0-3]):[0-5]\d-([01]\d|2[0-3]):[0-5]\d$'::text)),0,Pattern ^([01]\d|2[0-3]):[0-5]\d-([01]\d|2[0-3]):[0-5]\d$ -- 2 columns in 1 target tables.
+dom_order_number,character varying(30),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9\-]{6,30}$'::text))",0,"Pattern ^[A-Z0-9\-]{6,30}$ -- 3 columns in 3 target tables."
+dom_parental_rating,text,yes,CHECK ((VALUE ~ 'TV-G|TV-PG|TV-14|TV-MA|NR'::text)),0,Pattern TV-G|TV-PG|TV-14|TV-MA|NR -- 2 columns in 2 target tables.
+dom_posting_key,character varying(2),yes,CHECK (((VALUE)::text ~ '^[0-9]{2}$'::text)),0,Pattern ^[0-9]{2}$ -- 2 columns in 1 target tables.
+dom_primary_contact_phone,character varying(14),yes,"CHECK (((VALUE)::text ~ '^\+?[1-9]\d{1,14}$'::text))",0,"Pattern ^\+?[1-9]\d{1,14}$ -- 2 columns in 2 target tables."
+dom_primary_phone,character varying(14),yes,"CHECK (((VALUE)::text ~ '^\+?[1-9]\d{6,14}$'::text))",0,"Pattern ^\+?[1-9]\d{6,14}$ -- 2 columns in 2 target tables."
+dom_reference_number,character varying(15),yes,CHECK (((VALUE)::text ~ '^INC-[0-9]{4}-[0-9]{6}$'::text)),0,Pattern ^INC-[0-9]{4}-[0-9]{6}$ -- 2 columns in 2 target tables.
+dom_result_reference_code,character varying(30),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9\-]{4,30}$'::text))",0,"Pattern ^[A-Z0-9\-]{4,30}$ -- 4 columns in 4 target tables."
+dom_row_label_end,character varying(5),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9]{1,5}$'::text))",0,"Pattern ^[A-Z0-9]{1,5}$ -- 2 columns in 1 target tables."
+dom_sap_changed_by,character varying(12),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9_]{1,12}$'::text))",0,"Pattern ^[A-Z0-9_]{1,12}$ -- 4 columns in 2 target tables."
+dom_sap_fi_document_number,character varying(10),yes,CHECK (((VALUE)::text ~ '^[0-9]{10}$'::text)),0,Pattern ^[0-9]{10}$ -- 4 columns in 4 target tables.
+dom_section_code,character varying(20),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9\-]{1,20}$'::text))",0,"Pattern ^[A-Z0-9\-]{1,20}$ -- 4 columns in 4 target tables."
+dom_shopify_inventory_item_code,character varying(20),yes,"CHECK (((VALUE)::text ~ '^[0-9]{8,20}$'::text))",0,"Pattern ^[0-9]{8,20}$ -- 2 columns in 1 target tables."
+dom_short_name,character varying(20),yes,"CHECK (((VALUE)::text ~ '^.{1,20}$'::text))",0,"Pattern ^.{1,20}$ -- 2 columns in 2 target tables."
+dom_sku_code,character varying(30),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9\-]{3,30}$'::text))",0,"Pattern ^[A-Z0-9\-]{3,30}$ -- 2 columns in 2 target tables."
+dom_source_system_code,character varying(20),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9_]{2,20}$'::text))",0,"Pattern ^[A-Z0-9_]{2,20}$ -- 6 columns in 6 target tables."
+dom_sport_code,character varying(10),yes,"CHECK (((VALUE)::text ~ '^[A-Z]{2,10}$'::text))",0,"Pattern ^[A-Z]{2,10}$ -- 3 columns in 3 target tables."
+dom_stand_code,character varying(20),yes,"CHECK (((VALUE)::text ~ '^[A-Z0-9]{2,20}$'::text))",0,"Pattern ^[A-Z0-9]{2,20}$ -- 2 columns in 2 target tables."
+dom_state_province,character varying(3),yes,"CHECK (((VALUE)::text ~ '^[A-Z]{2,3}$'::text))",7,"Pattern ^[A-Z]{2,3}$ -- 5 columns in 5 target tables."
+dom_url,text,yes,CHECK ((VALUE ~ '^https?://[^\s/$.?#].[^\s]*$'::text)),1,Pattern ^https?://[^\s/$.?#].[^\s]*$ -- 9 columns in 7 target tables.
+dom_url_2,text,yes,CHECK ((VALUE ~ '^https?://.+'::text)),0,Pattern ^https?://.+ -- 3 columns in 2 target tables.
+dom_version,text,yes,CHECK ((VALUE ~ '^v\d+\.\d+$'::text)),1,Pattern ^v\d+\.\d+$ -- 4 columns in 4 target tables.

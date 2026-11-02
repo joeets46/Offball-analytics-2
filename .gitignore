@@ -1,0 +1,30 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Cached upstream model (7 MB). Regenerate with the curl command in README.md;
+# it is an input, not a source artifact.
+tools/.cache/
+
+# Local environment. .env.example is committed; .env is not.
+.env
+
+# Claude Code local settings, which are per-developer.
+.claude/settings.local.json
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Scratch
+.tmpwork/

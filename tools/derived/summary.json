@@ -1,0 +1,50 @@
+{
+  "upstream": {
+    "domains": 14,
+    "tables": 200,
+    "columns": 9102
+  },
+  "scope": {
+    "in_scope_tables": 153,
+    "out_of_scope_tables": 47,
+    "in_scope_columns": 6981
+  },
+  "value_domains": {
+    "enum_columns": 684,
+    "distinct_enum_domains": 662,
+    "promoted_to_reference_table": 43,
+    "inline_check_constraint": 619,
+    "regex_columns": 438,
+    "distinct_postgres_domain_types": 164
+  },
+  "flags": {
+    "enum_ref_candidates": 278,
+    "self_referencing_fks": 22
+  },
+  "classification": {
+    "sensitive_columns": 667,
+    "restricted": 153,
+    "confidential": 512,
+    "internal": 10,
+    "pii_columns": 281,
+    "pii_kinds": {
+      "pii_financial": 98,
+      "pii_address": 62,
+      "pii_health": 22,
+      "pii": 21,
+      "pii_identifier": 18,
+      "pii_email": 16,
+      "pii_phone": 16,
+      "pii_name": 16,
+      "pii_biometric": 5,
+      "pii_ip": 3,
+      "pii_dob": 2,
+      "pii_device": 2
+    },
+    "tables_needing_pii_satellite": 66
+  },
+  "foreign_keys": {
+    "resolved_in_scope": 1397,
+    "unresolved_out_of_scope": 213
+  }
+}

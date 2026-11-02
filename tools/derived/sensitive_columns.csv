@@ -1,0 +1,668 @@
+mvm_domain,mvm_table,column_name,data_type,classification,pii_kinds,references
+event,tournament,gender_category,STRING,confidential,pii,"FIFA, IOC, CBA Eligibility Regulations"
+event,tournament,prize_pool_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI Financial Accounting; CBA Prize Distribution Rules; SOX Financial Controls
+event,bracket,gender_category,STRING,confidential,pii,IOC Competition Format Standards; FIFA Tournament Regulations
+event,participant,appearance_fee_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO Module; SOX Financial Controls; Sports Entertainment Finance Domain
+event,participant,appearance_fee_currency,STRING,confidential,,ISO 4217 Currency Codes; SAP S/4HANA FI Module; SOX Financial Controls
+event,participant,contract_type,STRING,confidential,,NBA CBA; NFL CBA; MLB CBA; NHL CBA; MLS CBA; Sports Entertainment Workforce Domain
+event,participant,nationality_country,STRING,confidential,pii,ISO 3166-1 Alpha-3; FIFA Eligibility Regulations; IOC Nationality Rules; GDPR Article 9
+event,officiating_assignment,conflict_of_interest_notes,STRING,confidential,,FIFA Ethics Code; NFL Officiating Integrity Policy; CAS Arbitration Standards
+event,officiating_assignment,expense_allowance_amount,"DECIMAL(10,2)",confidential,,CBA; FIFA Referee Regulations; League Officiating Expense Policy; SAP S/4HANA FI/CO
+event,officiating_assignment,officiating_fee_amount,"DECIMAL(12,2)",confidential,,CBA (Collective Bargaining Agreement); FIFA Referee Pay Regulations; NFL/NBA/NHL Officiating Compensation Standards; SAP S/4HANA FI/CO
+event,officiating_assignment,performance_rating,"DECIMAL(4,2)",confidential,,FIFA Referee Assessment Standards; NFL Officiating Performance Evaluation; NBA Officiating Quality Program
+event,event_incident,insurance_claim_reference,STRING,confidential,,SAP S/4HANA FI; Internal Risk Management Policy; ISO 20121
+event,venue_assignment,rental_fee_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO (Financial Accounting / Controlling); SOX Financial Controls
+event,venue_assignment,revenue_share_pct,"DECIMAL(5,2)",confidential,,SAP S/4HANA FI/CO; SOX Financial Controls; Internal Contract Management Standard
+event,venue_assignment,venue_contract_reference,STRING,confidential,,SAP S/4HANA SD (Sales and Distribution); Internal Contract Management Standard
+event,competition_round,gender_category,STRING,confidential,pii,FIFA Competition Regulations; IOC Standards; ATP Regulations
+event,broadcast_window,rights_fee_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO; SOX Financial Controls; SEC Financial Reporting
+venue,facility,address_line1,STRING,confidential,pii_address,ADA Americans with Disabilities Act; OSHA Venue Safety
+venue,facility,address_line2,STRING,confidential,pii_address,ADA Americans with Disabilities Act; OSHA Venue Safety
+venue,facility,home_tenant_name,STRING,restricted,pii_identifier,NFL; NBA; NHL; MLB; MLS; Salesforce CRM
+venue,facility,latitude,"DECIMAL(9,6)",restricted,pii_address,ISO 6709 Geographic Point Location
+venue,facility,longitude,"DECIMAL(9,6)",restricted,pii_address,ISO 6709 Geographic Point Location
+venue,facility,postal_code,STRING,confidential,pii_address,GDPR Article 4; CCPA
+venue,parking_lot,address_line1,STRING,confidential,pii_address,GDPR (General Data Protection Regulation) — Article 4; CCPA (California Consumer Privacy Act)
+venue,parking_lot,base_event_rate,"DECIMAL(10,2)",confidential,,SAP S/4HANA FI/CO (Financial Accounting and Controlling); PCI SSC (Payment Card Industry Security Standards Council)
+venue,parking_lot,latitude,"DECIMAL(9,6)",restricted,pii_address,ISO 6709 — Standard Representation of Geographic Point Location
+venue,parking_lot,longitude,"DECIMAL(9,6)",restricted,pii_address,ISO 6709 — Standard Representation of Geographic Point Location
+venue,maintenance_work_order,actual_cost,"DECIMAL(15,2)",confidential,,SAP S/4HANA PM/CO — Actual Costs; SOX Financial Controls; EBITDA Reporting
+venue,maintenance_work_order,estimated_cost,"DECIMAL(15,2)",confidential,,SAP S/4HANA PM/CO — Planned Costs; SOX Financial Controls
+venue,maintenance_work_order,external_service_cost,"DECIMAL(15,2)",confidential,,SAP S/4HANA PM/MM — External Services (PM03 Operations); PCI-DSS for vendor management
+venue,maintenance_work_order,parts_cost,"DECIMAL(15,2)",confidential,,SAP S/4HANA PM/MM — Goods Issue (MIGO) to Order; Materials Management
+venue,safety_incident,estimated_liability_usd,"DECIMAL(18,2)",confidential,,SOX; General Liability Insurance Standards; SAP S/4HANA FI
+venue,safety_incident,insurance_claim_number,STRING,confidential,,PCI SSC; General Liability Insurance Standards; SOX
+venue,safety_incident,reported_by_name,STRING,confidential,,OSHA 29 CFR Part 1904.29; OSHA Form 301
+venue,event_day_ops,medical_staff_count,INT,restricted,pii,OSHA 29 CFR 1910.151; National Association of EMS Physicians Mass Gathering Guidelines
+venue,event_day_ops,medical_station_ready,BOOLEAN,restricted,pii,OSHA 29 CFR 1910.151; National Association of EMS Physicians Mass Gathering Guidelines
+venue,concession_stand,geo_latitude,"DECIMAL(9,6)",restricted,pii_address,Adobe Experience Platform — Fan Engagement and Personalization; Venue Digital Twin Standards
+venue,concession_stand,geo_longitude,"DECIMAL(9,6)",restricted,pii_address,Adobe Experience Platform — Fan Engagement and Personalization; Venue Digital Twin Standards
+venue,concession_stand,health_inspection_score,"DECIMAL(5,2)",restricted,pii,OSHA; Local Health Department Food Safety Codes
+venue,concession_stand,health_inspection_status,STRING,restricted,pii,OSHA Occupational Safety and Health Administration; Local Health Department Food Safety Codes; ISO 20121
+venue,concession_stand,last_health_inspection_date,DATE,restricted,pii,OSHA; Local Health Department Food Safety Codes
+venue,concession_stand,next_health_inspection_date,DATE,restricted,pii,OSHA; Local Health Department Food Safety Codes
+venue,concession_stand,revenue_share_pct,"DECIMAL(5,2)",confidential,,SAP S/4HANA FI/CO — Revenue Recognition; SOX Sarbanes-Oxley Act Financial Controls
+venue,suite,annual_license_fee,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI CO; SOX Sarbanes-Oxley Act; Workday Adaptive Planning
+venue,suite,catering_credit_amount,"DECIMAL(12,2)",confidential,,SAP S/4HANA SD CO; Workday Adaptive Planning
+venue,suite,license_number,STRING,confidential,,SAP S/4HANA SD Sales and Distribution; SOX Sarbanes-Oxley Act
+venue,suite,primary_contact_email,STRING,restricted,pii_email,GDPR Article 4; CCPA; Salesforce CRM
+venue,suite,primary_contact_name,STRING,confidential,pii_financial,Salesforce CRM; GDPR Article 4; CCPA
+venue,suite,primary_contact_phone,STRING,restricted,pii_phone,GDPR Article 4; CCPA; Salesforce CRM
+venue,suite,total_license_fee,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI CO; SOX Sarbanes-Oxley Act; Workday Adaptive Planning
+venue,accessibility_feature,annual_maintenance_cost,"DECIMAL(18,2)",confidential,,SAP S/4HANA Controlling (CO) — Cost Center Accounting; Workday Adaptive Planning
+venue,accessibility_feature,installation_cost,"DECIMAL(18,2)",confidential,,SAP S/4HANA Financial Accounting (FI) — Fixed Asset Management; SOX (Sarbanes-Oxley Act) Financial Controls
+venue,staff_plan,actual_cost_usd,"DECIMAL(14,2)",confidential,,SAP S/4HANA FI/CO — Cost Controlling; SOX (Sarbanes-Oxley Act) Financial Controls
+venue,staff_plan,estimated_cost_usd,"DECIMAL(14,2)",confidential,,SAP S/4HANA FI/CO — Cost Controlling; Workday Adaptive Planning
+venue,staff_plan,pay_rate_usd,"DECIMAL(10,2)",confidential,,SAP S/4HANA FI/CO — Cost Controlling; CBA (Collective Bargaining Agreement) Compliance
+venue,venue,address_line1,STRING,confidential,pii_address,ADA Americans with Disabilities Act; OSHA Occupational Safety and Health Administration; GDPR Article 4
+venue,venue,address_line2,STRING,confidential,pii_address,ADA Americans with Disabilities Act; OSHA Occupational Safety and Health Administration
+venue,venue,home_tenant_name,STRING,restricted,pii_identifier,NFL; NBA; MLB; NHL; MLS; CBA Collective Bargaining Agreement
+venue,venue,latitude,"DECIMAL(9,6)",restricted,pii_address,ISO 6709; Adobe Experience Platform
+venue,venue,longitude,"DECIMAL(9,6)",restricted,pii_address,ISO 6709; Adobe Experience Platform
+venue,venue,naming_rights_expiry_date,DATE,confidential,,Salesforce CRM Sponsor Relationship Management
+venue,venue,naming_rights_holder,STRING,confidential,,Salesforce CRM Sponsor Relationship Management; SAP S/4HANA SD
+venue,venue,postal_code,STRING,restricted,pii_address,SAP S/4HANA FI Tax Jurisdiction; OSHA Occupational Safety and Health Administration
+athlete,roster,contract_id,BIGINT,confidential,,CBA (Collective Bargaining Agreement); SAP S/4HANA SD — Contract Management
+athlete,roster,nationality_code,STRING,confidential,pii,ISO 3166-1 Alpha-3; FIFA International Transfer Regulations; MLS Roster Rules
+athlete,roster,salary_cap_hit,"DECIMAL(15,2)",confidential,,"CBA (Collective Bargaining Agreement) — NFL, NBA, MLB, NHL, MLS; SAP S/4HANA FI/CO"
+athlete,roster,visa_expiry_date,DATE,confidential,,USCIS Immigration Regulations; SAP SuccessFactors HCM — Workforce Compliance
+athlete,roster,visa_type,STRING,confidential,,USCIS P-1A Visa Classification; GDPR Article 9 (Special Category Data); OSHA Workforce Compliance
+athlete,athlete_profile,country_of_birth_code,STRING,restricted,pii_identifier,ISO 3166-1 Alpha-3; FIFA Regulations on the Status and Transfer of Players
+athlete,athlete_profile,date_of_birth,DATE,restricted,pii_dob,GDPR Article 4; FIFA Regulations on the Status and Transfer of Players; CBA Age Eligibility Rules
+athlete,athlete_profile,legal_first_name,STRING,restricted,pii_name,GDPR Article 4; CCPA §1798.140; FIFA Regulations on the Status and Transfer of Players
+athlete,athlete_profile,legal_last_name,STRING,restricted,pii_name,GDPR Article 4; CCPA §1798.140; FIFA Regulations on the Status and Transfer of Players
+athlete,athlete_profile,legal_middle_name,STRING,restricted,pii_name,GDPR Article 4; SAP SuccessFactors — Personal Information
+athlete,athlete_profile,nationality_code,STRING,restricted,pii_identifier,ISO 3166-1 Alpha-3; FIFA Regulations on the Status and Transfer of Players; IOC Eligibility Rules
+athlete,athlete_profile,preferred_name,STRING,restricted,pii_name,Dalet Galaxy — Talent Display Name; Broadcast Production Standards
+athlete,contract,aav,"DECIMAL(18,2)",confidential,,Sports Contract Industry Standard — AAV Calculation; CBA Salary Cap Accounting
+athlete,contract,base_salary_year1,"DECIMAL(18,2)",confidential,,SAP SuccessFactors Payroll — Compensation Element; CBA Minimum Salary Schedule
+athlete,contract,cap_hit,"DECIMAL(18,2)",confidential,,NFL CBA Article 13 — Salary Cap Accounting; NBA CBA Article VII; NHL CBA Article 50
+athlete,contract,contract_number,STRING,confidential,,SAP S/4HANA SD — Sales Contract Number; League Office Filing Standards
+athlete,contract,contract_status,STRING,confidential,,SAP S/4HANA SD — Contract Status; League CBA Termination Provisions
+athlete,contract,contract_type,STRING,confidential,,NBA CBA Article II; NFL CBA Article 7; MLB CBA; NHL CBA; MLS CBA
+athlete,contract,dead_cap_amount,"DECIMAL(18,2)",confidential,,NFL CBA Article 13 — Dead Money; SAP S/4HANA FI — Accrued Liabilities
+athlete,contract,end_date,DATE,confidential,,SAP S/4HANA SD — Contract Validity End; CBA Term Provisions
+athlete,contract,free_agency_class,STRING,confidential,,NFL CBA Article 9 — Free Agency; NBA CBA Article XI; MLB CBA Article XX; NHL CBA Article 10
+athlete,contract,free_agency_open_date,DATE,confidential,,NFL/NBA/MLB/NHL/MLS League Calendar; CBA Free Agency Period Rules
+athlete,contract,guaranteed_amount,"DECIMAL(18,2)",confidential,,NFL CBA Article 26 — Guaranteed Contracts; NBA CBA Article II; SAP S/4HANA FI — Accruals
+athlete,contract,negotiation_status,STRING,confidential,,Salesforce CRM — Opportunity Stage; League Office Negotiation Reporting
+athlete,contract,nil_agreement_flag,BOOLEAN,confidential,,NIL Legislation (NCAA/State Laws); CBA Image Rights Provisions; IP Law
+athlete,contract,no_cut_clause,BOOLEAN,confidential,,CBA Termination Provisions; NFL CBA Article 26
+athlete,contract,no_trade_clause,BOOLEAN,confidential,,CBA Trade Clause Provisions; MLB CBA Article XIX; NHL CBA Article 11
+athlete,contract,option_deadline,DATE,confidential,,CBA Option Deadline Provisions; League Calendar
+athlete,contract,option_type,STRING,confidential,,CBA Option Year Provisions; NBA CBA Article II Section 6
+athlete,contract,option_years,INT,confidential,,CBA Option Year Provisions; SAP S/4HANA SD — Contract Extension Terms
+athlete,contract,performance_bonus_eligible,BOOLEAN,confidential,,CBA Incentive Bonus Provisions; SAP SuccessFactors Variable Pay
+athlete,contract,performance_bonus_max,"DECIMAL(18,2)",confidential,,NFL CBA Article 13 — Incentive Bonuses; NBA CBA Article II; SAP S/4HANA FI — Variable Compensation
+athlete,contract,qualifying_offer_amount,"DECIMAL(18,2)",confidential,,NFL CBA Article 9 — Qualifying Offers; NBA CBA Article XI; MLB CBA Article XX
+athlete,contract,right_of_first_refusal,BOOLEAN,confidential,,NFL CBA Article 9; NBA CBA Article XI — Right of First Refusal
+athlete,contract,sap_contract_doc_number,STRING,confidential,,SAP S/4HANA SD — Sales Contract Document; SAP SuccessFactors Payroll Integration
+athlete,contract,signing_bonus,"DECIMAL(18,2)",confidential,,NFL CBA Article 13 — Signing Bonus; SAP SuccessFactors Payroll; SAP S/4HANA FI
+athlete,contract,signing_date,DATE,confidential,,SAP S/4HANA SD — Document Date; League Office Filing Deadline
+athlete,contract,signing_deadline,DATE,confidential,,NFL CBA Article 10 — Franchise Player; NBA CBA Article XI; League Calendar
+athlete,contract,start_date,DATE,confidential,,SAP S/4HANA SD — Contract Validity Start; CBA Effective Date Provisions
+athlete,contract,total_value,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — Financial Obligation; CBA Salary Cap Rules; SOX Financial Controls
+athlete,contract,years,INT,confidential,,CBA Maximum Contract Length Provisions; League Roster Rules
+athlete,injury_record,actual_rtp_date,DATE,restricted,pii_health,CBA Return-to-Play Protocol; OSHA 29 CFR 1904
+athlete,injury_record,body_part,STRING,restricted,pii_health,ICD-10-CM Anatomical Site Classification; OSHA 29 CFR 1904
+athlete,injury_record,body_side,STRING,restricted,pii_health,ICD-10-CM Laterality Coding Guidelines
+athlete,injury_record,concussion_protocol_triggered,BOOLEAN,restricted,pii_health,NFL/NHL/FIFA Concussion Protocol; IOC Consensus Statement on Concussion in Sport
+athlete,injury_record,days_lost_actual,INT,restricted,pii_health,OSHA 29 CFR 1904.7 General Recording Criteria; CBA
+athlete,injury_record,days_lost_estimated,INT,restricted,pii_health,CBA Injury Reporting; Insurance Claim Standards
+athlete,injury_record,expected_rtp_date,DATE,restricted,pii_health,CBA Return-to-Play Protocol; League Medical Standards
+athlete,injury_record,icd10_code,STRING,restricted,pii_health,ICD-10-CM (WHO / CDC); OSHA 29 CFR 1904; PCI-DSS (insurance billing)
+athlete,injury_record,injury_date,DATE,restricted,pii_health,OSHA 29 CFR 1904.29; WADA Medical Exemption Reporting
+athlete,injury_record,injury_description,STRING,restricted,pii_health,OSHA 29 CFR 1904; HIPAA (where applicable to athlete health records)
+athlete,injury_record,injury_mechanism,STRING,restricted,pii_health,OSHA 29 CFR 1904.12; Sports Medicine Injury Surveillance Standards
+athlete,injury_record,injury_type,STRING,restricted,pii_health,ICD-10-CM Classification; League Concussion Protocol; WADA
+athlete,injury_record,insurance_reserve_amount,"DECIMAL(18,2)",confidential,,CBA Insurance Provisions; SAP S/4HANA FI Module; SOX Financial Controls
+athlete,injury_record,is_recurrence,BOOLEAN,restricted,pii_health,Sports Medicine Injury Surveillance Standards; CBA
+athlete,injury_record,is_wada_reportable,BOOLEAN,restricted,pii_health,WADA World Anti-Doping Code; WADA International Standard for Therapeutic Use Exemptions (ISTUE)
+athlete,injury_record,medical_staff_notes,STRING,restricted,pii_health,HIPAA (where applicable); CBA Medical Privacy Provisions; GDPR Article 9
+athlete,injury_record,reported_date,DATE,restricted,pii_health,OSHA 29 CFR 1904.29; CBA Injury Reporting Obligations
+athlete,injury_record,rtp_clearance_stage,STRING,restricted,pii_health,League Concussion Protocol; CBA Medical Provisions; IOC Consensus Statement on Concussion
+athlete,injury_record,severity_grade,STRING,restricted,pii_health,UEFA Injury Study Severity Classification; Sports Medicine Consensus Statement
+athlete,injury_record,surgery_date,DATE,restricted,pii_health,CBA Medical Provisions; OSHA 29 CFR 1904
+athlete,injury_record,surgery_required,BOOLEAN,restricted,pii_health,CBA Medical Provisions; Insurance Claim Standards
+athlete,injury_record,treatment_protocol,STRING,restricted,pii_health,OSHA 29 CFR 1904; CBA Medical Treatment Provisions
+athlete,injury_record,tue_reference,STRING,restricted,pii_health,WADA International Standard for Therapeutic Use Exemptions (ISTUE); CAS
+athlete,draft_selection,actual_signing_bonus,"DECIMAL(15,2)",confidential,,NFL CBA; NBA CBA Rookie Scale; MLB CBA; SAP S/4HANA FI/CO Financial Accounting
+athlete,draft_selection,athlete_nationality,STRING,confidential,pii,ISO 3166-1 Alpha-3; FIFA Nationality Rules; NBA International Player Rules; GDPR Article 4
+athlete,draft_selection,medical_clearance_status,STRING,restricted,pii,NFL CBA Medical Examination Rules; NBA CBA; MLB CBA; OSHA Workplace Health Standards
+athlete,draft_selection,signing_slot_value,"DECIMAL(15,2)",confidential,,NFL CBA Article 7 Rookie Signing; NBA CBA Rookie Scale; MLB CBA Draft Bonus Pool; SAP S/4HANA FI/CO
+athlete,eligibility_status,financial_penalty_amount,"DECIMAL(18,2)",confidential,,CBA Collective Bargaining Agreement; NFL/NBA/MLB/NHL/MLS Disciplinary Policies; FIFA Disciplinary Code
+athlete,eligibility_status,sample_collection_date,DATE,confidential,,WADA International Standard for Testing and Investigations (ISTI); WADA World Anti-Doping Code
+athlete,eligibility_status,visa_permit_number,STRING,confidential,pii_identifier,FIFA RSTP Article 9 (International Transfer Certificate); GDPR Article 9 (Special Category Data); CCPA
+athlete,nil_agreement,annual_value_amount,"DECIMAL(18,2)",confidential,,Workday Adaptive Planning; SAP S/4HANA FI/CO
+athlete,nil_agreement,deal_value_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO Contract Valuation; NCAA NIL Disclosure Requirements
+athlete,nil_agreement,incentive_value_amount,"DECIMAL(18,2)",confidential,,CBA Performance Incentive Provisions; SAP S/4HANA SD
+athlete,nil_agreement,internal_notes,STRING,confidential,,Internal Legal Operations; Salesforce CRM
+athlete,nil_agreement,morality_clause_terms,STRING,confidential,,Standard Sports Endorsement Contract Terms; CBA Conduct Provisions
+athlete,nil_agreement,royalty_rate,"DECIMAL(5,4)",confidential,,IP (Intellectual Property) Licensing Standards; SAP S/4HANA SD Royalty Management
+athlete,agent_relationship,agreement_document_ref,STRING,confidential,,SOX (Sarbanes-Oxley Act) — Document Retention; CBA (Collective Bargaining Agreement)
+athlete,agent_relationship,certification_number,STRING,confidential,,NFLPA Regulations Governing Contract Advisors; NBPA Agent Regulations; MLBPA Regulations; NHLPA Agent Certification
+athlete,agent_relationship,commission_rate_pct,"DECIMAL(5,4)",confidential,,CBA (Collective Bargaining Agreement); NFLPA Regulations Governing Contract Advisors; NBPA Agent Regulations
+athlete,agent_relationship,conflict_of_interest_notes,STRING,confidential,,NFLPA Regulations Governing Contract Advisors; CAS (Court of Arbitration for Sport); SOX (Sarbanes-Oxley Act)
+athlete,agent_relationship,notes,STRING,confidential,,Internal Talent Management Standard
+athlete,agent_relationship,power_of_attorney,BOOLEAN,confidential,,CBA (Collective Bargaining Agreement); League Agent Certification Requirements; SOX (Sarbanes-Oxley Act) — Contract Controls
+athlete,agent_relationship,power_of_attorney_scope,STRING,confidential,,CBA (Collective Bargaining Agreement); League Agent Certification Requirements
+athlete,agent_relationship,primary_contact_email,STRING,confidential,pii_email,GDPR Article 4; CCPA Section 1798.140; Salesforce CRM — Contact Record
+athlete,agent_relationship,primary_contact_phone,STRING,confidential,pii_phone,GDPR Article 4; CCPA Section 1798.140; Salesforce CRM — Contact Record
+athlete,agent_relationship,representation_agreement_date,DATE,confidential,,NFLPA Regulations Governing Contract Advisors; CBA (Collective Bargaining Agreement)
+athlete,suspension_record,case_reference_number,STRING,confidential,,WADA Code Article 10; CAS Procedural Rules; NFL Personal Conduct Policy; NBA Anti-Drug Program
+athlete,suspension_record,financial_penalty_amount,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement); NFL Personal Conduct Policy; NBA Uniform Player Contract; SAP S/4HANA FI (Financial Accounting)
+athlete,suspension_record,incident_description,STRING,confidential,,NFL Personal Conduct Policy; NBA Anti-Drug Program; CBA (Collective Bargaining Agreement); WADA Code
+athlete,suspension_record,nil_agreement_impact,STRING,confidential,,NIL (Name Image and Likeness) Regulations; NCAA NIL Policy; CBA (Collective Bargaining Agreement); Salesforce CRM Sponsorship Records
+athlete,suspension_record,prior_violation_count,INT,confidential,,WADA Code Article 10.7; CBA (Collective Bargaining Agreement); NFL Personal Conduct Policy
+athlete,suspension_record,prohibited_substance_code,STRING,confidential,,WADA Prohibited List (annually updated); WADA Code Article 2.1; ISO 20121 Event Sustainability
+athlete,suspension_record,salary_withheld_amount,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement); SAP S/4HANA FI/CO (Financial Accounting and Controlling); SAP SuccessFactors Payroll
+athlete,suspension_record,sample_collection_date,DATE,confidential,,WADA Code Article 5; WADA International Standard for Testing and Investigations (ISTI)
+athlete,suspension_record,union_grievance_number,STRING,confidential,,CBA (Collective Bargaining Agreement) Grievance Procedures; NFLPA; NBPA; MLBPA; NHLPA
+athlete,salary_cap_entry,salary_cap_entry_id,BIGINT,restricted,pii_financial,NBA/NFL/NHL/MLB CBA Salary Cap Accounting Standards
+athlete,salary_cap_entry,primary_salary_athlete_athlete_profile_id,BIGINT,restricted,pii_financial,NBA/NFL/NHL/MLB CBA Roster and Cap Rules
+athlete,salary_cap_entry,primary_salary_franchise_id,BIGINT,restricted,pii_financial,NFL/NBA/NHL/MLB League Office Salary Cap Rules
+athlete,salary_cap_entry,salary_cap_id,BIGINT,restricted,pii_financial,Internal - LLM Generated Cross-Domain Link
+athlete,salary_cap_entry,base_salary,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Salary Definition; SAP S/4HANA FI/CO
+athlete,salary_cap_entry,cap_hit,"DECIMAL(18,2)",confidential,,NFL/NBA/NHL/MLB CBA Salary Cap Accounting Rules; Workday Adaptive Planning
+athlete,salary_cap_entry,cap_hold_amount,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Restricted Free Agent (RFA) Cap Hold Rules
+athlete,salary_cap_entry,cap_relief,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Contract Restructure Rules
+athlete,salary_cap_entry,dead_cap_value,"DECIMAL(18,2)",confidential,,NFL/NBA/NHL/MLB CBA Dead Cap / Accelerated Cap Rules
+athlete,salary_cap_entry,likely_incentive_amount,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Incentive Classification Rules; NFL/NBA/NHL/MLB League Office
+athlete,salary_cap_entry,option_bonus_prorated,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Option Bonus Proration Rules
+athlete,salary_cap_entry,per_game_roster_bonus,"DECIMAL(18,2)",confidential,,NFL CBA Per-Game Roster Bonus Rules
+athlete,salary_cap_entry,prior_year_incentive_carryover,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Incentive Carryover Rules; NFL/NBA/NHL/MLB League Office
+athlete,salary_cap_entry,roster_bonus,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Roster Bonus Rules
+athlete,salary_cap_entry,signing_bonus_prorated,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Signing Bonus Proration Rules; NFL/NBA/NHL/MLB League Office
+athlete,salary_cap_entry,signing_bonus_total,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Signing Bonus Proration Rules
+athlete,salary_cap_entry,unlikely_incentive_amount,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Incentive Classification Rules; NFL/NBA/NHL/MLB League Office
+athlete,salary_cap_entry,workout_bonus,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Workout Bonus Rules
+athlete,free_agency_status,cap_hold_amount,"DECIMAL(18,2)",confidential,,CBA — Salary Cap Hold Provisions; NFL Governance Office; NBA League Office; SAP S/4HANA FI/CO
+athlete,free_agency_status,compensation_tier,STRING,restricted,pii_financial,CBA — Compensatory Pick Formula; NFL Governance Office; MLB Commissioner's Office
+athlete,free_agency_status,draft_pick_compensation_flag,BOOLEAN,restricted,pii_financial,CBA — Compensatory Draft Pick Provisions; NFL Governance Office; MLB Commissioner's Office
+athlete,free_agency_status,franchise_tag_amount,"DECIMAL(18,2)",confidential,,CBA — Franchise Tag Article; NFL Governance Office; SAP S/4HANA FI/CO
+athlete,free_agency_status,qualifying_offer_amount,"DECIMAL(18,2)",confidential,,CBA — Qualifying Offer Provisions; SAP S/4HANA SD — Contract Pricing
+athlete,free_agency_status,tender_amount,"DECIMAL(18,2)",confidential,,CBA — Tender Amount Provisions; SAP S/4HANA FI/CO
+athlete,free_agency_status,transition_tag_amount,"DECIMAL(18,2)",confidential,,CBA — Transition Tag Article; NFL Governance Office; SAP S/4HANA FI/CO
+athlete,agent,commission_rate_percentage,"DECIMAL(5,2)",confidential,,
+athlete,agent,disciplinary_action_summary,STRING,confidential,,
+athlete,agent,full_name,STRING,restricted,pii_name,
+athlete,agent,office_address_line1,STRING,confidential,pii_address,
+athlete,agent,office_address_line2,STRING,confidential,pii_address,
+athlete,agent,office_city,STRING,confidential,pii_address,
+athlete,agent,office_postal_code,STRING,confidential,pii_address,
+athlete,agent,office_state_province,STRING,confidential,pii_address,
+athlete,agent,primary_email,STRING,restricted,pii_email,
+athlete,agent,primary_phone,STRING,restricted,pii_phone,
+athlete,agent,professional_liability_coverage_amount,"DECIMAL(15,2)",confidential,,
+athlete,agent,professional_liability_policy_number,STRING,confidential,,
+athlete,agent,tax_identification_number,STRING,restricted,pii_financial,
+athlete,agency,annual_revenue_usd,"DECIMAL(15,2)",confidential,,
+athlete,agency,commission_rate_percentage,"DECIMAL(5,2)",confidential,,
+athlete,agency,compliance_officer_email,STRING,confidential,pii_email,
+athlete,agency,headquarters_address_line1,STRING,confidential,pii_address,
+athlete,agency,headquarters_address_line2,STRING,confidential,pii_address,
+athlete,agency,headquarters_city,STRING,confidential,pii_address,
+athlete,agency,headquarters_postal_code,STRING,confidential,pii_address,
+athlete,agency,headquarters_state_province,STRING,confidential,pii_address,
+athlete,agency,insurance_coverage_amount,"DECIMAL(15,2)",confidential,,
+athlete,agency,insurance_policy_number,STRING,confidential,,
+athlete,agency,primary_contact_email,STRING,confidential,pii_email,
+athlete,agency,primary_contact_phone,STRING,confidential,pii_phone,
+athlete,agency,tax_identification_number,STRING,restricted,pii_financial,
+fan,fan_profile,accessibility_requirements,STRING,confidential,,ADA (Americans with Disabilities Act) Title III; ISO 20121 Event Sustainability
+fan,fan_profile,aep_profile_reference,STRING,restricted,pii_identifier,Adobe Experience Platform — Real-Time Customer Profile
+fan,fan_profile,birth_date,DATE,restricted,pii_dob,GDPR Article 4; CCPA Section 1798.140; ISO 8601
+fan,fan_profile,communication_opt_in_email,BOOLEAN,restricted,pii_email,GDPR Article 6 (Lawful Basis); GDPR Article 7 (Consent); CAN-SPAM Act; CCPA Section 1798.120
+fan,fan_profile,country_of_residence_code,STRING,restricted,pii_address,ISO 3166-1 Alpha-3; GDPR Article 3; CCPA Section 1798.140
+fan,fan_profile,crm_contact_reference,STRING,restricted,pii_identifier,Salesforce CRM — Contact Object
+fan,fan_profile,display_name,STRING,restricted,pii_name,Adobe Experience Platform — Profile Attributes
+fan,fan_profile,email,STRING,restricted,pii_email,GDPR Article 4; CCPA Section 1798.140; CAN-SPAM Act
+fan,fan_profile,first_name,STRING,restricted,pii_name,GDPR Article 4; CCPA Section 1798.140
+fan,fan_profile,gender,STRING,confidential,,GDPR Article 9; CCPA Section 1798.140
+fan,fan_profile,last_name,STRING,restricted,pii_name,GDPR Article 4; CCPA Section 1798.140
+fan,fan_profile,nationality_code,STRING,confidential,,ISO 3166-1 Alpha-3; FIFA Regulations; GDPR Article 4
+fan,fan_profile,phone,STRING,restricted,pii_phone,GDPR Article 4; CCPA Section 1798.140; ITU-T E.164
+fan,fan_profile,postal_code,STRING,restricted,pii_address,GDPR Article 4; CCPA Section 1798.140
+fan,account,fan_profile_id,BIGINT,restricted,pii_identifier,Salesforce CRM Account-Contact Relationship; GDPR Article 4
+fan,account,card_brand,STRING,confidential,,PCI-DSS v4.0 Requirement 3.3; Salesforce CRM Payment Methods
+fan,account,card_expiry_date,DATE,confidential,,PCI-DSS v4.0 Requirement 3; Salesforce CRM Payment Methods
+fan,account,card_last_four,STRING,confidential,pii_financial,PCI-DSS v4.0 Requirement 3.3.1 (Truncated PAN); Salesforce CRM Payment Methods
+fan,account,crm_account_number,STRING,restricted,pii_financial,Salesforce CRM Account Object; Internal Account Numbering Standard
+fan,account,marketing_email_opt_in_flag,BOOLEAN,restricted,pii_email,GDPR Article 6(1)(a); CAN-SPAM Act; CASL; Salesforce CRM Marketing Cloud
+fan,account,membership_number,STRING,restricted,pii_identifier,Archtics Venue Seating and Inventory Management; Ticketmaster/AXS Access Control
+fan,account,pci_payment_token,STRING,restricted,pii_financial,PCI-DSS v4.0 Requirement 3; PCI SSC Tokenization Guidelines; Salesforce CRM Payment
+fan,account,primary_email,STRING,restricted,pii_email,Salesforce CRM Account Email; GDPR Article 4; CCPA §1798.140; PCI-DSS v4.0
+fan,account,primary_phone,STRING,restricted,pii_phone,Salesforce CRM Account Phone; GDPR Article 4; CCPA §1798.140; ITU-T E.164
+fan,account,username,STRING,restricted,pii_identifier,Salesforce CRM; Adobe Experience Platform Identity Management; GDPR Article 4
+fan,loyalty_program,membership_fee_amount,"DECIMAL(12,2)",confidential,,SAP S/4HANA FI/CO; PCI-DSS; Internal Pricing Policy
+fan,loyalty_enrollment,membership_card_number,STRING,confidential,pii_identifier,PCI DSS v4.0; Salesforce CRM; Archtics Venue Seating
+fan,loyalty_transaction,monetary_value,"DECIMAL(12,2)",confidential,pii_financial,SAP S/4HANA FI — Revenue Recognition; PCI-DSS — Transaction Amount; Internal Loyalty Earn Rate Policy
+fan,loyalty_transaction,redemption_value,"DECIMAL(12,2)",confidential,pii_financial,SAP S/4HANA FI/CO — Loyalty Liability Accounting; Internal Loyalty Redemption Valuation Policy; SOX — Financial Controls
+fan,membership,discount_amount,"DECIMAL(12,2)",confidential,pii_financial,SAP S/4HANA SD Condition Records; Sports Entertainment Pricing Policy
+fan,membership,fee,"DECIMAL(12,2)",confidential,pii_financial,SAP S/4HANA SD Pricing; SOX Section 606 Revenue Recognition; PCI-DSS v4.0
+fan,membership,membership_number,STRING,confidential,pii_identifier,Archtics Membership Module; Ticketmaster/AXS Access Control
+fan,membership,net_fee,"DECIMAL(12,2)",confidential,pii_financial,SAP S/4HANA FI Revenue Recognition; SOX Section 606
+fan,consent_preference,primary_consent_fan_profile_id,BIGINT,restricted,pii_identifier,GDPR Article 4(1); CCPA Section 1798.140(o)
+fan,consent_preference,tertiary_consent_parental_guardian_fan_profile_id,BIGINT,restricted,pii_identifier,GDPR Article 8; COPPA; CCPA Section 1798.120
+fan,consent_preference,ip_address,STRING,confidential,pii_ip,GDPR Article 4(1); GDPR Recital 30; CCPA Section 1798.140(o)
+fan,engagement_event,ip_address,STRING,confidential,pii_ip,GDPR Article 4; CCPA; FCC Broadcast Regulation; Adobe Experience Platform (AEP)
+fan,service_case,refund_amount,"DECIMAL(12,2)",confidential,pii_financial,SAP S/4HANA FI — Financial Accounting; PCI-DSS (Payment Card Industry Data Security Standard)
+fan,payment_method,bank_account_last_four,STRING,restricted,pii_financial,PCI DSS v4.0; NACHA ACH Rules; SEPA Direct Debit Scheme
+fan,payment_method,bank_routing_code,STRING,confidential,,NACHA ACH Operating Rules; SEPA Direct Debit Core Scheme Rulebook
+fan,payment_method,billing_address_line1,STRING,restricted,pii_address,PCI DSS v4.0 Requirement 12.3; GDPR Article 4; CCPA §1798.140
+fan,payment_method,billing_address_line2,STRING,restricted,pii_address,PCI DSS v4.0; GDPR Article 4; CCPA §1798.140
+fan,payment_method,billing_city,STRING,restricted,pii_address,PCI DSS v4.0; GDPR Article 4; CCPA §1798.140
+fan,payment_method,billing_postal_code,STRING,restricted,pii_address,PCI DSS v4.0; GDPR Article 4; CCPA §1798.140
+fan,payment_method,billing_state_province,STRING,restricted,pii_address,PCI DSS v4.0; CCPA §1798.140; GDPR Article 4
+fan,payment_method,bin_number,STRING,confidential,,ISO 7812 BIN/IIN Standard; PCI DSS v4.0 Requirement 3.3.1
+fan,payment_method,card_last_four,STRING,restricted,pii_financial,PCI DSS v4.0 Requirement 3.3.1; PCI SSC Truncation Guidelines
+fan,payment_method,cardholder_name,STRING,restricted,pii_financial,PCI DSS v4.0 Requirement 3.3; GDPR Article 5 (Data Minimisation); CCPA §1798.140
+fan,payment_method,direct_debit_mandate_ref,STRING,confidential,,SEPA Direct Debit Core Scheme Rulebook; NACHA ACH Operating Rules; PCI DSS v4.0
+fan,payment_method,fraud_risk_score,"DECIMAL(5,2)",confidential,,PCI DSS v4.0 Requirement 12.3; Adyen RevenueProtect; Stripe Radar
+fan,payment_method,gift_card_balance,"DECIMAL(12,2)",confidential,pii_financial,Shopify Plus Gift Card API; PCI DSS v4.0 Requirement 3
+fan,payment_method,token_value,"DECIMAL(18,2)",restricted,pii_financial,PCI DSS v4.0 Requirement 3.5; PCI SSC Tokenization Guidelines
+fan,club,annual_revenue_usd,"DECIMAL(14,2)",confidential,,SAP S/4HANA FI (Financial Accounting) / CO (Controlling); SOX; EBITDA Reporting Standards
+fan,club,membership_fee_amount,"DECIMAL(10,2)",confidential,,SAP S/4HANA SD (Sales and Distribution); PCI-DSS
+fan,club,merchandise_discount_pct,"DECIMAL(5,2)",confidential,,Shopify Plus; SAP S/4HANA SD
+fan,campaign,actual_spend_amount,"DECIMAL(15,2)",confidential,,
+fan,campaign,budget_amount,"DECIMAL(15,2)",confidential,,
+ticketing,ticket_inventory,dynamic_price_amount,"DECIMAL(12,2)",confidential,,Ticketmaster / AXS Ticketing and Access Control; SAP S/4HANA SD Sales and Distribution
+ticketing,ticket_inventory,face_value_amount,"DECIMAL(12,2)",confidential,,SAP S/4HANA FI Financial Accounting; PCI SSC Payment Card Industry Security Standards Council
+ticketing,ticket_inventory,resale_max_price,"DECIMAL(12,2)",confidential,,Ticketmaster / AXS Ticketing and Access Control; SAP S/4HANA SD Sales and Distribution
+ticketing,ticket_inventory,resale_min_price,"DECIMAL(12,2)",confidential,,Ticketmaster / AXS Ticketing and Access Control; SAP S/4HANA SD Sales and Distribution
+ticketing,ticket_order,access_barcode,STRING,confidential,,Ticketmaster / AXS; Archtics; PCI-DSS v4.0
+ticketing,ticket_order,discount_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA SD; Salesforce CRM
+ticketing,ticket_order,face_value_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI/CO; PCI-DSS v4.0; SOX
+ticketing,ticket_order,order_total_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI/CO; PCI-DSS v4.0; SOX
+ticketing,ticket_order,payment_reference,STRING,restricted,pii_financial,PCI-DSS v4.0; PCI SSC; SAP S/4HANA FI
+ticketing,ticket_order,refund_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI; PCI-DSS v4.0; SOX
+ticketing,ticket_order,service_fee_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI/CO; Ticketmaster / AXS; PCI-DSS v4.0
+ticketing,ticket_order,tax_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI; SOX; SEC Financial Reporting
+ticketing,ticket_order_line,discount_amount,"DECIMAL(10,2)",confidential,pii_financial,SAP S/4HANA SD; Ticketmaster/AXS; SOX
+ticketing,ticket_order_line,dynamic_price,"DECIMAL(12,2)",confidential,pii_financial,Ticketmaster/AXS Dynamic Pricing Engine; SAP S/4HANA SD
+ticketing,ticket_order_line,face_value,"DECIMAL(12,2)",confidential,pii_financial,SAP S/4HANA FI (Financial Accounting); PCI-DSS; SOX Sarbanes-Oxley Act
+ticketing,ticket_order_line,facility_fee,"DECIMAL(10,2)",confidential,pii_financial,Archtics Venue Seating and Inventory Management; SAP S/4HANA FI; OSHA
+ticketing,ticket_order_line,line_total,"DECIMAL(12,2)",confidential,pii_financial,SAP S/4HANA FI/CO; PCI-DSS; SOX
+ticketing,ticket_order_line,resale_original_price,"DECIMAL(12,2)",confidential,pii_financial,Ticketmaster/AXS Resale Marketplace; League Governance
+ticketing,ticket_order_line,service_fee,"DECIMAL(10,2)",confidential,pii_financial,Ticketmaster/AXS Ticketing Platform; SAP S/4HANA FI; PCI-DSS
+ticketing,ticket_order_line,tax_amount,"DECIMAL(10,2)",confidential,pii_financial,SAP S/4HANA FI/CO; SOX Sarbanes-Oxley Act; SEC Financial Reporting
+ticketing,price_tier,face_value,"DECIMAL(12,2)",confidential,,Ticketmaster/AXS Pricing Configuration; PCI-DSS (Payment Card Industry Data Security Standard); SAP S/4HANA SD Pricing
+ticketing,price_tier,facility_fee,"DECIMAL(10,2)",confidential,,Archtics Venue Seating Inventory; SAP S/4HANA FI/CO Venue Revenue Accounting
+ticketing,price_tier,max_price,"DECIMAL(12,2)",confidential,,Ticketmaster/AXS Dynamic Pricing Configuration; SAP S/4HANA SD Pricing Conditions
+ticketing,price_tier,min_price,"DECIMAL(12,2)",confidential,,Ticketmaster/AXS Dynamic Pricing Configuration; SAP S/4HANA SD Pricing Conditions
+ticketing,price_tier,resale_min_price,"DECIMAL(12,2)",confidential,,Ticketmaster/AXS Resale Marketplace Configuration
+ticketing,price_tier,service_fee,"DECIMAL(10,2)",confidential,,Ticketmaster/AXS Fee Configuration; SAP S/4HANA SD Pricing Conditions
+ticketing,season_ticket_package,face_value_amount,"DECIMAL(12,2)",confidential,,SAP S/4HANA SD; PCI-DSS; SOX
+ticketing,season_ticket_account,account_balance,"DECIMAL(12,2)",confidential,,SAP S/4HANA FI; PCI-DSS; SOX
+ticketing,season_ticket_account,account_number,STRING,restricted,pii_financial,Archtics Venue Seating and Inventory Management; Ticketmaster/AXS
+ticketing,season_ticket_account,discount_amount,"DECIMAL(12,2)",confidential,,SAP S/4HANA SD; Ticket Sales and Revenue Management
+ticketing,season_ticket_account,face_value_amount,"DECIMAL(12,2)",confidential,,SAP S/4HANA FI/SD; PCI-DSS; Ticket Sales and Revenue Management
+ticketing,season_ticket_account,net_package_amount,"DECIMAL(12,2)",confidential,,SAP S/4HANA FI/SD; PCI-DSS; SOX
+ticketing,group_sale,catering_amount,"DECIMAL(12,2)",confidential,,SAP S/4HANA SD; OSHA
+ticketing,group_sale,coordinator_email,STRING,restricted,pii_email,GDPR Article 4; CCPA; Salesforce CRM
+ticketing,group_sale,coordinator_name,STRING,restricted,pii_name,GDPR Article 4; CCPA; Salesforce CRM
+ticketing,group_sale,coordinator_phone,STRING,restricted,pii_phone,GDPR Article 4; CCPA; Salesforce CRM
+ticketing,group_sale,deposit_amount,"DECIMAL(12,2)",confidential,,SAP S/4HANA FI; Ticketmaster/AXS Group Sales Module
+ticketing,group_sale,discount_rate,"DECIMAL(5,4)",confidential,,SAP S/4HANA SD; Ticketmaster/AXS Group Sales Module
+ticketing,group_sale,face_value_price,"DECIMAL(12,2)",confidential,,SAP S/4HANA SD; Ticketmaster/AXS; PCI-DSS
+ticketing,group_sale,gross_amount,"DECIMAL(14,2)",confidential,,SAP S/4HANA FI/CO; SOX; PCI-DSS
+ticketing,group_sale,negotiated_price,"DECIMAL(12,2)",confidential,,SAP S/4HANA SD; Ticketmaster/AXS
+ticketing,group_sale,net_amount,"DECIMAL(14,2)",confidential,,SAP S/4HANA FI/CO; SOX; PCI-DSS
+ticketing,group_sale,service_fee_amount,"DECIMAL(12,2)",confidential,,SAP S/4HANA SD; Ticketmaster/AXS
+ticketing,group_sale,tax_amount,"DECIMAL(12,2)",confidential,,SAP S/4HANA FI; SOX; SEC
+ticketing,resale,listing_price,"DECIMAL(12,2)",confidential,,Ticketmaster/AXS; PCI-DSS; SAP S/4HANA SD
+ticketing,resale,original_face_value,"DECIMAL(12,2)",confidential,,Ticketmaster/AXS; League anti-scalping policies; SAP S/4HANA SD
+ticketing,resale,payment_reference,STRING,confidential,pii_financial,PCI-DSS; PCI SSC; Ticketmaster/AXS Payment Processing
+ticketing,resale,platform_fee_amount,"DECIMAL(12,2)",confidential,,Ticketmaster/AXS Marketplace Fee Schedule; SAP S/4HANA FI/CO
+ticketing,resale,revenue_share_amount,"DECIMAL(12,2)",confidential,,League Revenue Share Agreements; SAP S/4HANA FI/CO; CBA
+ticketing,resale,revenue_share_rate,"DECIMAL(5,4)",confidential,,League Revenue Share Agreements; SAP S/4HANA FI/CO; CBA
+ticketing,resale,sale_price,"DECIMAL(12,2)",confidential,,Ticketmaster/AXS; PCI-DSS; SAP S/4HANA FI
+ticketing,resale,seller_proceeds,"DECIMAL(12,2)",confidential,,Ticketmaster/AXS; SAP S/4HANA FI; PCI-DSS
+ticketing,access_entitlement,entitlement_token,STRING,confidential,,Ticketmaster/AXS Access Control; PCI SSC; ISO 20121
+ticketing,access_entitlement,face_value_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI Financial Accounting; PCI-DSS; SOX Sarbanes-Oxley Act
+ticketing,gate_scan,device_code,STRING,internal,pii,Ticketmaster/AXS Access Control System
+ticketing,gate_scan,is_mobile_ticket,BOOLEAN,restricted,pii_phone,Ticketmaster/AXS Access Control System
+ticketing,ticket_payment,card_expiry_month,INT,restricted,pii_financial,PCI DSS v4.0 Requirement 3.3; PCI SSC Data Security Standard
+ticketing,ticket_payment,card_expiry_year,INT,restricted,pii_financial,PCI DSS v4.0 Requirement 3.3; PCI SSC Data Security Standard
+ticketing,ticket_payment,discount_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA SD Pricing Conditions; Ticketmaster/AXS Discount Management
+ticketing,ticket_payment,gross_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA FI Revenue Recognition; SOX Section 302/404 Financial Controls
+ticketing,ticket_payment,masked_card_reference,STRING,restricted,pii_financial,PCI DSS v4.0 Requirement 3.3 (Masking of PAN); PCI SSC Data Security Standard
+ticketing,ticket_payment,net_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA FI Revenue Recognition; SOX Section 302/404; PCI DSS v4.0
+ticketing,ticket_payment,processor_transaction_token,STRING,restricted,pii_financial,PCI DSS v4.0 Requirement 3.5 (Tokenization); PCI SSC Token Service Provider Guidelines
+ticketing,ticket_payment,refund_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA FI Credit Memo Processing; PCI DSS v4.0 Requirement 3; Ticketmaster/AXS Refund Policy
+ticketing,ticket_payment,service_fee_amount,"DECIMAL(18,4)",confidential,pii_financial,Ticketmaster/AXS Fee Schedule; FTC Transparency in Ticketing Guidelines
+ticketing,ticket_payment,tax_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA FI Tax Accounting; SOX Section 302; GDPR Article 6 (Lawful Basis for Processing)
+ticketing,refund,gross_refund_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA FI Revenue Reversal; PCI DSS v4.0; SOX Section 404
+ticketing,refund,net_refund_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA FI Net Payment; PCI DSS v4.0; SOX Section 404
+ticketing,refund,payment_transaction_ref,STRING,confidential,pii_financial,PCI DSS v4.0 Requirement 10.2; SAP S/4HANA FI Bank Reconciliation
+ticketing,refund,service_fee_refund_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA CO Cost Allocation; PCI DSS v4.0
+ticketing,refund,tax_refund_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA FI Tax Management; GDPR Article 5; SOX Section 404
+ticketing,hold_allocation,access_code,STRING,confidential,,Ticketmaster/AXS Inventory Management; GDPR (General Data Protection Regulation)
+ticketing,ticket_transfer,recipient_display_name,STRING,restricted,pii_name,GDPR Article 4; CCPA
+ticketing,ticket_transfer,recipient_email,STRING,restricted,pii_email,GDPR Article 4; CCPA; Ticketmaster / AXS Ticketing and Access Control
+ticketing,ticket_transfer,recipient_phone,STRING,restricted,pii_phone,GDPR Article 4; CCPA; Ticketmaster / AXS Ticketing and Access Control
+ticketing,price_zone,mobile_entry_enabled,BOOLEAN,restricted,pii_phone,
+broadcast,media_rights_deal,annual_rights_fee_usd,"DECIMAL(18,2)",confidential,,SOX Financial Controls; SAP S/4HANA FI/CO; Workday Adaptive Planning
+broadcast,media_rights_deal,deal_name,STRING,confidential,,Dalet Galaxy; Salesforce CRM
+broadcast,media_rights_deal,deal_number,STRING,confidential,,Dalet Galaxy Contract Management; Salesforce CRM
+broadcast,media_rights_deal,deal_value_usd,"DECIMAL(18,2)",confidential,,SOX Financial Controls; SAP S/4HANA FI/CO; SEC Financial Reporting
+broadcast,media_rights_deal,effective_date,DATE,confidential,,SOX Financial Controls; Salesforce CRM
+broadcast,media_rights_deal,execution_date,DATE,confidential,,SOX Financial Controls; Salesforce CRM
+broadcast,media_rights_deal,expiry_date,DATE,confidential,,SOX Financial Controls; Salesforce CRM
+broadcast,media_rights_deal,revenue_share_pct,"DECIMAL(5,2)",confidential,,SOX Financial Controls; SAP S/4HANA FI/CO; CBA (Collective Bargaining Agreement)
+broadcast,broadcast_schedule,ppv_price,"DECIMAL(10,2)",confidential,,PCI-DSS; SAP S/4HANA SD Pricing; Dalet Galaxy Broadcast Workflow
+broadcast,channel,monthly_rights_fee,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO; SOX Financial Controls; Internal Media Rights Framework
+broadcast,channel,revenue_share_pct,DECIMAL,confidential,,
+broadcast,channel,stream_url,STRING,confidential,,Internal Broadcast Technical Standards; CDN SLA
+broadcast,blackout_rule,media_rights_deal_id,BIGINT,confidential,,Internal Broadcast Rights Management
+broadcast,blackout_rule,penalty_clause,STRING,confidential,,Internal Media Rights Contract Management; FCC Enforcement Policy
+broadcast,blackout_rule,rsn_partner_name,STRING,confidential,,RSN Exclusivity Agreement Terms
+broadcast,streaming_subscription,device_code,STRING,confidential,pii_device,GDPR Article 4; CCPA; Internal DRM Policy
+broadcast,streaming_subscription,promotional_rate,"DECIMAL(10,2)",confidential,,Internal Broadcast Domain Standard; SAP S/4HANA SD
+broadcast,streaming_subscription,subscription_charge,"DECIMAL(10,2)",confidential,,SAP S/4HANA SD; PCI-DSS; SOX (Sarbanes-Oxley Act)
+broadcast,rights_window,revenue_share_pct,"DECIMAL(5,2)",confidential,,SAP S/4HANA FI Revenue Recognition; SOX Financial Controls; EBITDA Reporting
+broadcast,rights_window,rights_fee_allocation_pct,"DECIMAL(5,2)",confidential,,SAP S/4HANA FI Revenue Recognition; Workday Adaptive Planning; SOX Financial Controls
+broadcast,rights_window,rights_fee_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI Revenue Recognition; SOX Financial Controls; EBITDA Reporting
+broadcast,production,color_analyst_name,STRING,confidential,,Dalet Galaxy Broadcast Workflow; NIL
+broadcast,production,play_by_play_announcer,STRING,confidential,,Dalet Galaxy Broadcast Workflow; NIL; SAP SuccessFactors HCM
+broadcast,production,ppv_price,"DECIMAL(10,2)",confidential,,PPV; SAP S/4HANA FI/CO; PCI-DSS
+broadcast,production,sideline_reporter_name,STRING,confidential,,Dalet Galaxy Broadcast Workflow
+broadcast,audience_rating,audience_guarantee_target,BIGINT,confidential,,Media Rights Agreement Standards; SOX Financial Controls; SEC Financial Reporting
+broadcast,audience_rating,cpm_rate,"DECIMAL(10,4)",confidential,,IAB CPM Standards; FCC Broadcast Regulation; SEC Financial Reporting
+broadcast,audience_rating,demo_gender,STRING,confidential,pii,Nielsen Demographic Standards; BARB; MRC Audience Measurement Guidelines
+broadcast,rights_holder,bank_account_name,STRING,restricted,pii_financial,
+broadcast,rights_holder,bank_account_number,STRING,restricted,pii_financial,
+broadcast,rights_holder,bank_routing_number,STRING,restricted,pii_financial,
+broadcast,rights_holder,bank_swift_code,STRING,restricted,pii_financial,
+broadcast,rights_holder,credit_rating,STRING,confidential,,
+broadcast,rights_holder,headquarters_address_line1,STRING,confidential,pii_address,
+broadcast,rights_holder,headquarters_address_line2,STRING,confidential,pii_address,
+broadcast,rights_holder,headquarters_city,STRING,confidential,pii_address,
+broadcast,rights_holder,headquarters_postal_code,STRING,confidential,pii_address,
+broadcast,rights_holder,headquarters_state_province,STRING,confidential,pii_address,
+broadcast,rights_holder,minimum_guarantee_amount,"DECIMAL(15,2)",confidential,,
+broadcast,rights_holder,primary_contact_email,STRING,restricted,pii_email,
+broadcast,rights_holder,primary_contact_name,STRING,restricted,pii_name,
+broadcast,rights_holder,primary_contact_phone,STRING,restricted,pii_phone,
+broadcast,rights_holder,revenue_share_percentage,"DECIMAL(5,2)",confidential,,
+broadcast,rights_holder,tax_identification_number,STRING,confidential,pii_financial,
+broadcast,licensee,business_address_line1,STRING,confidential,pii_address,
+broadcast,licensee,business_address_line2,STRING,confidential,pii_address,
+broadcast,licensee,business_city,STRING,confidential,pii_address,
+broadcast,licensee,business_postal_code,STRING,confidential,pii_address,
+broadcast,licensee,business_state_province,STRING,confidential,pii_address,
+broadcast,licensee,credit_limit_amount,"DECIMAL(18,2)",confidential,,
+broadcast,licensee,primary_contact_email,STRING,restricted,pii_email,
+broadcast,licensee,primary_contact_name,STRING,restricted,pii_name,
+broadcast,licensee,primary_contact_phone,STRING,restricted,pii_phone,
+broadcast,licensee,subscriber_count,BIGINT,confidential,,
+broadcast,licensee,tax_identification_number,STRING,restricted,pii_identifier,
+sponsorship,sponsor,annual_investment_usd,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO — Revenue Recognition; SOX Section 302; Internal Sponsorship Revenue Policy
+sponsorship,sponsor,legal_name,STRING,confidential,,SOX Section 302; SEC Regulation S-K
+sponsorship,sponsor,parent_organization_name,STRING,confidential,,SAP S/4HANA FI — Business Partner Hierarchy; SOX Section 302
+sponsorship,sponsor,renewal_probability,"DECIMAL(5,2)",confidential,,Salesforce CRM — Opportunity Probability; Workday Adaptive Planning — Revenue Forecast
+sponsorship,sponsor,value_in_kind_usd,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — Non-Cash Revenue Recognition; GAAP ASC 606
+sponsorship,deal,annual_contract_value,"DECIMAL(18,2)",confidential,,SAP S/4HANA CO — Annual Budget; Workday Adaptive Planning
+sponsorship,deal,arpu_impact_estimate,"DECIMAL(10,2)",confidential,,Workday Adaptive Planning; Sports Entertainment Digital Revenue Policy; ARPU KPI Standard
+sponsorship,deal,contract_document_reference,STRING,confidential,,SOX Section 302 and 404; SEC Financial Reporting; SAP S/4HANA SD — Contract Management
+sponsorship,deal,cpm_rate,"DECIMAL(10,4)",confidential,,Sports Entertainment Media Pricing Policy; CPM Industry Standard
+sponsorship,deal,renewal_option_terms,STRING,confidential,,Sports Entertainment Contract Management Policy; SOX Financial Controls
+sponsorship,deal,total_contract_value,"DECIMAL(18,2)",confidential,,SAP S/4HANA SD — Contract Value; SOX Financial Controls; SEC Financial Reporting
+sponsorship,deal_term,cash_fee_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO — Revenue Recognition; SOX; EBITDA Reporting Standards
+sponsorship,deal_term,cpm_rate,"DECIMAL(10,4)",confidential,,Sports Entertainment Digital Platform Policy; IAB CPM Standards; FCC Broadcast Regulation
+sponsorship,deal_term,effective_end_date,DATE,confidential,,SAP S/4HANA SD — Contract Validity End; SOX Financial Controls
+sponsorship,deal_term,effective_start_date,DATE,confidential,,SAP S/4HANA SD — Contract Validity Start; SOX Financial Controls
+sponsorship,deal_term,escalation_rate_pct,"DECIMAL(7,4)",confidential,,SAP S/4HANA SD — Price Escalation Clause; SOX Financial Controls
+sponsorship,deal_term,kill_clause_threshold,STRING,confidential,,Sports Entertainment Sponsorship Contract Standards; CAS Arbitration Guidelines
+sponsorship,deal_term,late_payment_penalty_rate_pct,"DECIMAL(7,4)",confidential,,SAP S/4HANA FI — Dunning Configuration; PCI-DSS; Sports Entertainment Commercial Policy
+sponsorship,deal_term,payment_schedule_type,STRING,confidential,,SAP S/4HANA SD — Billing Plan Type; PCI-DSS Payment Processing Standards
+sponsorship,deal_term,performance_bonus_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA SD — Bonus/Rebate Condition; Sports Entertainment CBA and Commercial Policy
+sponsorship,deal_term,sap_contract_number,STRING,confidential,,SAP S/4HANA SD — Sales Contract (VA41/VA42); SOX Financial Controls
+sponsorship,deal_term,signed_date,DATE,confidential,,SOX Financial Controls; SAP S/4HANA SD — Contract Signing Date; SEC Financial Reporting
+sponsorship,deal_term,term_reference_number,STRING,confidential,,SAP S/4HANA SD — Sales Contract Line Reference
+sponsorship,deal_term,total_contract_fee,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO — Revenue Recognition; SOX Financial Controls; SEC Financial Reporting
+sponsorship,deal_term,vik_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA MM — VIK Goods Receipt; SOX Financial Controls
+sponsorship,deal_term,vik_description,STRING,confidential,,SAP S/4HANA MM — Material Description; Sports Entertainment Sponsorship Policy
+sponsorship,activation,contracted_value,"DECIMAL(18,2)",confidential,,SAP S/4HANA SD — Revenue Recognition; SOX Financial Controls
+sponsorship,activation_fulfillment,cpm_contracted,"DECIMAL(12,4)",confidential,,IAB CPM Standards; Salesforce CRM — Contract Pricing
+sponsorship,activation_fulfillment,cpm_realized,"DECIMAL(12,4)",confidential,,IAB CPM Standards; Salesforce CRM — Fulfillment Analytics
+sponsorship,activation_fulfillment,fulfillment_value_usd,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — Revenue Recognition; SOX Financial Controls; SEC Reporting
+sponsorship,naming_right,activation_budget_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA CO; Workday Adaptive Planning; Sports Entertainment Sponsorship Policy
+sponsorship,naming_right,agreement_number,STRING,confidential,,SAP S/4HANA SD; Salesforce CRM
+sponsorship,naming_right,annual_fee_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO; Workday Adaptive Planning; SOX
+sponsorship,naming_right,contract_document_ref,STRING,confidential,,SAP S/4HANA Document Management; Sports Entertainment Legal Policy
+sponsorship,naming_right,cpm_rate,"DECIMAL(10,4)",confidential,,Sports Entertainment Commercial Policy; CPM industry standard
+sponsorship,naming_right,exclusivity_category,STRING,confidential,,Sports Entertainment Commercial Policy; Salesforce CRM
+sponsorship,naming_right,fee_escalation_rate,"DECIMAL(6,4)",confidential,,Workday Adaptive Planning; SAP S/4HANA FI/CO
+sponsorship,naming_right,renewal_option_terms,STRING,confidential,,Salesforce CRM Contract Management; Sports Entertainment Legal Policy
+sponsorship,naming_right,roi_target_pct,"DECIMAL(6,4)",confidential,,Workday Adaptive Planning; Sports Entertainment Commercial Policy; ROI standard
+sponsorship,naming_right,termination_fee_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI; Sports Entertainment Legal Policy
+sponsorship,naming_right,total_fee_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO; SOX (Sarbanes-Oxley Act); SEC Financial Reporting
+sponsorship,ad_inventory,assessed_value_per_unit,"DECIMAL(18,4)",confidential,,Salesforce CRM — Sponsorship Valuation Object; Sports Entertainment Commercial Standards; SOX Financial Controls
+sponsorship,ad_inventory,cpm_benchmark,"DECIMAL(12,4)",confidential,,Nielsen Media Standards; CPM Industry Benchmarks; Sports Entertainment Commercial Standards
+sponsorship,ad_inventory,list_price_per_unit,"DECIMAL(18,4)",confidential,,Salesforce CRM — Sponsorship Pricing Object; SAP S/4HANA SD — Pricing; Sports Entertainment Commercial Standards
+sponsorship,inventory_allocation,allocated_value,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO; SOX Financial Controls; SEC Financial Reporting
+sponsorship,inventory_allocation,cpm_rate,"DECIMAL(10,4)",confidential,,IAB Advertising Standards; Internal Digital Sponsorship Pricing
+sponsorship,inventory_allocation,rate_card_value,"DECIMAL(18,2)",confidential,,Internal Sponsorship Rate Card; SAP S/4HANA SD Pricing
+sponsorship,performance_metric,contracted_target_value,"DECIMAL(18,4)",confidential,,Salesforce CRM — Contract KPI Terms; Sports Entertainment Sponsorship Contract Standards
+sponsorship,performance_metric,cpm_realized,"DECIMAL(12,4)",confidential,,IAB CPM Standards; Nielsen Media Research
+sponsorship,payment_schedule,adjustment_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — Discount/Surcharge Conditions; Sponsorship Contract Addendum
+sponsorship,payment_schedule,late_fee_amount,"DECIMAL(18,2)",confidential,,Sponsorship Contract Terms; SAP S/4HANA FI — Dunning Charges
+sponsorship,payment_schedule,net_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — Net Invoice Amount; ASC 606
+sponsorship,payment_schedule,received_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — Clearing Amount; Accounts Receivable
+sponsorship,payment_schedule,scheduled_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — Billing Plan Item Amount; ASC 606
+sponsorship,payment_schedule,withholding_tax_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — Withholding Tax; OECD Model Tax Convention
+sponsorship,property,base_sponsorship_value_usd,"DECIMAL(18,2)",confidential,,
+sponsorship,property,media_value_multiplier,"DECIMAL(5,2)",confidential,,
+merchandise,sku_catalog,cost_price,"DECIMAL(10,2)",confidential,,SAP S/4HANA MM Moving Average Price / Standard Price (VERPR/STPRS); Workday Adaptive Planning
+merchandise,sku_catalog,gender_target,STRING,confidential,pii,Shopify Plus Product Tags; SAP S/4HANA MM Classification
+merchandise,sku_catalog,msrp,"DECIMAL(10,2)",confidential,,Shopify Plus Compare-At Price; SAP S/4HANA SD Condition Type PR00; PCI-DSS
+merchandise,sku_catalog,royalty_rate,"DECIMAL(5,4)",confidential,,Licensing Agreement Terms; SAP S/4HANA FI Royalty Management; SOX Financial Controls
+merchandise,inventory_position,inventory_value,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO — Inventory Valuation; SOX Financial Controls
+merchandise,inventory_position,unit_cost,"DECIMAL(18,4)",confidential,,SAP S/4HANA FI/CO — Material Ledger; PCI-DSS (if cost data is payment-adjacent)
+merchandise,retail_location,address_line_1,STRING,confidential,pii_address,GDPR Article 4; CCPA; SAP S/4HANA SD — Customer/Plant Address
+merchandise,retail_location,address_line_2,STRING,confidential,pii_address,GDPR Article 4; CCPA; SAP S/4HANA SD — Customer/Plant Address
+merchandise,retail_location,city,STRING,confidential,pii_address,GDPR Article 4; CCPA; ISO 3166
+merchandise,retail_location,contact_email,STRING,confidential,pii_address,GDPR Article 4; CCPA
+merchandise,retail_location,contact_phone,STRING,confidential,pii_phone,GDPR Article 4; CCPA
+merchandise,retail_location,latitude,"DECIMAL(9,6)",restricted,pii_address,WGS 84; ISO 6709
+merchandise,retail_location,longitude,"DECIMAL(9,6)",restricted,pii_address,WGS 84; ISO 6709
+merchandise,retail_location,postal_code,STRING,confidential,pii_address,ISO 3166; SAP S/4HANA FI — Tax Jurisdiction Code
+merchandise,retail_location,state_province,STRING,confidential,pii_address,ISO 3166-2; SAP S/4HANA FI — Tax Jurisdiction
+merchandise,merch_order,discount_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA SD; Shopify Plus
+merchandise,merch_order,gross_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA FI/CO; PCI DSS; SOX Financial Controls
+merchandise,merch_order,ip_address,STRING,confidential,pii_ip,GDPR Article 4; CCPA; PCI DSS Requirement 10; Shopify Plus
+merchandise,merch_order,net_total,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA FI/CO; PCI DSS; SOX Financial Controls
+merchandise,merch_order,payment_reference,STRING,confidential,pii_financial,PCI DSS Requirement 3.4; Shopify Plus Payments; SAP S/4HANA FI
+merchandise,merch_order,shipping_amount,"DECIMAL(18,4)",confidential,pii_financial,Shopify Plus; SAP S/4HANA SD
+merchandise,merch_order,shipping_country_code,STRING,confidential,pii_address,ISO 3166-1; GDPR Article 44; Shopify Plus
+merchandise,merch_order,shipping_postal_code,STRING,confidential,pii_address,GDPR Article 4; CCPA; Shopify Plus
+merchandise,merch_order,tax_amount,"DECIMAL(18,4)",confidential,pii_financial,SAP S/4HANA FI Tax Module; SOX; GDPR
+merchandise,order_line,line_discount_amount,"DECIMAL(18,4)",confidential,,Shopify Plus Line Item Discount Allocations; SAP S/4HANA SD Discount Condition
+merchandise,order_line,line_subtotal,"DECIMAL(18,4)",confidential,,Shopify Plus Line Item Pre-Tax Price; SAP S/4HANA SD Net Value
+merchandise,order_line,line_tax_amount,"DECIMAL(18,4)",confidential,,Shopify Plus Line Item Tax Lines; SAP S/4HANA FI Tax Condition; PCI-DSS
+merchandise,order_line,line_total,"DECIMAL(18,4)",confidential,,Shopify Plus Line Item Total; SAP S/4HANA SD Total Value
+merchandise,order_line,royalty_amount,"DECIMAL(18,4)",confidential,,SAP S/4HANA FI Royalty Accrual; NIL Agreement; CBA
+merchandise,order_line,royalty_rate,"DECIMAL(7,4)",confidential,,SAP S/4HANA SD Royalty Condition; NIL Agreement Terms; CBA
+merchandise,order_line,unit_cost,"DECIMAL(18,4)",confidential,,SAP S/4HANA MM Moving Average Price; Shopify Plus Cost Per Item
+merchandise,order_line,unit_price,"DECIMAL(18,4)",confidential,,Shopify Plus Line Item Price; SAP S/4HANA SD Condition Price
+merchandise,licensing_agreement,advance_payment,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO; SOX (Sarbanes-Oxley Act)
+merchandise,licensing_agreement,agreement_number,STRING,confidential,,SAP S/4HANA SD; Internal Contract Numbering Standard
+merchandise,licensing_agreement,contract_document_ref,STRING,confidential,,DAM (Digital Asset Management) Policy; Internal Document Management Standard
+merchandise,licensing_agreement,insurance_required_amount,"DECIMAL(18,2)",confidential,,OSHA (Occupational Safety and Health Administration); Internal Risk Management Policy
+merchandise,licensing_agreement,minimum_guaranteed_royalty,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO; SOX (Sarbanes-Oxley Act); Internal Royalty Policy
+merchandise,licensing_agreement,royalty_rate_pct,"DECIMAL(7,4)",confidential,,SAP S/4HANA FI/CO; SOX (Sarbanes-Oxley Act); Internal Royalty Policy
+merchandise,royalty_payment,adjustment_amount,"DECIMAL(18,2)",confidential,,CBA Audit Rights; FIFA Licensing Regulations; SOX Financial Controls
+merchandise,royalty_payment,advance_offset_amount,"DECIMAL(18,2)",confidential,,CBA Advance Recoupment Terms; FIFA Licensing Regulations; SAP S/4HANA FI Advance Payment Clearing
+merchandise,royalty_payment,gross_sales_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA SD Sales Reporting; Shopify Plus Revenue Data; CBA Royalty Base Definition
+merchandise,royalty_payment,minimum_guarantee_amount,"DECIMAL(18,2)",confidential,,CBA Minimum Guarantee Clause; FIFA Licensing Regulations; NIL Agreement Terms
+merchandise,royalty_payment,net_royalty_paid_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI Payment Document; CBA Payment Terms; SOX Financial Controls; PCI-DSS
+merchandise,royalty_payment,net_sales_amount,"DECIMAL(18,2)",confidential,,CBA Royalty Base Definition; FIFA Licensing Regulations; NIL Agreement Terms
+merchandise,royalty_payment,returns_allowances_amount,"DECIMAL(18,2)",confidential,,CBA Royalty Base Definition; SAP S/4HANA SD Returns Processing; FIFA Licensing Regulations
+merchandise,royalty_payment,royalty_due_amount,"DECIMAL(18,2)",confidential,,CBA Royalty Calculation; FIFA Licensing Regulations; NIL Agreement Terms; SOX Financial Controls
+merchandise,royalty_payment,royalty_rate,"DECIMAL(8,6)",confidential,,CBA Royalty Rate Schedule; FIFA Licensing Regulations; NIL Agreement Terms; Internal Licensing Operations Standard
+merchandise,fulfillment_shipment,recipient_email,STRING,restricted,pii_email,GDPR Article 4; CCPA
+merchandise,fulfillment_shipment,recipient_name,STRING,restricted,pii_name,GDPR Article 4; CCPA; PCI-DSS
+merchandise,fulfillment_shipment,recipient_phone,STRING,restricted,pii_phone,GDPR Article 4; CCPA
+merchandise,fulfillment_shipment,shipping_address_line1,STRING,restricted,pii_address,GDPR Article 4; CCPA
+merchandise,fulfillment_shipment,shipping_address_line2,STRING,restricted,pii_address,GDPR Article 4; CCPA
+merchandise,fulfillment_shipment,shipping_city,STRING,restricted,pii_address,GDPR Article 4; CCPA
+merchandise,fulfillment_shipment,shipping_postal_code,STRING,restricted,pii_address,GDPR Article 4; CCPA
+merchandise,return_request,customer_email,STRING,restricted,pii_email,GDPR Article 4; CCPA; Salesforce CRM
+merchandise,return_request,net_refund_amount,"DECIMAL(12,2)",confidential,pii_financial,Shopify Plus Refund API; SAP S/4HANA FI-AR; PCI-DSS
+merchandise,return_request,refund_amount,"DECIMAL(12,2)",confidential,pii_financial,Shopify Plus Refund API; SAP S/4HANA FI Credit Memo; PCI-DSS
+merchandise,return_request,restocking_fee,"DECIMAL(10,2)",confidential,pii_financial,Shopify Plus Refund API; SAP S/4HANA SD Condition Type
+merchandise,return_request,unit_price,"DECIMAL(12,2)",confidential,pii_financial,Shopify Plus Order Line Item; SAP S/4HANA SD Pricing
+merchandise,price_list,base_price,"DECIMAL(18,4)",confidential,,SAP S/4HANA SD Condition Amount (KBETR); Shopify Plus Price; MSRP Standard
+merchandise,price_list,discount_value,"DECIMAL(10,4)",confidential,,SAP S/4HANA SD Condition Amount; Shopify Plus Discount Value
+merchandise,price_list,minimum_advertised_price,"DECIMAL(18,4)",confidential,,Merchandise Licensing Agreement; IP Brand Compliance Policy; SAP S/4HANA SD Condition Floor Price
+merchandise,price_list,msrp,"DECIMAL(18,4)",confidential,,SAP S/4HANA SD Condition Type MSRP; Merchandise Licensing Agreement; MAP Policy
+merchandise,price_list,royalty_rate_pct,"DECIMAL(7,4)",confidential,,Merchandise Licensing Agreement; SAP S/4HANA FI Royalty Accounting; League IP Policy
+merchandise,price_list,wholesale_price,"DECIMAL(18,4)",confidential,,SAP S/4HANA SD Condition Type PR01; Merchandise Licensing Agreement
+merchandise,promotion,budget_amount,"DECIMAL(14,2)",confidential,,Workday Adaptive Planning - Campaign Budget; SAP S/4HANA CO - Cost Center Budget; SOX
+merchandise,supplier,address_line1,STRING,confidential,pii_address,SAP S/4HANA MM Vendor Master (LFA1.STRAS); GDPR Article 4
+merchandise,supplier,bank_account_ref,STRING,confidential,pii_financial,SAP S/4HANA FI Vendor Bank Data (LFBK); PCI-DSS v4.0; SOX Section 302
+merchandise,supplier,city,STRING,confidential,pii_address,SAP S/4HANA MM Vendor Master (LFA1.ORT01)
+merchandise,supplier,legal_name,STRING,confidential,,SAP S/4HANA MM Vendor Master (LFA1.NAME1); UCC Article 9
+merchandise,supplier,postal_code,STRING,confidential,pii_address,SAP S/4HANA MM Vendor Master (LFA1.PSTLZ)
+merchandise,supplier,primary_contact_email,STRING,confidential,pii_email,SAP S/4HANA MM Vendor Master (ADR6.SMTP_ADDR); GDPR Article 4
+merchandise,supplier,primary_contact_name,STRING,confidential,,SAP S/4HANA MM Vendor Contact (ADR6); Salesforce CRM Contact Object
+merchandise,supplier,primary_contact_phone,STRING,confidential,pii_phone,SAP S/4HANA MM Vendor Master (ADR2.TELNR); GDPR Article 4
+merchandise,supplier,royalty_rate,"DECIMAL(5,4)",confidential,,NFL Properties Licensing Agreement; NBA Properties; FIFA Licensing Programme; SAP S/4HANA FI Revenue Accounting
+merchandise,supplier,sap_vendor_account_number,STRING,restricted,pii_financial,SAP S/4HANA MM Vendor Master (LFA1.LIFNR)
+merchandise,supplier,tax_number,STRING,confidential,,SAP S/4HANA FI Vendor Master (LFA1.STCD1); IRS Form W-9; SOX Section 404; GDPR Article 4
+merchandise,product_category,royalty_rate_percent,"DECIMAL(5,2)",confidential,,
+content,production_order,production_cost,"DECIMAL(18,2)",confidential,,SAP S/4HANA CO — Cost Object Controlling; Sports Entertainment Financial Reporting; SOX — Sarbanes-Oxley Act
+content,ingest_job,source_device_identifier,STRING,confidential,pii_device,Dalet Galaxy DAM — Device Registry; OB (Outside Broadcast) Equipment Management
+content,collection,ppv_price,"DECIMAL(10,2)",confidential,,Sports Entertainment PPV Pricing Policy; PCI-DSS (Payment Card Industry Data Security Standard); SAP S/4HANA SD — Pricing
+content,license,contract_document_ref,STRING,confidential,,Dalet Galaxy DAM — Document Reference; SAP S/4HANA SD — Contract Document Link
+content,license,cpm_rate,"DECIMAL(10,4)",confidential,,SAP S/4HANA SD — CPM Pricing Condition; IAB CPM Standard
+content,license,flat_fee_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — Contract Billing Amount; SOX Financial Controls
+content,license,license_name,STRING,confidential,,Dalet Galaxy DAM — Contract Naming Convention
+content,license,license_number,STRING,confidential,,SAP S/4HANA SD — Contract Number Convention
+content,license,revenue_share_pct,"DECIMAL(5,2)",confidential,,SAP S/4HANA SD — Revenue Share Condition; SOX Financial Controls; EBITDA Reporting
+content,license,royalty_rate,"DECIMAL(8,4)",confidential,,SAP S/4HANA SD — Royalty Condition Type; WIPO Copyright Treaty
+content,platform_channel,api_endpoint_url,STRING,confidential,,Sports Entertainment Digital Platform Integration Standards; API Governance Policy
+content,platform_channel,cdn_endpoint_url,STRING,confidential,,Sports Entertainment CDN Distribution Architecture; SLA Management Standards
+league,league,cba_expiry_date,DATE,confidential,,CBA (Collective Bargaining Agreement); NFL Players Association; NBA Players Association; MLBPA
+league,league,gender_category,STRING,confidential,pii,IOC Olympic Charter; Title IX (Education Amendments Act); FIFA Statutes
+league,league,ip_owner_entity,STRING,confidential,,IP (Intellectual Property) Law; DRM (Digital Rights Management) Standards; SOX Financial Controls; SEC Financial Reporting
+league,league,revenue_sharing_model,STRING,confidential,,NFL Constitution; NBA Constitution and By-Laws; SOX Financial Controls; SEC Financial Reporting
+league,league,salary_cap_amount,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement); NFL Constitution; NBA Collective Bargaining Agreement; SOX Financial Controls
+league,league,salary_cap_currency_code,STRING,restricted,pii_financial,ISO 4217; CBA (Collective Bargaining Agreement)
+league,league,salary_cap_enabled,BOOLEAN,restricted,pii_financial,CBA (Collective Bargaining Agreement); NFL Constitution; NBA Collective Bargaining Agreement
+league,league,tax_exempt_status,BOOLEAN,confidential,,SOX (Sarbanes-Oxley Act); SEC Financial Reporting; IRS 501(c)(6) Tax Exemption
+league,conference,salary_cap_applicable,BOOLEAN,restricted,pii_financial,CBA (Collective Bargaining Agreement); NFL Governance Office; NBA League Office; NHL Board of Governors
+league,division,cba_agreement_code,STRING,confidential,,CBA; NFL Governance Office; NBA League Office; MLB Commissioner's Office; NHL Board of Governors; MLS
+league,division,salary_cap_amount,"DECIMAL(18,2)",confidential,,CBA; NFL Governance Office; NBA League Office; NHL Board of Governors; SOX
+league,division,salary_cap_applicable,BOOLEAN,restricted,pii_financial,CBA; NFL Governance Office; NBA League Office; NHL Board of Governors; MLB Commissioner's Office
+league,division,salary_cap_currency,STRING,restricted,pii_financial,ISO 4217; CBA; FIFA; MLS
+league,franchise,agreement_effective_date,DATE,confidential,,NFL Governance Office; NBA League Office; SOX
+league,franchise,agreement_execution_date,DATE,confidential,,NFL Governance Office; NBA League Office; SOX; SAP S/4HANA FI
+league,franchise,agreement_expiry_date,DATE,confidential,,NFL Governance Office; NBA League Office; SOX
+league,franchise,agreement_version,STRING,confidential,,NFL Governance Office; NBA League Office; MLB Commissioner's Office; SOX
+league,franchise,amendment_history_notes,STRING,confidential,,NFL Governance Office; NBA League Office; SOX; Dalet Galaxy DAM
+league,franchise,expansion_fee_paid,"DECIMAL(18,2)",confidential,,NFL Governance Office; NBA League Office; MLS; SAP S/4HANA FI; SOX
+league,franchise,legal_name,STRING,confidential,,NFL Governance Office; SEC; SOX
+league,franchise,ownership_transfer_rules_summary,STRING,confidential,,NFL Governance Office; NBA League Office; SEC; SOX
+league,franchise,relocation_restriction_expiry_date,DATE,confidential,,NFL Governance Office; NBA League Office; MLS
+league,franchise,relocation_restriction_flag,BOOLEAN,confidential,,NFL Governance Office; NBA League Office; MLS; CAS
+league,franchise,revenue_sharing_tier,STRING,confidential,,NFL Governance Office; NBA League Office; MLB Commissioner's Office; SAP S/4HANA FI/CO; SOX
+league,franchise,salary_cap_allotment,"DECIMAL(18,2)",confidential,,NFL CBA; NBA CBA; NHL CBA; MLS CBA; WADA; CAS
+league,franchise,salary_cap_currency_code,STRING,restricted,pii_financial,ISO 4217; FIFA; NHL Board of Governors; SAP S/4HANA FI
+league,franchise,territorial_rights_description,STRING,confidential,,NFL Governance Office; NBA League Office; MLS; FIFA
+league,franchise,valuation_estimate,"DECIMAL(18,2)",confidential,,SEC; SOX; SAP S/4HANA FI; Workday Adaptive Planning
+league,season,luxury_tax_threshold,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Compliance; NBA League Office; MLB Commissioner's Office; SOX Financial Controls
+league,season,salary_cap_amount,"DECIMAL(18,2)",confidential,,CBA (Collective Bargaining Agreement) Compliance; NFL Governance Office; NBA League Office; NHL Board of Governors; SOX Financial Controls
+league,season,salary_cap_currency,STRING,restricted,pii_financial,ISO 4217 Currency Codes; CBA (Collective Bargaining Agreement) Compliance
+league,season,salary_cap_year_flag,BOOLEAN,restricted,pii_financial,CBA (Collective Bargaining Agreement) Compliance; NFL Governance Office; NBA League Office; NHL Board of Governors
+league,team,market_value,"DECIMAL(18,2)",confidential,,
+league,team,salary_cap_amount,"DECIMAL(18,2)",confidential,,
+league,team,salary_cap_currency,STRING,restricted,pii_financial,
+finance,gl_account,account_number,STRING,restricted,pii_financial,SAP S/4HANA FI SKA1; GAAP ASC 230; IFRS IAS 1
+finance,gl_account,alternative_account_number,STRING,restricted,pii_financial,SAP S/4HANA FI SKA1; IFRS IAS 1; GAAP ASC 205
+finance,gl_account,house_bank_account,BOOLEAN,restricted,pii_financial,SAP S/4HANA FI-TR; GAAP ASC 230; PCI-DSS
+finance,cost_center,budget_amount,"DECIMAL(18,2)",confidential,,Workday Adaptive Planning; SAP S/4HANA CO-OM-CCA; SOX Section 302
+finance,profit_center,annual_capex_budget,"DECIMAL(18,2)",confidential,,Workday Adaptive Planning; SAP S/4HANA FI-AA (Asset Accounting); SEC Regulation S-K
+finance,profit_center,annual_opex_budget,"DECIMAL(18,2)",confidential,,Workday Adaptive Planning; SOX Section 404; EBITDA Reporting Standards
+finance,profit_center,annual_revenue_budget,"DECIMAL(18,2)",confidential,,Workday Adaptive Planning; SOX Section 302/404; SEC MD&A Reporting
+finance,profit_center,manager,STRING,confidential,,SAP S/4HANA CO-PCA; SOX Section 302 — Management Certification
+finance,profit_center,sox_control_owner,STRING,confidential,,SOX Section 302; SOX Section 404; SEC Regulation S-K Item 308
+finance,profit_center,target_ebitda_margin_pct,"DECIMAL(5,2)",confidential,,Workday Adaptive Planning; EBITDA Reporting; SEC MD&A; SOX Section 302
+finance,company_code,city,STRING,confidential,pii_address,SEC Regulation S-K Item 102; SAP S/4HANA FI Address Management
+finance,company_code,legal_name,STRING,confidential,,SEC Regulation S-K; SOX Section 302; SAP S/4HANA FI (BUTXT)
+finance,company_code,minority_interest_pct,"DECIMAL(5,2)",confidential,,SEC Regulation S-X ASC 810; IFRS IFRS 10; SAP S/4HANA Group Reporting
+finance,company_code,postal_code,STRING,confidential,pii_address,SAP S/4HANA FI Address (PSTLZ); IRS Tax Jurisdiction; ADA Compliance
+finance,company_code,street_address,STRING,confidential,pii_address,SEC Regulation S-K Item 102; SAP S/4HANA FI Address Management
+finance,company_code,tax_registration_number,STRING,confidential,,IRS EIN; EU VAT Directive 2006/112/EC; OECD BEPS; SOX Section 302
+finance,company_code,vat_registration_number,STRING,confidential,,EU VAT Directive 2006/112/EC; HMRC VAT Registration; SAP S/4HANA FI Tax
+finance,journal_entry,group_currency_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — BSEG.KZBTR; IFRS IAS 21; SEC Regulation S-X
+finance,journal_entry,local_currency_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — BSEG.DMBTR; IFRS IAS 21; GAAP ASC 830
+finance,journal_entry,tax_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI-TX — BSEG.HWSTE; GAAP ASC 740; IFRS IAS 12
+finance,journal_entry,transaction_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI — BSEG.WRBTR; GAAP ASC 230; IFRS IAS 1
+finance,budget,actuals_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO Module; SOX Section 302/404; SEC Financial Reporting
+finance,budget,committed_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA CO/MM Module; GAAP ASC 420
+finance,budget,forecast_amount,"DECIMAL(18,2)",confidential,,Workday Adaptive Planning; SAP S/4HANA CO; SEC Regulation S-K
+finance,budget,planned_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA CO Module; Workday Adaptive Planning; SOX Section 302
+finance,budget,prior_year_actual_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI/CO Module; SOX Section 302; SEC Annual Report
+finance,budget,reporting_currency_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI Module; GAAP ASC 830; SEC Financial Reporting
+finance,budget,revised_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA CO Module; Workday Adaptive Planning; SOX Section 302
+finance,ar_invoice,amount_paid,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI-AR AUGBL; GAAP ASC 310
+finance,ar_invoice,deferred_revenue_amount,"DECIMAL(18,2)",confidential,pii_financial,GAAP ASC 606; IFRS 15; SOX Section 302/404; SEC Regulation S-X
+finance,ar_invoice,discount_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI SKTO1; GAAP ASC 606
+finance,ar_invoice,gross_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI WRBTR; GAAP ASC 606; SOX Section 302/404
+finance,ar_invoice,local_currency_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI DMBTR; IAS 21; SEC Regulation S-X
+finance,ar_invoice,net_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI-AR; GAAP ASC 606; SOX Section 302/404
+finance,ar_invoice,tax_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI WMWST; GAAP ASC 740; GDPR Article 5 (data minimisation for EU invoices)
+finance,ar_invoice,write_off_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI-AR; GAAP ASC 310; SOX Section 302/404
+finance,ap_invoice,discount_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI-AP (BSEG-WSKTO); IAS 7
+finance,ap_invoice,gross_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI-AP (RBKP-RMWWR); IFRS 15; SOX Section 302
+finance,ap_invoice,local_currency_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI (BSEG-DMBTR); IFRS 21; SEC Regulation S-X
+finance,ap_invoice,net_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI-AP (RBKP-RMWWR - WMWST); IFRS 15; SOX Section 302
+finance,ap_invoice,tax_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI-AP (RBKP-WMWST); GDPR; SEC Regulation S-X
+finance,ap_invoice,vendor_invoice_number,STRING,confidential,,SAP S/4HANA FI-AP (RBKP-XBLNR); SOX Section 404
+finance,ap_invoice,withholding_tax_amount,"DECIMAL(18,2)",confidential,,SAP S/4HANA FI-AP Extended Withholding Tax (WITH_ITEM); IRS Form 1099; SEC Regulation S-X
+finance,payment,discount_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI Cash Discount (BSEG.SKFBT); GAAP ASC 310
+finance,payment,gross_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI Payment Amount (BSEG.WRBTR); GAAP ASC 606; IFRS 15
+finance,payment,local_currency_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI Local Currency Amount (BSEG.DMBTR); IFRS 21; SEC Regulation S-X
+finance,payment,net_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI Net Amount; IAS 7; GAAP ASC 230
+finance,payment,swift_reference,STRING,restricted,pii,SWIFT MT103/MX pacs.008; SAP S/4HANA FI Bank Communication Management
+finance,payment,withholding_tax_amount,"DECIMAL(18,2)",confidential,pii_financial,SAP S/4HANA FI Withholding Tax (WITH_ITEM); IRS Form 1099/1042-S; GDPR; SOX
+finance,fixed_asset,accumulated_depreciation,"DECIMAL(18,2)",confidential,,SAP FI-AA (ANLC-KNAFA); IAS 16 para 73; GAAP ASC 360; SOX Section 404
+finance,fixed_asset,acquisition_cost,"DECIMAL(18,2)",confidential,,SAP FI-AA (ANLC-KANSW); IAS 16 para 16; GAAP ASC 360-10; SOX Section 404
+finance,fixed_asset,annual_depreciation_charge,"DECIMAL(18,2)",confidential,,SAP FI-AA Depreciation Simulation; IAS 16; GAAP ASC 360; Workday Adaptive Planning
+finance,fixed_asset,disposal_proceeds,"DECIMAL(18,2)",confidential,,SAP FI-AA; IAS 16 para 71; GAAP ASC 360-10-40; SOX
+finance,fixed_asset,impairment_loss,"DECIMAL(18,2)",confidential,,SAP FI-AA; IAS 36; GAAP ASC 360-10-35; SOX Section 404
+finance,fixed_asset,insurance_policy_number,STRING,confidential,,SAP FI-AA Insurance Data; ISO 20121; OSHA
+finance,fixed_asset,insured_value,"DECIMAL(18,2)",confidential,,SAP FI-AA Insurance Data; ISO 20121
+finance,fixed_asset,net_book_value,"DECIMAL(18,2)",confidential,,SAP FI-AA (ANLC-KNBTR); IAS 16 para 73; GAAP ASC 360; SOX; SEC Regulation S-X
+finance,fixed_asset,residual_value,"DECIMAL(18,2)",confidential,,SAP FI-AA (ANLB-SCHRW); IAS 16 para 53; GAAP ASC 360
+finance,fixed_asset,revaluation_amount,"DECIMAL(18,2)",confidential,,SAP FI-AA; IAS 16 para 31-42; IFRS
+finance,fixed_asset,subsequent_acquisition_cost,"DECIMAL(18,2)",confidential,,SAP FI-AA (ANLC-KANSW subsequent postings); IAS 16 para 10; GAAP ASC 360
+finance,revenue_recognition_schedule,cumulative_recognized_amount,"DECIMAL(18,2)",confidential,,"ASC 606, IFRS 15.B1, SAP S/4HANA RAR"
+finance,revenue_recognition_schedule,current_period_recognition_amount,"DECIMAL(18,2)",confidential,,"ASC 606 Step 5, IFRS 15, SAP S/4HANA FI Journal Entry"
+finance,revenue_recognition_schedule,deferred_revenue_balance,"DECIMAL(18,2)",confidential,,"ASC 606, IFRS 15, SEC Regulation S-X, SAP S/4HANA FI"
+finance,revenue_recognition_schedule,total_contract_value,"DECIMAL(18,2)",confidential,,"ASC 606 Steps 3–4, IFRS 15.73–15.86, SAP S/4HANA RAR"
+finance,revenue_recognition_schedule,variable_consideration_amount,"DECIMAL(18,2)",confidential,,"ASC 606 Step 3, IFRS 15.53, SAP S/4HANA RAR"
+security,credential,background_check_status,STRING,confidential,,OSHA 29 CFR 1910; WADA — Anti-Doping Compliance; Internal HR Security Policy; SAP SuccessFactors — Background Screening
+security,credential,barcode_value,"DECIMAL(18,2)",confidential,,Ticketmaster / AXS — Access Control; ISO/IEC 15417 — Barcode Symbology
+security,credential,biometric_linked,BOOLEAN,restricted,pii_biometric,GDPR Article 9 — Special Categories of Personal Data; CCPA Section 1798.140; ISO/IEC 19794 — Biometric Data Interchange
+security,credential,biometric_type,STRING,restricted,pii_biometric,GDPR Article 9 — Special Categories; CCPA Section 1798.140; ISO/IEC 19794
+security,credential,emergency_contact_name,STRING,restricted,pii_name,GDPR Article 4; CCPA Section 1798.140; OSHA 29 CFR 1910 — Emergency Action Plans
+security,credential,emergency_contact_phone,STRING,restricted,pii_phone,GDPR Article 4; CCPA Section 1798.140; OSHA 29 CFR 1910 — Emergency Action Plans
+security,credential,law_enforcement_badge_number,STRING,confidential,,OSHA 29 CFR 1910; Internal Law Enforcement Coordination Policy
+security,credential,photo_url,STRING,restricted,pii_biometric,GDPR Article 9; CCPA Section 1798.140; Dalet Galaxy — Digital Asset Management
+security,credential,rfid_tag_code,STRING,confidential,,ISO/IEC 14443 — RFID Proximity Cards; Ticketmaster / AXS — Access Control
+security,credential,vehicle_plate_number,STRING,confidential,,Internal Venue Security Policy; OSHA 29 CFR 1910
+security,credential_assignment,holder_id_number,STRING,restricted,pii_identifier,GDPR Article 4; CCPA; Internal Security Operations Standard
+security,credential_assignment,holder_photo_url,STRING,restricted,pii_biometric,GDPR Article 9; CCPA; Internal Credentialing Policy; DAM Policy
+security,access_event,biometric_verified_flag,BOOLEAN,restricted,pii_biometric,GDPR – General Data Protection Regulation; CCPA – California Consumer Privacy Act
+security,access_event,credential_token,STRING,confidential,,PCI-DSS – Payment Card Industry Data Security Standard; GDPR – General Data Protection Regulation
+security,access_event,reader_device_code,BIGINT,internal,pii,ISO 27001 – Information Security Management
+security,security_incident,insurance_claim_reference,STRING,confidential,,SAP S/4HANA FI Module; SOX Section 302
+security,security_incident,involved_party_id_number,STRING,restricted,pii_identifier,GDPR Article 9; CCPA; PCI-DSS
+security,security_incident,involved_party_name,STRING,restricted,pii_name,GDPR Article 4; CCPA Section 1798.140
+security,security_incident,medical_referral_required,BOOLEAN,restricted,pii,OSHA 29 CFR 1904; NFPA 101 Life Safety Code
+security,ejection_record,ejected_party_id_number,STRING,restricted,pii_identifier,GDPR Article 5; CCPA §1798.100; Sports Entertainment Security Operations Standard
+security,ejection_record,ejected_party_name,STRING,restricted,pii_name,GDPR Article 4; CCPA §1798.140; Sports Entertainment Security Operations Standard
+security,ejection_record,medical_assistance_required_flag,BOOLEAN,restricted,pii,OSHA 29 CFR 1910; Sports Entertainment Emergency Response Plan; ADA Title III

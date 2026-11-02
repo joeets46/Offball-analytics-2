@@ -1,0 +1,499 @@
+// =========================================================================
+// Logical model -- Competition & Events
+//
+// Platform-neutral 3NF. Types are abstract domains (identifier, code, name,
+// money, quantity, instant, day), not vendor types: the physical choice differs
+// per system and is made in oltp/.
+//
+// Conventions in this layer:
+//   * `pk` marks the logical identifier, not a surrogate key strategy.
+//   * Every many-to-many is resolved into an associative entity.
+//   * A supertype carries a discriminator and the subtypes share its key.
+//   * Nothing is nullable unless the business genuinely permits it unknown.
+// =========================================================================
+
+Project competition_events {
+  database_type: 'logical'
+  note: '''
+    Subject area 1 of 5. Upstream MVM domains: event, league (structure only),
+    athlete.
+
+    The structural spine of the whole model: everything downstream hangs off
+    `event`.
+  '''
+}
+
+// -------------------------------------------------------------------------
+// Competition structure
+// -------------------------------------------------------------------------
+
+Table league {
+  league_id identifier [pk]
+  league_code code [not null, unique]
+  name name [not null]
+  governing_body_name name
+  sport_id identifier [not null]
+  founded_year quantity
+  note: 'The competition organiser and rule-setter.'
+}
+
+Table sport {
+  sport_id identifier [pk]
+  sport_code code [not null, unique]
+  name name [not null]
+  note: '''
+    Normalized out of league. The upstream model carries sport as a STRING on
+    several tables, which is how the same sport ends up spelled three ways.
+  '''
+}
+
+Table conference {
+  conference_id identifier [pk]
+  league_id identifier [not null]
+  conference_code code [not null]
+  name name [not null]
+  indexes { (league_id, conference_code) [unique] }
+}
+
+Table division {
+  division_id identifier [pk]
+  conference_id identifier [not null]
+  division_code code [not null]
+  name name [not null]
+  indexes { (conference_id, division_code) [unique] }
+}
+
+Table season {
+  season_id identifier [pk]
+  league_id identifier [not null]
+  season_code code [not null]
+  name name [not null]
+  starts_on day [not null]
+  ends_on day [not null]
+  indexes { (league_id, season_code) [unique] }
+  note: 'A competitive and commercial cycle. Not the same thing as a fiscal year, though the two are mapped in the Corporate area.'
+}
+
+Table competition {
+  competition_id identifier [pk]
+  season_id identifier [not null]
+  competition_code code [not null]
+  name name [not null]
+  competition_format_id identifier [not null]
+  indexes { (season_id, competition_code) [unique] }
+  note: 'A trophy or series contested within a season.'
+}
+
+Table competition_format {
+  competition_format_id identifier [pk]
+  format_code code [not null, unique]
+  name name [not null]
+  is_knockout boolean [not null]
+  legs_per_tie quantity
+  note: 'Reference entity restored from a declared value domain. Shared across competitions, so a table rather than an attribute domain.'
+}
+
+Table competition_stage {
+  competition_stage_id identifier [pk]
+  competition_id identifier [not null]
+  parent_stage_id identifier
+  stage_code code [not null]
+  name name [not null]
+  stage_ordinal quantity [not null]
+  indexes { (competition_id, stage_code) [unique] }
+  note: '''
+    Recursive: group stage contains matchdays, knockout contains rounds which
+    contain ties. The upstream model splits this one structure across
+    event.tournament, event.bracket and event.competition_round, which is why
+    all three map at low confidence -- no source system has three such tables.
+  '''
+}
+
+// -------------------------------------------------------------------------
+// Clubs and squads
+// -------------------------------------------------------------------------
+
+Table franchise {
+  franchise_id identifier [pk]
+  franchise_code code [not null, unique]
+  name name [not null]
+  legal_entity_id identifier
+  founded_year quantity
+  home_venue_id identifier
+  note: '''
+    The club as a continuing enterprise. Survives relocation, rebranding and
+    relegation, and fields several teams at once -- which is why it is distinct
+    from `team`. The upstream model conflates the two.
+  '''
+}
+
+Table franchise_division_membership {
+  franchise_id identifier [pk]
+  division_id identifier [pk]
+  season_id identifier [pk]
+  note: '''
+    Associative. Restored because divisional membership changes with promotion,
+    relegation and realignment; a direct foreign key on franchise would state
+    only the current one and silently rewrite history.
+  '''
+}
+
+Table team {
+  team_id identifier [pk]
+  franchise_id identifier [not null]
+  team_code code [not null]
+  name name [not null]
+  squad_level_id identifier [not null]
+  indexes { (franchise_id, team_code) [unique] }
+  note: 'A squad that takes the field: first team, academy, reserves, women.'
+}
+
+Table squad_level {
+  squad_level_id identifier [pk]
+  level_code code [not null, unique]
+  name name [not null]
+  counts_toward_senior_registration boolean [not null]
+}
+
+// -------------------------------------------------------------------------
+// Events -- supertype and subtypes
+//
+// The upstream event.fixture has 52 columns handling matches, concerts, PPV
+// bouts and award shows at once, so a concert carries home_score, var_used and
+// penalty_shootout as nulls. Subtyping puts the competitive attributes where
+// they belong.
+// -------------------------------------------------------------------------
+
+Table event {
+  event_id identifier [pk]
+  event_code code [not null, unique]
+  name name [not null]
+  event_type_id identifier [not null]
+  event_category event_category [not null, note: 'Discriminator: competitive | concert | ppv | ceremony | exhibition']
+  season_id identifier
+  competition_id identifier
+  competition_stage_id identifier
+  announced_at instant
+  note: 'Supertype. The anchor entity of the entire model.'
+}
+
+Table event_type {
+  event_type_id identifier [pk]
+  type_code code [not null, unique]
+  name name [not null]
+  event_category event_category [not null]
+  has_competitive_result boolean [not null]
+}
+
+Table event_schedule {
+  event_id identifier [pk]
+  venue_id identifier [not null]
+  seating_configuration_id identifier
+  local_event_day day [not null, note: 'Local calendar date, which the UTC instant alone does not determine near midnight.']
+  scheduled_start_at instant [not null]
+  scheduled_end_at instant
+  doors_open_at instant
+  actual_start_at instant
+  actual_end_at instant
+  lifecycle_status event_lifecycle_status [not null]
+  is_neutral_site boolean [not null]
+  note: '''
+    Split from event by lifecycle: scheduling is revised repeatedly by
+    operations after the event identity is fixed, and the actual times are
+    written after it happens.
+  '''
+}
+
+Table competitive_fixture {
+  event_id identifier [pk]
+  home_team_id identifier
+  away_team_id identifier
+  matchday_number quantity
+  leg_number quantity
+  surface_type_id identifier
+  note: 'Subtype of event where event_category = competitive. Home and away are nullable for a neutral-site or multi-party contest.'
+}
+
+Table event_participant_team {
+  event_id identifier [pk]
+  team_id identifier [pk]
+  participation_role participation_role [not null, note: 'home | away | neutral | invited']
+  note: '''
+    Associative, and the reason competitive_fixture.home/away_team_id are
+    optional. A three-way race, a tournament group or a relay cannot be
+    expressed as two columns, which is what the upstream model offers.
+  '''
+}
+
+Table performance_event {
+  event_id identifier [pk]
+  headline_act_name name
+  support_act_name name
+  is_pay_per_view boolean [not null]
+  note: 'Subtype covering concert, PPV and ceremony. Holds the attributes a competitive fixture has no use for.'
+}
+
+// -------------------------------------------------------------------------
+// Outcome and in-event detail
+// -------------------------------------------------------------------------
+
+Table event_outcome {
+  event_id identifier [pk]
+  home_score quantity
+  away_score quantity
+  result_status result_status [not null]
+  decided_by decided_by [not null, note: 'regulation | extra_time | penalties | forfeit | abandoned']
+  home_penalty_score quantity
+  away_penalty_score quantity
+  confirmed_at instant
+  note: 'Split from event: written after the event by a different party (match officials and analysis), and absent entirely for a concert.'
+}
+
+Table match_event {
+  match_event_id identifier [pk]
+  event_id identifier [not null]
+  match_event_type_id identifier [not null]
+  period_number quantity
+  elapsed_minute quantity
+  elapsed_second quantity
+  attributed_athlete_id identifier
+  opposing_athlete_id identifier
+  team_id identifier
+  pitch_x quantity [note: 'Normalised 0..100 so positions compare across venues with different pitch dimensions.']
+  pitch_y quantity
+  note: 'A single moment within an event: a goal, a card, a substitution, a turnover.'
+}
+
+Table match_event_type {
+  match_event_type_id identifier [pk]
+  type_code code [not null, unique]
+  name name [not null]
+  is_scoring boolean [not null]
+  is_disciplinary boolean [not null]
+}
+
+Table match_event_qualifier {
+  match_event_id identifier [pk]
+  qualifier_id identifier [pk]
+  note: '''
+    Associative, and the most consequential one in the model. This is what a
+    coded match event MEANS -- "shot, right foot, inside box, on target" is four
+    rows. The upstream model has no equivalent at any point, so the semantics
+    of every match event are lost on the way into the lakehouse.
+  '''
+}
+
+Table qualifier {
+  qualifier_id identifier [pk]
+  qualifier_group_id identifier [not null]
+  qualifier_code code [not null]
+  name name [not null]
+  indexes { (qualifier_group_id, qualifier_code) [unique] }
+}
+
+Table qualifier_group {
+  qualifier_group_id identifier [pk]
+  group_code code [not null, unique]
+  name name [not null]
+  is_exclusive boolean [not null, note: 'An exclusive group permits one qualifier per event; an inclusive group permits several.']
+}
+
+// -------------------------------------------------------------------------
+// Athletes
+// -------------------------------------------------------------------------
+
+Table athlete {
+  athlete_id identifier [pk]
+  party_id identifier [not null, note: 'Subtype of party -- see 05-corporate.dbml. An athlete who later becomes a coach or an agent is the same party.']
+  primary_position_id identifier
+  dominant_side dominant_side
+  height_cm quantity
+  note: 'A person who competes. Personal identity lives on party; this holds what is specific to competing.'
+}
+
+Table athlete_nationality {
+  athlete_id identifier [pk]
+  country_code country_code [pk]
+  nationality_rank quantity [not null, note: '1 = primary. Dual nationality governs squad registration limits, so both are kept.']
+  note: 'Associative. The upstream model has primary and secondary columns, which cannot hold a third nationality.'
+}
+
+Table position {
+  position_id identifier [pk]
+  sport_id identifier [not null]
+  position_code code [not null]
+  name name [not null]
+  indexes { (sport_id, position_code) [unique] }
+}
+
+Table athlete_engagement {
+  athlete_engagement_id identifier [pk]
+  athlete_id identifier [not null]
+  franchise_id identifier [not null]
+  engagement_type engagement_type [not null, note: 'playing | loan | trial | coaching | ambassador']
+  agreement_id identifier [note: 'The commitment that governs it -- see 05-corporate.dbml.']
+  starts_on day [not null]
+  ends_on day
+  is_squad_registered boolean [not null]
+  shirt_number quantity
+  note: 'The relationship between an athlete and a franchise over a period. Effective-dated, because careers have several of them.'
+}
+
+Table athlete_team_assignment {
+  athlete_engagement_id identifier [pk]
+  team_id identifier [pk]
+  season_id identifier [pk]
+  note: 'Associative. One engagement can serve two teams in a season -- first team and under-21 -- which a direct key cannot say.'
+}
+
+Table event_participant_athlete {
+  event_id identifier [pk]
+  athlete_id identifier [pk]
+  team_id identifier [not null]
+  is_starter boolean [not null]
+  minute_on quantity
+  minute_off quantity
+  minutes_played quantity [note: 'The denominator for every per-90 measure.']
+  note: 'Associative: who played, for whom, for how long.'
+}
+
+Table availability {
+  availability_id identifier [pk]
+  athlete_id identifier [not null]
+  availability_status availability_status [not null]
+  reason_category availability_reason
+  body_area_id identifier
+  mechanism injury_mechanism
+  reported_on day [not null]
+  expected_return_on day
+  actual_return_on day
+  note: '''
+    Why an athlete can or cannot play. Deliberately covers injury, suspension
+    and international duty in one entity: they are all "unavailable, for a
+    reason, until a date", and the upstream model splits them across
+    athlete.injury_record, athlete.suspension_record and nothing at all.
+  '''
+}
+
+Table body_area {
+  body_area_id identifier [pk]
+  area_code code [not null, unique]
+  name name [not null]
+}
+
+Table performance_measure {
+  performance_measure_id identifier [pk]
+  event_id identifier [not null]
+  athlete_id identifier [not null]
+  measure_definition_id identifier [not null]
+  measure_value quantity [not null]
+  per_90_value quantity
+  indexes { (event_id, athlete_id, measure_definition_id) [unique] }
+  note: 'A quantified assessment. Derived from match_event_qualifier rather than entered, which is why the definition is a separate entity.'
+}
+
+Table measure_definition {
+  measure_definition_id identifier [pk]
+  measure_code code [not null, unique]
+  name name [not null]
+  computation_type computation_type [not null]
+  unit_of_measure code
+  higher_is_better boolean [note: 'Getting this backwards silently inverts every leaderboard.']
+  note: '''
+    The rule that turns coded events into a statistic. The upstream
+    athlete.performance_stat receives the number, so without this the figure is
+    neither reproducible nor auditable.
+  '''
+}
+
+// -------------------------------------------------------------------------
+// Officials
+// -------------------------------------------------------------------------
+
+Table official {
+  official_id identifier [pk]
+  party_id identifier [not null, note: 'Subtype of party.']
+  official_role_id identifier [not null]
+  accreditation_level code
+}
+
+Table official_role {
+  official_role_id identifier [pk]
+  role_code code [not null, unique]
+  name name [not null]
+  sport_id identifier [not null]
+}
+
+Table event_official_assignment {
+  event_id identifier [pk]
+  official_id identifier [pk]
+  official_role_id identifier [not null]
+  assigned_at instant [not null]
+  note: 'Associative. A fixture has a referee, two assistants, a fourth official and a VAR -- five rows, not five columns.'
+}
+
+// -------------------------------------------------------------------------
+// Relationships
+// -------------------------------------------------------------------------
+
+Ref: league.sport_id > sport.sport_id
+Ref: conference.league_id > league.league_id
+Ref: division.conference_id > conference.conference_id
+Ref: season.league_id > league.league_id
+Ref: competition.season_id > season.season_id
+Ref: competition.competition_format_id > competition_format.competition_format_id
+Ref: competition_stage.competition_id > competition.competition_id
+Ref: competition_stage.parent_stage_id > competition_stage.competition_stage_id
+
+Ref: franchise_division_membership.franchise_id > franchise.franchise_id
+Ref: franchise_division_membership.division_id > division.division_id
+Ref: franchise_division_membership.season_id > season.season_id
+Ref: team.franchise_id > franchise.franchise_id
+Ref: team.squad_level_id > squad_level.squad_level_id
+
+Ref: event.event_type_id > event_type.event_type_id
+Ref: event.season_id > season.season_id
+Ref: event.competition_id > competition.competition_id
+Ref: event.competition_stage_id > competition_stage.competition_stage_id
+
+Ref: event_schedule.event_id - event.event_id
+Ref: competitive_fixture.event_id - event.event_id
+Ref: competitive_fixture.home_team_id > team.team_id
+Ref: competitive_fixture.away_team_id > team.team_id
+Ref: performance_event.event_id - event.event_id
+Ref: event_outcome.event_id - event.event_id
+
+Ref: event_participant_team.event_id > event.event_id
+Ref: event_participant_team.team_id > team.team_id
+
+Ref: match_event.event_id > event.event_id
+Ref: match_event.match_event_type_id > match_event_type.match_event_type_id
+Ref: match_event.attributed_athlete_id > athlete.athlete_id
+Ref: match_event.opposing_athlete_id > athlete.athlete_id
+Ref: match_event.team_id > team.team_id
+Ref: match_event_qualifier.match_event_id > match_event.match_event_id
+Ref: match_event_qualifier.qualifier_id > qualifier.qualifier_id
+Ref: qualifier.qualifier_group_id > qualifier_group.qualifier_group_id
+
+Ref: athlete.primary_position_id > position.position_id
+Ref: position.sport_id > sport.sport_id
+Ref: athlete_nationality.athlete_id > athlete.athlete_id
+Ref: athlete_engagement.athlete_id > athlete.athlete_id
+Ref: athlete_engagement.franchise_id > franchise.franchise_id
+Ref: athlete_team_assignment.athlete_engagement_id > athlete_engagement.athlete_engagement_id
+Ref: athlete_team_assignment.team_id > team.team_id
+Ref: athlete_team_assignment.season_id > season.season_id
+Ref: event_participant_athlete.event_id > event.event_id
+Ref: event_participant_athlete.athlete_id > athlete.athlete_id
+Ref: event_participant_athlete.team_id > team.team_id
+Ref: availability.athlete_id > athlete.athlete_id
+Ref: availability.body_area_id > body_area.body_area_id
+Ref: performance_measure.event_id > event.event_id
+Ref: performance_measure.athlete_id > athlete.athlete_id
+Ref: performance_measure.measure_definition_id > measure_definition.measure_definition_id
+
+Ref: official.official_role_id > official_role.official_role_id
+Ref: official_role.sport_id > sport.sport_id
+Ref: event_official_assignment.event_id > event.event_id
+Ref: event_official_assignment.official_id > official.official_id
+Ref: event_official_assignment.official_role_id > official_role.official_role_id
